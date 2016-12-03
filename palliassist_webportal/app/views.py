@@ -18,3 +18,15 @@ def index(request):
 
     return render(request, 'app/index.html', context)
 
+def messaging(request):
+    #return HttpResponse("Hello, world. You're at the index")
+    """Renders the home page."""
+    assert isinstance(request, HttpRequest)
+
+    context = {
+        'title': 'Messaging',
+        'year' : datetime.now().year,
+    }
+
+    return render(request, 'app/messaging.html', context)
+
