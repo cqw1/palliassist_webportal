@@ -1,0 +1,2 @@
+django<1.10
+twilio==5.4.0
