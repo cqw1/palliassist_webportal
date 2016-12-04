@@ -5,6 +5,8 @@ Definition of urls for django_get_started.
 from datetime import datetime
 from django.conf.urls import *
 from app.forms import BootstrapAuthenticationForm
+from app import views as app_views
+from django.contrib.auth import views as auth_views
 
 # Uncomment the next lines to enable the admin:
 # from django.conf.urls import include
@@ -13,13 +15,13 @@ from app.forms import BootstrapAuthenticationForm
 
 urlpatterns = [
     # Examples:
-    url(r'^$', 'app.views.home', name='home'),
-    url(r'^contact$', 'app.views.contact', name='contact'),
-    url(r'^about', 'app.views.about', name='about'),
-    url(r'^messaging', 'app.views.messaging', name='messaging'),
-    url(r'^token', 'app.views.token', name='token'),
+    url(r'^$', app_views.home, name='home'),
+    url(r'^contact$', app_views.contact, name='contact'),
+    url(r'^about', app_views.about, name='about'),
+    url(r'^messaging', app_views.messaging, name='messaging'),
+    url(r'^token', app_views.token, name='token'),
     url(r'^login/$',
-        'django.contrib.auth.views.login',
+        auth_views.login,
         {
             'template_name': 'app/login.html',
             'authentication_form': BootstrapAuthenticationForm,
@@ -31,7 +33,7 @@ urlpatterns = [
         },
         name='login'),
     url(r'^logout$',
-        'django.contrib.auth.views.logout',
+        auth_views.logout,
         {
             'next_page': '/',
         },
