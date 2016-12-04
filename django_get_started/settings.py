@@ -10,7 +10,7 @@ TEMPLATE_DEBUG = DEBUG
 
 ALLOWED_HOSTS = (
     'localhost',
-    'palliassist-dev-us.azurewebsites.net'.
+    'palliassist-dev-us.azurewebsites.net',
 )
 
 ADMINS = (
