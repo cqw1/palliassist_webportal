@@ -19,6 +19,7 @@ urlpatterns = [
     url(r'^contact$', app_views.contact, name='contact'),
     url(r'^about', app_views.about, name='about'),
     url(r'^messaging', app_views.messaging, name='messaging'),
+    url(r'^saveMessage', app_views.saveMessage, name='saveMessage'),
     url(r'^token', app_views.token, name='token'),
     url(r'^login/$',
         auth_views.login,

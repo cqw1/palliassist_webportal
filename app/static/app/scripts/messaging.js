@@ -158,8 +158,20 @@ $(function() {
         if (e.keyCode == 13) {
             var $msg = $('<div class="info">');
             $msg.text('Saved: "' + $saveInput.val() + '"');
+
+            //$.post('/saveMessage', {'message': $saveInput.val()});
+
+            $.getJSON('/saveMessage', {
+                content: $saveInput.val(),
+                sender: username,
+                channel: channelName,
+                time_sent: $.now(),
+                type: 'text'
+            }, function(data) {})
+
             $savedWindow.append($msg);
             $saveInput.val('');
         }
     });
+
 });

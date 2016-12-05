@@ -7,8 +7,10 @@ from django.http import HttpRequest, JsonResponse
 from django.template import RequestContext
 from datetime import datetime
 from cgi import parse_qs, escape
+from django.views.decorators.csrf import csrf_exempt
 
 import logging
+import MySQLdb
 
 from twilio.access_token import AccessToken, IpMessagingGrant
 
@@ -64,11 +66,45 @@ def messaging(request):
         'message':'Send messages.',
         'year':datetime.now().year,
     }
+
     return render(
         request,
         'app/messaging.html',
         context
     )
+
+def saveMessage(request):
+    """Renders the about page."""
+    assert isinstance(request, HttpRequest)
+
+    print request
+
+    sender = request.GET['sender']
+    channel = request.GET['channel']
+    content = request.GET['content']
+    content_type = request.GET['type']
+    time_sent = request.GET['time_sent']
+
+    print "saveMessage:"
+    print sender, channel, content, content_type, time_sent
+
+    db = MySQLdb.connect(host="us-cdbr-azure-southcentral-f.cloudapp.net", user="b811fcf3c52d36", passwd="91e7ba1e", db="palliative")
+    cur = db.cursor()
+
+    sender_id = cur.execute("SELECT id FROM palliative.login WHERE username = '" + sender + "';")
+    print sender_id
+
+    result = cur.execute("INSERT INTO palliative.messages VALUES(" + str(sender_id) + ", '" + channel + "', '" + content + "', '" + content_type + "', " + str(time_sent) + ");")
+    print result
+
+    cur.close()
+
+    db.commit()
+    db.close()
+
+    
+    return JsonResponse({})
+
 
 def token(request):
     assert isinstance(request, HttpRequest)
