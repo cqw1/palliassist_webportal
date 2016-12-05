@@ -6,7 +6,6 @@ from django.shortcuts import render
 from django.http import HttpRequest, JsonResponse
 from django.template import RequestContext
 from datetime import datetime
-from cgi import parse_qs, escape
 
 import logging
 
@@ -77,14 +76,10 @@ def token(request):
     account_sid = 'ACbf05fc8a591d9136132c9d62d8319eb1'
     api_key = 'SKeed5a60867e8f918ac7f2e9fa819d98a'
     api_secret = 'R3W2DYt3Eq1hbwj2GRKQV531XeVDU9sJ'
-
-    # old one with testchannel nd general
-    #service_sid = 'IS7d421d86df064d9698e91ee6e3d4bcf5'
-
-    service_sid = 'IS2ec68050ef5e4c79b15b78c3ded7ddc5'
+    service_sid = 'IS7d421d86df064d9698e91ee6e3d4bcf5'
 
     # create a randomly generated username for the client
-    identity = request.GET['identity']
+    identity = "bob"
 
     # <unique app>:<user>:<device>
     endpoint = "TwilioChatDemo:8:29"
