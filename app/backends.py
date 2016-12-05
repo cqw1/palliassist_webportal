@@ -14,7 +14,8 @@ class SqlBackend:
         found = cur.execute('SELECT * FROM palliative.login WHERE username = "' + username + '" AND password = "' + password + '"')
 
         if found == 0:
-            # No user with the input username was found.
+            # No user with the input username was found. 
+            # TODO: Should never have more than 1, but should check anyways
             return None
 
         try:
