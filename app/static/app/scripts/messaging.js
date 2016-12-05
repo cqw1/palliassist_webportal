@@ -2,7 +2,8 @@ console.log("messaging.js");
 
 $(function() {
     // Get handle to the chat div 
-    var $chatWindow = $('#messages');
+    var $chatWindow = $('#chat-messages');
+    var $savedWindow = $('#saved-messages');
 
     console.log('chatWindow: ' + $chatWindow);
 
@@ -143,11 +144,22 @@ $(function() {
     }
 
     // Send a new message to the general channel
-    var $input = $('#chat-input');
-    $input.on('keydown', function(e) {
+    var $chatInput = $('#chat-input');
+    $chatInput.on('keydown', function(e) {
         if (e.keyCode == 13) {
-            channel.sendMessage($input.val())
-            $input.val('');
+            channel.sendMessage($chatInput.val())
+            $chatInput.val('');
+        }
+    });
+
+    // Save a message to db
+    var $saveInput = $('#save-input');
+    $saveInput.on('keydown', function(e) {
+        if (e.keyCode == 13) {
+            var $msg = $('<div class="info">');
+            $msg.text('Saved: "' + $saveInput.val() + '"');
+            $savedWindow.append($msg);
+            $saveInput.val('');
         }
     });
 });
