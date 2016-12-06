@@ -1,6 +1,7 @@
 # import the User object
 from django.contrib.auth.models import User
 import MySQLdb
+from redcap import Project, RedcapError
 
 # verify against mysql db
 class SqlBackend:
@@ -8,6 +9,7 @@ class SqlBackend:
     # create an authentication method
     # this is called by the standard django login procedure
     def authenticate(self, username=None, password=None):
+        """
         db = MySQLdb.connect(host="us-cdbr-azure-southcentral-f.cloudapp.net", user="b811fcf3c52d36", passwd="91e7ba1e", db="palliative")
         cur = db.cursor()
 
@@ -15,10 +17,25 @@ class SqlBackend:
 
         cur.close()
         db.close()
+        """
 
-        if found == 0:
+        URL = 'https://hcbredcap.com.br/api/'
+        TOKEN = 'F2C5AEE8A2594B0A9E442EE91C56CC7A'
+
+        project = Project(URL, TOKEN)
+
+        for field in project.metadata:
+            print "%s (%s) => %s" % (field['field_name'],field['field_type'], field['field_label'])
+
+        found = False
+        data = project.export_records()
+        for d in data:
+            if d['username'] == username and d['password'] == password:
+                found = True
+                break
+
+        if not found:
             # No user with the input username was found. 
-            # TODO: Should never have more than 1, but should check anyways
             return None
 
         try:

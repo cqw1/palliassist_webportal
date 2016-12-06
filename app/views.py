@@ -11,8 +11,10 @@ from django.views.decorators.csrf import csrf_exempt
 
 import logging
 import MySQLdb
+from redcap import Project, RedcapError
 
 from twilio.access_token import AccessToken, IpMessagingGrant
+
 
 def home(request):
     """Renders the home page."""
@@ -21,6 +23,21 @@ def home(request):
         'title':'Home Page',
         'year':datetime.now().year,
     }
+
+    """
+    URL = 'https://hcbredcap.com.br/api/'
+    TOKEN = 'F2C5AEE8A2594B0A9E442EE91C56CC7A'
+
+    project = Project(URL, TOKEN)
+
+    for field in project.metadata:
+        print "%s (%s) => %s" % (field['field_name'],field['field_type'], field['field_label'])
+
+    data = project.export_records()
+    for d in data:
+        print d
+        """
+
 
     return render(
         request,
@@ -127,6 +144,7 @@ def token(request):
 
     # Create access token with credentials
     token = AccessToken(account_sid, api_key, api_secret, identity)
+    print "token: ", token
 
     # Create an IP Messaging grant and add to token
     ipm_grant = IpMessagingGrant(endpoint_id=endpoint, service_sid=service_sid)
