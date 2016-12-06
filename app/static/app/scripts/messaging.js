@@ -71,8 +71,8 @@ $(function() {
         accessManager = new Twilio.AccessManager(data.token);
         messagingClient = new Twilio.IPMessaging.Client(accessManager);
 
-        channelName = 'demo';
-        channelFriendlyName = 'Demo';
+        channelName = 'Demo Channel';
+        channelFriendlyName = 'Demo Channel';
 
         // Get the general chat channel, which is where all the messages are
         // sent in this simple application

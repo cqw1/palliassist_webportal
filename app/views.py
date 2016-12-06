@@ -105,6 +105,7 @@ def saveMessage(request):
     print "saveMessage:"
     print sender, channel, content, content_type, time_sent
 
+    """
     db = MySQLdb.connect(host="us-cdbr-azure-southcentral-f.cloudapp.net", user="b811fcf3c52d36", passwd="91e7ba1e", db="palliative")
     cur = db.cursor()
 
@@ -118,6 +119,29 @@ def saveMessage(request):
 
     db.commit()
     db.close()
+    """
+
+    URL = 'https://hcbredcap.com.br/api/'
+    TOKEN = 'F2C5AEE8A2594B0A9E442EE91C56CC7A'
+
+    project = Project(URL, TOKEN)
+
+    for field in project.metadata:
+        print "%s (%s) => %s" % (field['field_name'],field['field_type'], field['field_label'])
+
+    data = project.export_records()
+    for d in data:
+        print d
+
+    d = data[0]
+    d['content'] = content
+    d['content_type'] = content_type
+    d['channel'] = channel
+    d['time_sent'] = time_sent
+
+    response = project.import_records(data)
+    print response['count']
+        
 
     
     return JsonResponse({})
