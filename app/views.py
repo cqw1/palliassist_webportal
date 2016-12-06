@@ -10,7 +10,7 @@ from cgi import parse_qs, escape
 from django.views.decorators.csrf import csrf_exempt
 
 import logging
-import MySQLdb
+#import MySQLdb
 from redcap import Project, RedcapError
 
 from twilio.access_token import AccessToken, IpMessagingGrant

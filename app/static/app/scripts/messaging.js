@@ -140,7 +140,7 @@ $(function() {
             console.log("===========");
             console.log('received message at timestamp: ' + message.timestamp.getTime());
         });
-        loadPreviousMessages();
+        //loadPreviousMessages();
     }
 
     // Send a new message to the general channel

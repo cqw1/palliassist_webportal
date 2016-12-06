@@ -1,6 +1,6 @@
 # import the User object
 from django.contrib.auth.models import User
-import MySQLdb
+#import MySQLdb
 from redcap import Project, RedcapError
 
 # verify against mysql db
