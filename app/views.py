@@ -168,7 +168,6 @@ def token(request):
 
     # Create access token with credentials
     token = AccessToken(account_sid, api_key, api_secret, identity)
-    print "token: ", token
 
     # Create an IP Messaging grant and add to token
     ipm_grant = IpMessagingGrant(endpoint_id=endpoint, service_sid=service_sid)
