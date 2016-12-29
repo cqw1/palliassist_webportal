@@ -1,0 +1,16 @@
+
+
+.pa-body-container {
+    display: flex;
+}
+
+
+.pa-navbar {
+    display: inline-block;
+}
+
+.pa-body-content{
+    display: inline-block;
+    margin-right: initial;
+    margin-left: initial;
+}
