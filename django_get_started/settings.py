@@ -20,6 +20,8 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
+AUTHENTICATION_BACKENDS = ('app.backends.SqlBackend',)
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -31,7 +33,9 @@ DATABASES = {
     }
 }
 
+
 LOGIN_URL = '/login'
+LOGIN_REDIRECT_URL = 'home'
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -83,6 +87,7 @@ STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
+    #path.join(PROJECT_ROOT, 'app/static'),
 )
 
 # List of finder classes that know how to find static files in
@@ -118,14 +123,6 @@ ROOT_URLCONF = 'django_get_started.urls'
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'django_get_started.wsgi.application'
 
-"""
-TEMPLATE_DIRS = (
-    # Put strings here, like "/home/html/django_templates" or
-    # "C:/www/django/templates".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
-)
-"""
 TEMPLATES = [
 {
     'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -189,3 +186,4 @@ LOGGING = {
 
 # Specify the default test runner.
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
+
