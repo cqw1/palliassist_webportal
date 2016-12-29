@@ -24,6 +24,8 @@ class SqlBackend:
 
         project = Project(URL, TOKEN)
 
+        print project
+
         for field in project.metadata:
             print "%s (%s) => %s" % (field['field_name'],field['field_type'], field['field_label'])
 
