@@ -1,10 +1,9 @@
 # import the User object
 from django.contrib.auth.models import User
-#import MySQLdb
 from redcap import Project, RedcapError
 
-# verify against mysql db
-class SqlBackend:
+# verify against redcap db
+class REDCapBackend:
 
     # create an authentication method
     # this is called by the standard django login procedure
@@ -17,6 +16,13 @@ class SqlBackend:
 
         cur.close()
         db.close()
+        """
+
+        """
+        # Clear all users from the db
+        print "before:", User.objects.all()
+        User.objects.all().delete()
+        print "after:", User.objects.all()
         """
 
         URL = 'https://hcbredcap.com.br/api/'

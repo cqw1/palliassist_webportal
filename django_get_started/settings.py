@@ -20,7 +20,7 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-AUTHENTICATION_BACKENDS = ('app.backends.SqlBackend',)
+AUTHENTICATION_BACKENDS = ('app.backends.REDCapBackend',)
 
 DATABASES = {
     'default': {

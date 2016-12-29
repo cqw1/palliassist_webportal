@@ -3,11 +3,14 @@ Definition of views.
 """
 
 from django.shortcuts import render
-from django.http import HttpRequest, JsonResponse
+from django.http import HttpRequest, JsonResponse, HttpResponseRedirect
 from django.template import RequestContext
 from datetime import datetime
 from cgi import parse_qs, escape
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth import views as auth_views
+from django.core.urlresolvers import reverse
+
 
 import logging
 #import MySQLdb
@@ -44,6 +47,13 @@ def home(request):
         'app/index.html',
         context
     )
+def loginRedirect(request, **kwargs):
+    if request.user.is_authenticated():
+        return HttpResponseRedirect(reverse('home'))
+    else:
+        return auth_views.login(request, **kwargs)
+
+
 
 def contact(request):
     """Renders the contact page."""

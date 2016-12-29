@@ -17,7 +17,20 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     # Examples:
-    url(r'^$', app_views.home, name='home'),
+    #url(r'^$', app_views.home, name='home'),
+    url(r'^$',
+        app_views.loginRedirect,
+        {
+            'template_name': 'app/login.html',
+            'authentication_form': BootstrapAuthenticationForm,
+            'extra_context':
+            {
+                'title':'Log in',
+                'year':datetime.now().year,
+            }
+        },
+        name='login'),
+    url(r'^home$', app_views.home, name='home'),
     url(r'^contact$', app_views.contact, name='contact'),
     url(r'^about', app_views.about, name='about'),
     url(r'^messaging', app_views.messaging, name='messaging'),
