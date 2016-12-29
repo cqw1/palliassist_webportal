@@ -7,6 +7,8 @@ from django.conf.urls import *
 from app.forms import BootstrapAuthenticationForm
 from app import views as app_views
 from django.contrib.auth import views as auth_views
+from django.conf import settings
+from django.conf.urls.static import static
 
 # Uncomment the next lines to enable the admin:
 # from django.conf.urls import include
@@ -45,4 +47,4 @@ urlpatterns = [
 
     # Uncomment the next line to enable the admin:
     # url(r'^admin/', include(admin.site.urls)),
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
