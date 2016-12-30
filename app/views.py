@@ -19,11 +19,11 @@ from redcap import Project, RedcapError
 from twilio.access_token import AccessToken, IpMessagingGrant
 
 
-def home(request):
-    """Renders the home page."""
+def dashboard(request):
+    """Renders the dashboard page."""
     assert isinstance(request, HttpRequest)
     context = {
-        'title':'Home Page',
+        'title':'Dashboard',
         'year':datetime.now().year,
     }
 
@@ -44,12 +44,14 @@ def home(request):
 
     return render(
         request,
-        'app/index.html',
+        'app/dashboard.html',
         context
     )
+
+
 def loginRedirect(request, **kwargs):
     if request.user.is_authenticated():
-        return HttpResponseRedirect(reverse('home'))
+        return HttpResponseRedirect(reverse('dashboard'))
     else:
         return auth_views.login(request, **kwargs)
 
@@ -70,33 +72,33 @@ def contact(request):
         context
     )
 
-def about(request):
+def patients(request):
     """Renders the about page."""
     assert isinstance(request, HttpRequest)
     context = {
-        'title':'About',
-        'message':'Your application description page.',
+        'title':'Patients',
+        'message':'List of patients.',
         'year':datetime.now().year,
     }
 
     return render(
         request,
-        'app/about.html',
+        'app/patients.html',
         context
     )
 
-def messaging(request):
+def messages(request):
     """Renders the about page."""
     assert isinstance(request, HttpRequest)
     context = {
-        'title':'Messaging',
+        'title':'Messages',
         'message':'Send messages.',
         'year':datetime.now().year,
     }
 
     return render(
         request,
-        'app/messaging.html',
+        'app/messages.html',
         context
     )
 

@@ -11,6 +11,7 @@
 
 .pa-body-content{
     display: inline-block;
+    width: 100%;
     margin-right: initial;
     margin-left: initial;
 }
