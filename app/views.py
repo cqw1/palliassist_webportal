@@ -10,6 +10,7 @@ from cgi import parse_qs, escape
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import views as auth_views
 from django.core.urlresolvers import reverse
+from app.models import UnreadMessage
 
 
 import logging
@@ -22,9 +23,19 @@ from twilio.access_token import AccessToken, IpMessagingGrant
 def dashboard(request):
     """Renders the dashboard page."""
     assert isinstance(request, HttpRequest)
+
+
+    unread_messages = []
+
+    for i in range(4):
+        # create_unread_message(patient_id, patient_name, num_unread)
+        temp = UnreadMessage.objects.create_unread_message(i * 10, "Patient " + str(i), i * 10)
+        unread_messages.append(temp)
+
     context = {
         'title':'Dashboard',
         'year':datetime.now().year,
+        'unread_messages': unread_messages
     }
 
     """

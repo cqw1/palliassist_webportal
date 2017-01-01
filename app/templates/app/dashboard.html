@@ -5,33 +5,42 @@
     <h1>Dashboard<small><!--Subtext for header--></small></h1>
 </div>
 
-<!-- Unread Messages Panel -->
-<div class="panel panel-warning">
-    <div class="panel-heading">
-        <h3 class="panel-title">Unread Messages</h3>
+<div class="row">
+
+    <div class="col-xs-12 col-md-4">
+        <!-- Unread Messages Panel -->
+        <div class="panel panel-warning">
+            <div class="panel-heading">
+                <h3 class="panel-title">Unread Messages</h3>
+            </div>
+
+            <div class="list-group">
+                {% for unread_message in unread_messages %}
+                <a href="#" class="list-group-item">{{ unread_message.patient_name }}<span class="badge">{{ unread_message.num_unread }}</span></a>
+                {% endfor %}
+            </div>
+        </div>
     </div>
 
-    <div class="list-group">
-        <a href="#" class="list-group-item">Billy Bob<span class="badge">78</span></a>
-        <a href="#" class="list-group-item">John Doe<span class="badge">3</span></a>
-        <a href="#" class="list-group-item">Jane Doe<span class="badge">10</span></a>
-        <a href="#" class="list-group-item">John Jingleheimerschmidt<span class="badge">101</span></a>
-    </div>
-</div>
+    <div class="col-xs-12 col-md-4">
+        <!-- Missed Medication Panel -->
+        <div class="panel panel-danger">
+            <div class="panel-heading">
+                <h3 class="panel-title">Missed Medication</h3>
+            </div>
 
-
-<!-- Missing Medication Panel -->
-<div class="panel panel-warning">
-    <div class="panel-heading">
-        <h3 class="panel-title">Unread Messages</h3>
+            <div class="list-group">
+                <a href="#" class="list-group-item">Billy Bob<span class="badge">78</span></a>
+                <a href="#" class="list-group-item">John Doe<span class="badge">3</span></a>
+                <a href="#" class="list-group-item">Jane Doe<span class="badge">10</span></a>
+                <a href="#" class="list-group-item">John Jingleheimerschmidt<span class="badge">101</span></a>
+            </div>
+        </div>
     </div>
 
-    <div class="list-group">
-        <a href="#" class="list-group-item">Billy Bob<span class="badge">78</span></a>
-        <a href="#" class="list-group-item">John Doe<span class="badge">3</span></a>
-        <a href="#" class="list-group-item">Jane Doe<span class="badge">10</span></a>
-        <a href="#" class="list-group-item">John Jingleheimerschmidt<span class="badge">101</span></a>
+    <div class="col-xs-12 col-md-4">
     </div>
+
 </div>
 
 {% endblock %}
