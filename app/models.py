@@ -39,3 +39,25 @@ class UnreadMessage(DashboardAlert):
     num_unread = models.IntegerField()
 
 
+"""
+Class to manage patients.
+"""
+class PatientManager(models.Manager):
+    def create_unread_message(self, patient_id, patient_name, num_unread):
+        unread_message = self.create(patient_id=patient_id, patient_name=patient_name, num_unread=num_unread)
+
+        # do something with the unread_message
+
+        return unread_message
+
+
+"""
+Contains info on a patient.
+"""
+class Patient(DashboardAlert):
+    objects = UnreadMessageManager()
+
+    patient_id = models.IntegerField()
+    patient_name = models.CharField(max_length=NAME_MAX_LENGTH)
+    num_unread = models.IntegerField()
+

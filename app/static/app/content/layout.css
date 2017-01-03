@@ -1,9 +1,10 @@
-
+.pa-center-wrapper {
+    text-align: center;
+}
 
 .pa-body-container {
     display: flex;
 }
-
 
 .pa-navbar {
     display: inline-block;
