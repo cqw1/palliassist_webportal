@@ -1,3 +1,16 @@
+
+label {
+    padding-right: 10px;
+}
+
+.pa-register-patient-btn {
+    float: right;
+}
+
+.pa-child-display-inline-block * {
+    display: inline-block;
+}
+
 .pa-center-wrapper {
     text-align: center;
 }

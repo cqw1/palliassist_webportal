@@ -11,6 +11,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import views as auth_views
 from django.core.urlresolvers import reverse
 from app.models import UnreadMessage
+from .forms import QueryPatientsForm
 
 
 import logging
@@ -79,12 +80,19 @@ def patients(request):
     if not request.user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
 
+    if request.method == 'GET':
+        print "[views.searchPatients] got GET request"
+    else:
+        print "else"
+
+    query_patients_form = QueryPatientsForm()
 
     context = {
         'title': 'Patients',
         'message': 'List of patients.',
         'year': datetime.now().year,
         'patient_results': [],
+        'form': query_patients_form,
     }
 
     return render(
@@ -92,6 +100,7 @@ def patients(request):
         'app/patients.html',
         context
     )
+
 
 def messages(request):
     """Renders the messages page."""

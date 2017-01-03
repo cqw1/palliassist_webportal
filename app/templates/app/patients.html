@@ -7,9 +7,24 @@
 
 
 <!-- Search form -->
+<section id="queryPatients">
+<form method="GET">
+    {% csrf_token %}
 
-<!-- Button to register a new patient -->
-<a href="#" class="btn btn-danger" role="button">+ Register Patient</a>
+    <div class="pa-child-display-inline-block">
+        {{ form }}
+
+        <button type="submit" class="btn btn-primary">Search</button>
+
+        <!-- Button to register a new patient -->
+        <a href="#" class="btn btn-danger pa-register-patient-btn" role="button">+ Register Patient</a>
+    </div>
+
+</form>
+</section>
+
+<hr />
+
 
 {% if patient_results %}
 
