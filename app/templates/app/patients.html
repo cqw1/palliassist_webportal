@@ -5,4 +5,41 @@
     <h1>Patients<small><!--Subtext for header--></small></h1>
 </div>
 
+
+<!-- Search form -->
+
+<!-- Button to register a new patient -->
+<a href="#" class="btn btn-danger" role="button">+ Register Patient</a>
+
+{% if patient_results %}
+
+<!-- Table of search results --> 
+<table class="table table-striped">
+    <!-- Table headers -->
+    <tr>
+        <th>Name</th>
+        <th>Gender</th>
+        <th>Age</th>
+    </tr>
+
+
+    <!-- Search results -->
+    {% for patient_result in patient_results %}
+    <tr>
+        <td>{{ patient_result.name}} </td>
+        <td>{{ patient_result.gender}} </td>
+        <td>{{ patient_result.age}} </td>
+    </tr>
+    {% endfor %}
+
+</table>
+
+{% else %}
+
+<div class="pa-center-wrapper">
+    No patients found.
+</div>
+
+{% endif %}
+
 {% endblock %}

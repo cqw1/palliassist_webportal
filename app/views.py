@@ -79,10 +79,12 @@ def patients(request):
     if not request.user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
 
+
     context = {
-        'title':'Patients',
-        'message':'List of patients.',
-        'year':datetime.now().year,
+        'title': 'Patients',
+        'message': 'List of patients.',
+        'year': datetime.now().year,
+        'patient_results': [],
     }
 
     return render(
