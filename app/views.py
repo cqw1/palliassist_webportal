@@ -24,6 +24,9 @@ def dashboard(request):
     """Renders the dashboard page."""
     assert isinstance(request, HttpRequest)
 
+    # Check if user is logged in. Otherwise redirect to login page.
+    if not request.user.is_authenticated():
+        return HttpResponseRedirect(reverse('login'))
 
     unread_messages = []
 
@@ -61,31 +64,21 @@ def dashboard(request):
 
 
 def loginRedirect(request, **kwargs):
+    # Checks to see if user is logged in. If so, redirect to dashboard page.
     if request.user.is_authenticated():
         return HttpResponseRedirect(reverse('dashboard'))
     else:
         return auth_views.login(request, **kwargs)
 
 
-
-def contact(request):
-    """Renders the contact page."""
-    assert isinstance(request, HttpRequest)
-    context = {
-        'title':'Contact',
-        'message':'Your contact page.',
-        'year':datetime.now().year,
-    }
-
-    return render(
-        request,
-        'app/contact.html',
-        context
-    )
-
 def patients(request):
-    """Renders the about page."""
+    """Renders the patients page."""
     assert isinstance(request, HttpRequest)
+
+    # Check if user is logged in. Otherwise redirect to login page.
+    if not request.user.is_authenticated():
+        return HttpResponseRedirect(reverse('login'))
+
     context = {
         'title':'Patients',
         'message':'List of patients.',
@@ -99,8 +92,13 @@ def patients(request):
     )
 
 def messages(request):
-    """Renders the about page."""
+    """Renders the messages page."""
     assert isinstance(request, HttpRequest)
+
+    # Check if user is logged in. Otherwise redirect to login page.
+    if not request.user.is_authenticated():
+        return HttpResponseRedirect(reverse('login'))
+
     context = {
         'title':'Messages',
         'message':'Send messages.',
@@ -113,8 +111,10 @@ def messages(request):
         context
     )
 
+"""
+Saves a message to the REDCap database.
+"""
 def saveMessage(request):
-    """Renders the about page."""
     assert isinstance(request, HttpRequest)
 
     print request
@@ -169,7 +169,9 @@ def saveMessage(request):
     
     return JsonResponse({})
 
-
+"""
+Gets an access token for Twilio IP messaging. Called by messages.js.
+"""
 def token(request):
     assert isinstance(request, HttpRequest)
 
@@ -199,3 +201,4 @@ def token(request):
     # COMMENTED CAUSE FLASK THING - Return token info as JSON 
     #return jsonify(identity=identity, token=token.to_jwt())
     return JsonResponse({'identity': identity, 'token': token.to_jwt()})
+

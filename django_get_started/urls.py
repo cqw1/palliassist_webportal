@@ -25,13 +25,12 @@ urlpatterns = [
             'authentication_form': BootstrapAuthenticationForm,
             'extra_context':
             {
-                'title':'Log in',
+                'title':'Login',
                 'year':datetime.now().year,
             }
         },
         name='login'),
     url(r'^dashboard$', app_views.dashboard, name='dashboard'),
-    url(r'^contact$', app_views.contact, name='contact'),
     url(r'^patients', app_views.patients, name='patients'),
     url(r'^messages', app_views.messages, name='messages'),
     url(r'^saveMessage', app_views.saveMessage, name='saveMessage'),
@@ -43,7 +42,7 @@ urlpatterns = [
             'authentication_form': BootstrapAuthenticationForm,
             'extra_context':
             {
-                'title':'Log in',
+                'title':'Login',
                 'year':datetime.now().year,
             }
         },
