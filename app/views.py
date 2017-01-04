@@ -101,6 +101,31 @@ def patients(request):
         context
     )
 
+def signUp(request):
+    """Renders the patients page."""
+    assert isinstance(request, HttpRequest)
+
+    if request.method == 'GET':
+        print "[views.signUp] got GET request"
+    else:
+        print "else"
+
+    #query_patients_form = QueryPatientsForm()
+
+    context = {
+        'title': 'Sign Up',
+        'message': 'List of patients.',
+        'year': datetime.now().year,
+        'patient_results': [],
+        #'form': query_patients_form,
+    }
+
+    return render(
+        request,
+        'app/sign_up.html',
+        context
+    )
+
 
 def messages(request):
     """Renders the messages page."""

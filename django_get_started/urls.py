@@ -17,8 +17,8 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     # Examples:
-    #url(r'^$', app_views.home, name='home'),
-    url(r'^$',
+    #url(r'^(?i)$', app_views.home, name='home'),
+    url(r'^(?i)$',
         app_views.loginRedirect,
         {
             'template_name': 'app/login.html',
@@ -30,12 +30,13 @@ urlpatterns = [
             }
         },
         name='login'),
-    url(r'^dashboard$', app_views.dashboard, name='dashboard'),
-    url(r'^patients', app_views.patients, name='patients'),
-    url(r'^messages', app_views.messages, name='messages'),
-    url(r'^saveMessage', app_views.saveMessage, name='saveMessage'),
-    url(r'^token', app_views.token, name='token'),
-    url(r'^login/$',
+    url(r'^(?i)dashboard$', app_views.dashboard, name='dashboard'),
+    url(r'^(?i)patients', app_views.patients, name='patients'),
+    url(r'^(?i)signUp', app_views.signUp, name='signUp'),
+    url(r'^(?i)messages', app_views.messages, name='messages'),
+    url(r'^(?i)saveMessage', app_views.saveMessage, name='saveMessage'),
+    url(r'^(?i)token', app_views.token, name='token'),
+    url(r'^(?i)login/$',
         auth_views.login,
         {
             'template_name': 'app/login.html',
@@ -47,7 +48,7 @@ urlpatterns = [
             }
         },
         name='login'),
-    url(r'^logout$',
+    url(r'^(?i)logout$',
         auth_views.logout,
         {
             'next_page': '/',
