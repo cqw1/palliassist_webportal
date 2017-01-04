@@ -11,7 +11,9 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import views as auth_views
 from django.core.urlresolvers import reverse
 from app.models import UnreadMessage
+
 from .forms import QueryPatientsForm
+from .forms import SignUpForm 
 
 
 import logging
@@ -110,14 +112,12 @@ def signUp(request):
     else:
         print "else"
 
-    #query_patients_form = QueryPatientsForm()
+    sign_up_form = SignUpForm()
 
     context = {
         'title': 'Sign Up',
-        'message': 'List of patients.',
         'year': datetime.now().year,
-        'patient_results': [],
-        #'form': query_patients_form,
+        'form': sign_up_form,
     }
 
     return render(
