@@ -25,6 +25,10 @@ class SignUpForm(forms.Form):
     """ Queries for patients by name"""
     real_name = forms.CharField(label=_("Full Name"), widget=forms.TextInput({ 'class': 'form-control', 'placeholder':'Full Name'})) 
     username = forms.CharField(label=_("Username"), widget=forms.TextInput({ 'class': 'form-control', 'placeholder':'Username'})) 
-    password_1 = forms.CharField(label=_("Password"), widget=forms.TextInput({ 'class': 'form-control', 'placeholder':'Password'})) 
-    password_2 = forms.CharField(label=_("Retype Password"), widget=forms.TextInput({ 'class': 'form-control', 'placeholder':'Retype Password'})) 
+    password_1 = forms.CharField(label=_("Password"), widget=forms.PasswordInput({ 'class': 'form-control', 'placeholder':'Password'})) 
+    password_2 = forms.CharField(label=_("Retype Password"), widget=forms.PasswordInput({ 'class': 'form-control', 'placeholder':'Retype Password'})) 
+    access_key = forms.CharField(label=_("Access Key"), widget=forms.TextInput({ 'class': 'form-control', 'placeholder':'Access Key'})) 
+    doctor_patient_choice = forms.ChoiceField(label=_("Role"), widget=forms.RadioSelect, choices=[('doctor', 'Doctor'), ('patient', 'Patient')])
+    patients_doctor_username = forms.CharField(label=_("Doctor's Username*"), widget=forms.TextInput({ 'class': 'form-control', 'placeholder': "Doctor's Username"})) 
+    #favorite_colors = forms.MultipleChoiceField( required=False, widget=forms.CheckboxSelectMultiple, choices=FAVORITE_COLORS_CHOICES,)
 
