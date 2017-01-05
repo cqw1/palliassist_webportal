@@ -107,12 +107,14 @@ def signUp(request):
     """Renders the patients page."""
     assert isinstance(request, HttpRequest)
 
+    sign_up_form = SignUpForm()
+
     if request.method == 'GET':
         print "[views.signUp] got GET request"
-    else:
-        print "else"
 
-    sign_up_form = SignUpForm()
+    elif request.method == 'POST':
+        print "[views.signUp] got POST request"
+        sign_up_form = SignUpForm(request.POST)
 
     context = {
         'title': 'Sign Up',

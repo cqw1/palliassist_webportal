@@ -10,16 +10,12 @@
 </div>
 
 <div class="row">
-    {% if form.errors %}
-    <p class="validation-summary-errors">Please enter a correct username and password.</p>
-    {% endif %}
-</div>
-
-<div class="row">
     <div class="col-md-8 col-md-push-3">
         <section id="loginForm">
         <form action="." method="post" class="form-horizontal">
             {% csrf_token %}
+
+            {{ form.non_field_errors }}
 
             <!-- Loops through fields in form and renders -->
             {% for field in form %}
@@ -29,8 +25,10 @@
                 <div class="col-md-9 pa-ignore-center-wrapper pa-form-field">
                     {{ field }}
 
+                    {{ field.errors }}
+
                     {% if field.id_for_label == 'id_patients_doctor_username' %}
-                    <span style="color: red">* Only for registering patients.</span>
+                    <span><i>* Only for registering patients.</i></span>
                     {% endif %}
                 </div>
             </div>
