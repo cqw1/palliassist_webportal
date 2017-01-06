@@ -5,7 +5,7 @@ Django settings for django_get_started project.
 from os import path
 PROJECT_ROOT = path.dirname(path.abspath(path.dirname(__file__)))
 
-DEBUG = True
+DEBUG = False 
 TEMPLATE_DEBUG = DEBUG
 
 ALLOWED_HOSTS = (
@@ -132,10 +132,10 @@ TEMPLATES = [
     'APP_DIRS': True,
     'OPTIONS': {
         'context_processors': [
-        'django.template.context_processors.debug',
-        'django.template.context_processors.request',
-        'django.contrib.auth.context_processors.auth',
-        'django.contrib.messages.context_processors.messages',
+            'django.template.context_processors.debug',
+            'django.template.context_processors.request',
+            'django.contrib.auth.context_processors.auth',
+            'django.contrib.messages.context_processors.messages',
         ],
     },
 },
@@ -150,7 +150,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'app',
     # Uncomment the next line to enable the admin:
-    # 'django.contrib.admin',
+    'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )

@@ -9,6 +9,7 @@ from app import views as app_views
 from django.contrib.auth import views as auth_views
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib import admin
 
 # Uncomment the next lines to enable the admin:
 # from django.conf.urls import include
@@ -32,9 +33,10 @@ urlpatterns = [
         name='login'),
     url(r'^(?i)dashboard$', app_views.dashboard, name='dashboard'),
     url(r'^(?i)patients', app_views.patients, name='patients'),
-    url(r'^(?i)signUp', app_views.signUp, name='signUp'),
+    url(r'^(?i)signup-success', app_views.signupSuccess, name='signup-success'),
+    url(r'^(?i)signup', app_views.signup, name='signup'),
     url(r'^(?i)messages', app_views.messages, name='messages'),
-    url(r'^(?i)saveMessage', app_views.saveMessage, name='saveMessage'),
+    url(r'^(?i)save-message', app_views.saveMessage, name='save-message'),
     url(r'^(?i)token', app_views.token, name='token'),
     url(r'^(?i)login/$',
         auth_views.login,
@@ -56,8 +58,8 @@ urlpatterns = [
         name='logout'),
 
     # Uncomment the admin/doc line below to enable admin documentation:
-    # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
+    url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
     # Uncomment the next line to enable the admin:
-    # url(r'^admin/', include(admin.site.urls)),
+    url(r'^admin/', include(admin.site.urls)),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

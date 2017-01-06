@@ -1,0 +1,40 @@
+
+label {
+    padding-right: 10px;
+}
+
+.pa-form-field ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.pa-register-patient-btn {
+    float: right;
+}
+
+.pa-child-display-inline-block * {
+    display: inline-block;
+}
+
+.pa-center-wrapper {
+    text-align: center;
+}
+
+.pa-ignore-center-wrapper {
+    text-align: initial;
+}
+
+.pa-body-container {
+    display: flex;
+}
+
+.pa-navbar {
+    display: inline-block;
+}
+
+.pa-body-content{
+    display: inline-block;
+    width: 100%;
+    margin-right: initial;
+    margin-left: initial;
+}

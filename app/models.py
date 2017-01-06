@@ -3,6 +3,7 @@ Definition of models.
 """
 
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 NAME_MAX_LENGTH = 100
@@ -16,48 +17,42 @@ class DashboardAlert(models.Model):
     class Meta:
         abstract = True
 
-"""
-Class to manage all unread message notifications.
-"""
-class UnreadMessageManager(models.Manager):
-    def create_unread_message(self, patient_id, patient_name, num_unread):
-        unread_message = self.create(patient_id=patient_id, patient_name=patient_name, num_unread=num_unread)
-
-        # do something with the unread_message
-
-        return unread_message
-
 
 """
 Contains info on dashboard alerts of unread messages.
 """
 class UnreadMessage(DashboardAlert):
-    objects = UnreadMessageManager()
-
     patient_id = models.IntegerField()
     patient_name = models.CharField(max_length=NAME_MAX_LENGTH)
     num_unread = models.IntegerField()
-
-
-"""
-Class to manage patients.
-"""
-class PatientManager(models.Manager):
-    def create_unread_message(self, patient_id, patient_name, num_unread):
-        unread_message = self.create(patient_id=patient_id, patient_name=patient_name, num_unread=num_unread)
-
-        # do something with the unread_message
-
-        return unread_message
-
 
 """
 Contains info on a patient.
 """
-class Patient(DashboardAlert):
-    objects = UnreadMessageManager()
+class Patient(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    u_id = models.IntegerField()
+    full_name = models.CharField(max_length=NAME_MAX_LENGTH)
 
-    patient_id = models.IntegerField()
-    patient_name = models.CharField(max_length=NAME_MAX_LENGTH)
-    num_unread = models.IntegerField()
+    def __unicode__(self):
+        return "[Patient - ", self.user_id, "]", self.full_name
+
+    class Meta:
+        ordering = ('user_id',)
+
+
+"""
+Contains info on a doctor.
+"""
+class Doctor(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    u_id = models.IntegerField()
+    full_name = models.CharField(max_length=NAME_MAX_LENGTH)
+    patients = models.ManyToManyField(Patient)
+
+    def __unicode__(self):
+        return "[Doctor - ", self.user_id, "]", self.full_name
+
+    class Meta:
+        ordering = ('user_id',)
 

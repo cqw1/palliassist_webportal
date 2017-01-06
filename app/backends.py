@@ -8,6 +8,9 @@ class REDCapBackend:
     # create an authentication method
     # this is called by the standard django login procedure
     def authenticate(self, username=None, password=None):
+        print
+        print "[REDCapBackend.authenticate]"
+        print
         """
         db = MySQLdb.connect(host="us-cdbr-azure-southcentral-f.cloudapp.net", user="b811fcf3c52d36", passwd="91e7ba1e", db="palliative")
         cur = db.cursor()

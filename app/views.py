@@ -42,8 +42,7 @@ def dashboard(request):
     unread_messages = []
 
     for i in range(4):
-        # create_unread_message(patient_id, patient_name, num_unread)
-        temp = UnreadMessage.objects.create_unread_message(i * 10, "Patient " + str(i), i * 10)
+        temp = UnreadMessage.objects.create(patient_id=i*10, patient_name="Patient " + str(i), num_unread=i*10)
         unread_messages.append(temp)
 
     context = {
@@ -111,30 +110,60 @@ def patients(request):
         context
     )
 
-def signUp(request):
+def signup(request):
     """Renders the patients page."""
     assert isinstance(request, HttpRequest)
 
-    sign_up_form = SignUpForm(error_class=SpanErrorList)
-    #sign_up_form = SignUpForm()
+    signup_form = SignUpForm(error_class=SpanErrorList)
 
-    if request.method == 'GET':
-        print "[views.signUp] got GET request"
+    if request.method == 'POST':
+        signup_form = SignUpForm(request.POST, error_class=SpanErrorList)
 
-    elif request.method == 'POST':
-        print "[views.signUp] got POST request"
-        sign_up_form = SignUpForm(request.POST, error_class=SpanErrorList)
-        #sign_up_form = SignUpForm(request.POST)
+        if signup_form.is_valid():
+            full_name = signup_form.cleaned_data['full_name']
+            username = signup_form.cleaned_data['username']
+            password = signup_form.cleaned_data['password_1']
+            role = signup_form.cleaned_data['doctor_patient_choice']
+
+            if role == 'patient':
+                # Create User and Patient object.
+                patients_doctor_username = form.cleaned_data['patients_doctor_username']
+            else:
+                # Create User and Doctor object.
+                pass
+
+
+
+
+            # TODO Create user.
+            return HttpResponseRedirect("/signup-success/")
+
 
     context = {
         'title': 'Sign Up',
         'year': datetime.now().year,
-        'form': sign_up_form,
+        'form': signup_form,
     }
 
     return render(
         request,
         'app/sign_up.html',
+        context
+    )
+
+def signupSuccess(request):
+    """Renders the page after a user has successfully signed up."""
+    assert isinstance(request, HttpRequest)
+
+
+    context = {
+        'title': 'Sign Up',
+        'year': datetime.now().year,
+    }
+
+    return render(
+        request,
+        'app/sign_up_success.html',
         context
     )
 
