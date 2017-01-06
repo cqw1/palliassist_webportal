@@ -14,6 +14,7 @@ from app.models import UnreadMessage
 
 from .forms import QueryPatientsForm
 from .forms import SignUpForm 
+from django.forms.utils import ErrorList
 
 
 import logging
@@ -21,6 +22,13 @@ import logging
 from redcap import Project, RedcapError
 
 from twilio.access_token import AccessToken, IpMessagingGrant
+
+class SpanErrorList(ErrorList):
+    def __unicode__(self):              # __unicode__ on Python 2
+        return self.as_spans()
+    def as_spans(self):
+        if not self: return ''
+        return ''.join(['<span class="control-label">%s</span>' % e for e in self])
 
 
 def dashboard(request):
@@ -107,14 +115,16 @@ def signUp(request):
     """Renders the patients page."""
     assert isinstance(request, HttpRequest)
 
-    sign_up_form = SignUpForm()
+    sign_up_form = SignUpForm(error_class=SpanErrorList)
+    #sign_up_form = SignUpForm()
 
     if request.method == 'GET':
         print "[views.signUp] got GET request"
 
     elif request.method == 'POST':
         print "[views.signUp] got POST request"
-        sign_up_form = SignUpForm(request.POST)
+        sign_up_form = SignUpForm(request.POST, error_class=SpanErrorList)
+        #sign_up_form = SignUpForm(request.POST)
 
     context = {
         'title': 'Sign Up',

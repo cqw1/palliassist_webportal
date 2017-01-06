@@ -26,7 +26,8 @@ class QueryPatientsForm(forms.Form):
     name_query = forms.CharField(label=_("Search"), widget=forms.TextInput({ 'class': 'form-control', 'placeholder':'Patient Name'})) 
 
 class SignUpForm(forms.Form):
-    """ Queries for patients by name"""
+    """ Registering new users, both doctors and patients. """
+
     full_name = forms.CharField(label=_("Full Name"), widget=forms.TextInput({ 'class': 'form-control', 'placeholder':'Full Name'}), required=True) 
     username = forms.CharField(label=_("Username"), widget=forms.TextInput({ 'class': 'form-control', 'placeholder':'Username'}), required=True) 
     password_1 = forms.CharField(label=_("Password"), widget=forms.PasswordInput({ 'class': 'form-control', 'placeholder':'Password'}), required=True) 
@@ -75,6 +76,7 @@ class SignUpForm(forms.Form):
         # Check if they typed and confirmed the password correctly.
         if password_1 != password_2:
             self.add_error('password_1', forms.ValidationError(_('Passwords must match.')))
+            self.add_error('password_2', forms.ValidationError(_('Passwords must match.')))
 
         # Check if valid doctor username when signing up a patient. Need to 
         # assign the patient to a doctor upon creation.
