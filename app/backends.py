@@ -1,5 +1,6 @@
 # import the User object
 from django.contrib.auth.models import User
+from django.conf import settings
 from redcap import Project, RedcapError
 
 # verify against redcap db
@@ -31,15 +32,14 @@ class REDCapBackend:
         URL = 'https://hcbredcap.com.br/api/'
         TOKEN = 'F2C5AEE8A2594B0A9E442EE91C56CC7A'
 
-        project = Project(URL, TOKEN)
+        #project = Project(URL, TOKEN)
+        #print project
 
-        print project
-
-        for field in project.metadata:
+        for field in settings.REDCAP_PROJECT.metadata:
             print "%s (%s) => %s" % (field['field_name'],field['field_type'], field['field_label'])
 
         found = False
-        data = project.export_records()
+        data = settings.REDCAP_PROJECT.export_records()
         for d in data:
             if d['username'] == username and d['password'] == password:
                 found = True

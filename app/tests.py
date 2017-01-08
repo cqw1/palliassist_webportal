@@ -19,29 +19,17 @@ class ViewTest(TestCase):
             super(ViewTest, cls).setUpClass()
             django.setup()
 
-    def test_home(self):
+    def test_login(self):
         """Tests the home page."""
-        response = self.client.get('/')
-        self.assertContains(response, 'Home Page', 1, 200)
-        print "test_home: PASSED"
-
-    def test_contact(self):
-        """Tests the contact page."""
-        response = self.client.get('/contact')
-        self.assertContains(response, 'Contact', 3, 200)
-        print "test_contact: PASSED"
-
-    def test_about(self):
-        """Tests the about page."""
-        response = self.client.get('/about')
-        self.assertContains(response, 'About', 3, 200)
-        print "test_about: PASSED"
+        response = self.client.get('/login')
+        self.assertContains(response, 'Login', 1, 200)
+        print "test_login: PASSED"
 
     def test_messaging(self):
         """Tests the messaging page."""
-        response = self.client.get('/messaging')
-        self.assertContains(response, 'Messaging', 3, 200)
-        print "test_messaging: PASSED"
+        response = self.client.get('/messages')
+        self.assertContains(response, 'Messages', 3, 200)
+        print "test_messages: PASSED"
 
     def test_redcap_connection(self):
         """Tests connecting to the REDCap database."""

@@ -11,6 +11,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import views as auth_views
 from django.core.urlresolvers import reverse
 from app.models import UnreadMessage, Patient, Doctor
+from django.conf import settings
 
 from .forms import QueryPatientsForm
 from .forms import SignupForm 
@@ -226,12 +227,12 @@ def save_message(request):
     URL = 'https://hcbredcap.com.br/api/'
     TOKEN = 'F2C5AEE8A2594B0A9E442EE91C56CC7A'
 
-    project = Project(URL, TOKEN)
+    #project = Project(URL, TOKEN)
 
-    for field in project.metadata:
+    for field in settings.REDCAP_PROJECT.metadata:
         print "%s (%s) => %s" % (field['field_name'],field['field_type'], field['field_label'])
 
-    data = project.export_records()
+    data = settings.REDCAP_PROJECT.export_records()
     for d in data:
         print d
 
@@ -241,7 +242,7 @@ def save_message(request):
     d['channel'] = channel
     d['time_sent'] = time_sent
 
-    response = project.import_records(data)
+    response = settings.REDCAP_PROJECT.import_records(data)
     print response['count']
         
 

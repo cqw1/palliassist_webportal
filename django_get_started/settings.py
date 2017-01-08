@@ -3,7 +3,16 @@ Django settings for django_get_started project.
 """
 
 from os import path
+from redcap import Project, RedcapError
+
 PROJECT_ROOT = path.dirname(path.abspath(path.dirname(__file__)))
+
+URL = 'https://hcbredcap.com.br/api/'
+TOKEN = 'F2C5AEE8A2594B0A9E442EE91C56CC7A'
+
+REDCAP_PROJECT = Project(URL, TOKEN)
+
+
 
 DEBUG = True 
 TEMPLATE_DEBUG = DEBUG
