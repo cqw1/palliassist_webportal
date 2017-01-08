@@ -5,8 +5,10 @@ Definition of forms.
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
 from django.utils.translation import ugettext_lazy as _
-from django.contrib.auth.models import User
 from django.conf import settings 
+
+from django.contrib.auth.models import User
+from app.models import Doctor
 
 import os
 
@@ -25,7 +27,7 @@ class QueryPatientsForm(forms.Form):
     """ Queries for patients by name"""
     name_query = forms.CharField(label=_("Search"), widget=forms.TextInput({ 'class': 'form-control', 'placeholder':'Patient Name'})) 
 
-class SignUpForm(forms.Form):
+class SignupForm(forms.Form):
     """ Registering new users, both doctors and patients. """
 
     full_name = forms.CharField(label=_("Full Name"), widget=forms.TextInput({ 'class': 'form-control', 'placeholder':'Full Name'}), required=True) 
@@ -65,7 +67,7 @@ class SignUpForm(forms.Form):
         return access_key 
 
     def clean(self):
-        cleaned_data = super(SignUpForm, self).clean()
+        cleaned_data = super(SignupForm, self).clean()
 
         password_1 = cleaned_data.get('password_1')
         password_2 = cleaned_data.get('password_2')
@@ -81,10 +83,16 @@ class SignUpForm(forms.Form):
         # Check if valid doctor username when signing up a patient. Need to 
         # assign the patient to a doctor upon creation.
         if doctor_patient_choice == 'patient':
-            # TODO: check if patients_doctor_username is a valid doctor's username.
-            pass
 
+            # Check if patients_doctor_username is a valid doctor's username.
+            try:
+                user = User.objects.get(username=patients_doctor_username)
 
+                try:
+                    Doctor.objects.get(user=user)
+                except Doctor.DoesNotExist:
+                    self.add_error('patients_doctor_username', forms.ValidationError(_('Doctor username not found.')))
 
-
+            except User.DoesNotExist:
+                self.add_error('patients_doctor_username', forms.ValidationError(_('Doctor username not found.')))
 

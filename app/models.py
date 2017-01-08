@@ -4,6 +4,8 @@ Definition of models.
 
 from django.db import models
 from django.contrib.auth.models import User
+from django.dispatch import receiver
+from django.db.models.signals import post_save
 
 # Create your models here.
 NAME_MAX_LENGTH = 100
@@ -35,7 +37,7 @@ class Patient(models.Model):
     full_name = models.CharField(max_length=NAME_MAX_LENGTH)
 
     def __unicode__(self):
-        return "[Patient - ", self.user_id, "]", self.full_name
+        return "[Patient] " + str(self.user.username)
 
     class Meta:
         ordering = ('user_id',)
@@ -51,8 +53,16 @@ class Doctor(models.Model):
     patients = models.ManyToManyField(Patient)
 
     def __unicode__(self):
-        return "[Doctor - ", self.user_id, "]", self.full_name
+        return "[Doctor] " + str(self.user.username)
 
     class Meta:
         ordering = ('user_id',)
+
+
+@receiver(post_save, sender=User)
+def update_redcap_user(sender, **kwargs):
+    if kwargs.get('created', False):
+        # New user was created.
+        print "[receiver - update_redcap_user]"
+
 

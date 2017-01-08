@@ -20,7 +20,7 @@ urlpatterns = [
     # Examples:
     #url(r'^(?i)$', app_views.home, name='home'),
     url(r'^(?i)$',
-        app_views.loginRedirect,
+        app_views.login_redirect,
         {
             'template_name': 'app/login.html',
             'authentication_form': BootstrapAuthenticationForm,
@@ -33,10 +33,10 @@ urlpatterns = [
         name='login'),
     url(r'^(?i)dashboard$', app_views.dashboard, name='dashboard'),
     url(r'^(?i)patients', app_views.patients, name='patients'),
-    url(r'^(?i)signup-success', app_views.signupSuccess, name='signup-success'),
+    url(r'^(?i)signup-success', app_views.signup_success, name='signup-success'),
     url(r'^(?i)signup', app_views.signup, name='signup'),
     url(r'^(?i)messages', app_views.messages, name='messages'),
-    url(r'^(?i)save-message', app_views.saveMessage, name='save-message'),
+    url(r'^(?i)save-message', app_views.save_message, name='save-message'),
     url(r'^(?i)token', app_views.token, name='token'),
     url(r'^(?i)login/$',
         auth_views.login,
@@ -58,8 +58,8 @@ urlpatterns = [
         name='logout'),
 
     # Uncomment the admin/doc line below to enable admin documentation:
-    url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
+    # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
     # Uncomment the next line to enable the admin:
-    url(r'^admin/', include(admin.site.urls)),
+    # url(r'^admin/', include(admin.site.urls)),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

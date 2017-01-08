@@ -10,11 +10,13 @@ from cgi import parse_qs, escape
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import views as auth_views
 from django.core.urlresolvers import reverse
-from app.models import UnreadMessage
+from app.models import UnreadMessage, Patient, Doctor
 
 from .forms import QueryPatientsForm
-from .forms import SignUpForm 
+from .forms import SignupForm 
 from django.forms.utils import ErrorList
+
+from django.contrib.auth.models import User
 
 
 import logging
@@ -23,12 +25,12 @@ from redcap import Project, RedcapError
 
 from twilio.access_token import AccessToken, IpMessagingGrant
 
-class SpanErrorList(ErrorList):
+class DivErrorList(ErrorList):
     def __unicode__(self):              # __unicode__ on Python 2
         return self.as_spans()
     def as_spans(self):
         if not self: return ''
-        return ''.join(['<span class="control-label">%s</span>' % e for e in self])
+        return ''.join(['<div><span class="control-label">%s</span></div>' % e for e in self])
 
 
 def dashboard(request):
@@ -73,7 +75,7 @@ def dashboard(request):
     )
 
 
-def loginRedirect(request, **kwargs):
+def login_redirect(request, **kwargs):
     # Checks to see if user is logged in. If so, redirect to dashboard page.
     if request.user.is_authenticated():
         return HttpResponseRedirect(reverse('dashboard'))
@@ -114,10 +116,10 @@ def signup(request):
     """Renders the patients page."""
     assert isinstance(request, HttpRequest)
 
-    signup_form = SignUpForm(error_class=SpanErrorList)
+    signup_form = SignupForm(error_class=DivErrorList)
 
     if request.method == 'POST':
-        signup_form = SignUpForm(request.POST, error_class=SpanErrorList)
+        signup_form = SignupForm(request.POST, error_class=DivErrorList)
 
         if signup_form.is_valid():
             full_name = signup_form.cleaned_data['full_name']
@@ -125,17 +127,17 @@ def signup(request):
             password = signup_form.cleaned_data['password_1']
             role = signup_form.cleaned_data['doctor_patient_choice']
 
+            user = User.objects.create(username=username, password=password)
+
             if role == 'patient':
                 # Create User and Patient object.
-                patients_doctor_username = form.cleaned_data['patients_doctor_username']
+                patients_doctor_username = signup_form.cleaned_data['patients_doctor_username']
+                patient = Patient.objects.create(user=user, u_id=10, full_name=full_name)
+                Doctor.objects.get(user=User.objects.get(username=patients_doctor_username)).patients.add(patient)
             else:
                 # Create User and Doctor object.
-                pass
+                doctor = Doctor.objects.create(user=user, u_id=10, full_name=full_name)
 
-
-
-
-            # TODO Create user.
             return HttpResponseRedirect("/signup-success/")
 
 
@@ -151,7 +153,7 @@ def signup(request):
         context
     )
 
-def signupSuccess(request):
+def signup_success(request):
     """Renders the page after a user has successfully signed up."""
     assert isinstance(request, HttpRequest)
 
@@ -191,7 +193,7 @@ def messages(request):
 """
 Saves a message to the REDCap database.
 """
-def saveMessage(request):
+def save_message(request):
     assert isinstance(request, HttpRequest)
 
     print request
