@@ -25,7 +25,7 @@ class BootstrapAuthenticationForm(AuthenticationForm):
 
 class QueryPatientsForm(forms.Form):
     """ Queries for patients by name"""
-    name_query = forms.CharField(label=_("Search"), widget=forms.TextInput({ 'class': 'form-control', 'placeholder':'Patient Name'})) 
+    patient_query = forms.CharField(label=_("Search"), widget=forms.TextInput({ 'class': 'form-control', 'placeholder':'Search for patient'})) 
 
 class SignupForm(forms.Form):
     """ Registering new users, both doctors and patients. """

@@ -2,6 +2,7 @@
 Definition of views.
 """
 
+from django.conf import settings
 from django.shortcuts import render
 from django.http import HttpRequest, JsonResponse, HttpResponseRedirect
 from django.template import RequestContext
@@ -11,7 +12,6 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import views as auth_views
 from django.core.urlresolvers import reverse
 from app.models import UnreadMessage, Patient, Doctor
-from django.conf import settings
 
 from .forms import QueryPatientsForm
 from .forms import SignupForm 
@@ -92,8 +92,33 @@ def patients(request):
     if not request.user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
 
+    print "request.user.username:", request.user.username
+
+    patient_results = []
+
     if request.method == 'GET':
         print "[views.searchPatients] got GET request"
+
+        # Get "patient_query" url param
+        patient_query = request.GET.get("patient_query", '')
+        print "patient_query:", patient_query
+
+        doctor = Doctor.objects.get(user=request.user)
+        print "doctor:", doctor
+
+        if patient_query == '':
+            # No specific patient query. Show all patients
+            patient_results = doctor.patients.all()
+
+        else:
+            # Actual query. Fetch close matches.
+            #longer_matches = doctor.patients.filter(full_name__search=patient_query)
+            patient_results = doctor.patients.filter(full_name__icontains=patient_query)
+            # Trigram matches will exclude results that are "farther" distance away.
+            #tri_matches = doctor.patients.filter(full_name__lower__trigram_similar=patient_query)
+
+            #patient_results = list(set(longer_matches).union(set(tri_matches)))
+
     else:
         print "else"
 
@@ -103,7 +128,7 @@ def patients(request):
         'title': 'Patients',
         'message': 'List of patients.',
         'year': datetime.now().year,
-        'patient_results': [],
+        'patient_results': patient_results,
         'form': query_patients_form,
     }
 
@@ -229,10 +254,10 @@ def save_message(request):
 
     #project = Project(URL, TOKEN)
 
-    for field in settings.REDCAP_PROJECT.metadata:
+    for field in settings.REDCAP_USER_PROJECT.metadata:
         print "%s (%s) => %s" % (field['field_name'],field['field_type'], field['field_label'])
 
-    data = settings.REDCAP_PROJECT.export_records()
+    data = settings.REDCAP_USER_PROJECT.export_records()
     for d in data:
         print d
 
@@ -242,7 +267,7 @@ def save_message(request):
     d['channel'] = channel
     d['time_sent'] = time_sent
 
-    response = settings.REDCAP_PROJECT.import_records(data)
+    response = settings.REDCAP_USER_PROJECT.import_records(data)
     print response['count']
         
 

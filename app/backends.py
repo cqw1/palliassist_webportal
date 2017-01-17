@@ -35,11 +35,11 @@ class REDCapBackend:
         #project = Project(URL, TOKEN)
         #print project
 
-        for field in settings.REDCAP_PROJECT.metadata:
+        for field in settings.REDCAP_USER_PROJECT.metadata:
             print "%s (%s) => %s" % (field['field_name'],field['field_type'], field['field_label'])
 
         found = False
-        data = settings.REDCAP_PROJECT.export_records()
+        data = settings.REDCAP_USER_PROJECT.export_records()
         for d in data:
             if d['username'] == username and d['password'] == password:
                 found = True

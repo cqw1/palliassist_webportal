@@ -8,7 +8,7 @@
 
 <!-- Search form -->
 <section id="queryPatients">
-<form method="GET">
+<form method="GET" action="/patients/">
     {% csrf_token %}
 
     <div class="pa-child-display-inline-block">
@@ -38,7 +38,7 @@
     <!-- Search results -->
     {% for patient_result in patient_results %}
     <tr>
-        <td>{{ patient_result.name}} </td>
+        <td>{{ patient_result.full_name}} </td>
         <td>{{ patient_result.gender}} </td>
         <td>{{ patient_result.age}} </td>
     </tr>

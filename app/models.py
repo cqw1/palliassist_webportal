@@ -6,6 +6,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.dispatch import receiver
 from django.db.models.signals import post_save
+from django.conf import settings
 
 # Create your models here.
 NAME_MAX_LENGTH = 100
@@ -61,8 +62,34 @@ class Doctor(models.Model):
 
 @receiver(post_save, sender=User)
 def update_redcap_user(sender, **kwargs):
+
+    instance = kwargs['instance']
+
+    current_records = settings.REDCAP_USER_PROJECT.export_records()
+
+    found = False 
+    last_record_id = 0
+    for r in current_records:
+        if r['username'] == instance.username:
+            found = True
+            updated_r = {'record_id': r['record_id'], 'username': instance.username, 'password': instance.password}
+            #updated_r = {'record_id': r.record_id, 'password': instance.password}
+            settings.REDCAP_USER_PROJECT.import_records([updated_r])
+            break
+
+        last_record_id = r['record_id']
+
+    if not found:
+        new_r = {'record_id': str(int(last_record_id) + 1), 'username': instance.username, 'password': instance.password}
+        print "new_r", new_r
+        settings.REDCAP_USER_PROJECT.import_records([new_r])
+
+    #########
+    """
+
     if kwargs.get('created', False):
         # New user was created.
         print "[receiver - update_redcap_user]"
+    """
 
 
