@@ -1,0 +1,6 @@
+#id_notes {
+    /* "id_notes" comes from the field "notes" in forms.PatientNotesForm. 
+     * Django auto adds "id_" to field name as id tag */
+    max-width: 100%;
+    resize: none;
+}

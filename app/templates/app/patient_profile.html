@@ -1,0 +1,72 @@
+{% extends "app/layout.html" %}
+
+{% block content %}
+<div class="page-header">
+    <h1>{{ patient.full_name }}<small><!--Subtext for header--></small></h1>
+</div>
+
+<div class="row">
+    <div class="col-md-9">
+        <ul class="nav nav-tabs">
+            <li class="active"><a data-toggle="tab" href="#home">Home</a></li>
+            <li><a data-toggle="tab" href="#messages">Messages</a></li>
+            <li><a data-toggle="tab" href="#medication">Medication</a></li>
+            <li><a data-toggle="tab" href="#esas">ESAS</a></li>
+            <li><a data-toggle="tab" href="#pain">Pain</a></li>
+        </ul>
+
+        <div class="tab-content">
+            <div id="home" class="tab-pane fade in active">
+                <h3>HOME</h3>
+                <p>Some content.</p>
+            </div>
+            <div id="messages" class="tab-pane fade">
+                <h3>ESAS</h3>
+                {% include "patient_profile_esas.html" %}
+            </div>
+            <div id="medication" class="tab-pane fade">
+                <h3>ESAS</h3>
+                {% include "patient_profile_esas.html" %}
+            </div>
+            <div id="esas" class="tab-pane fade">
+                <h3>ESAS</h3>
+                {% include "patient_profile_esas.html" %}
+            </div>
+            <div id="pain" class="tab-pane fade">
+                <h3>ESAS</h3>
+                {% include "patient_profile_esas.html" %}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <h3>Notes</h3>
+
+        <form method="POST" action="/save-notes/" id="notes-form" class="form-group">
+            <div>
+                {{ notes_form }}
+            </div>
+        </form>
+        <div>
+            <input class="btn btn-default" type="submit" form="notes-form" value="Save">
+            <input class="btn btn-default" type="button" onclick="clearNotes()" value="Clear">
+        </div>
+
+        {% comment %}
+        <div class="form-group">
+            <!-- <label for="comment">Comment:</label>_-->
+            <textarea class="form-control" rows="4" id="patient-notes"></textarea>
+        </div>
+        {% endcomment %}
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+
+{% load staticfiles %}
+<link rel="stylesheet" type="text/css" href="{% static 'app/content/patient_profile.css' %}" />
+<script src="{% static 'app/scripts/patient_profile.js' %}"></script>
+
+{% endblock %}
+

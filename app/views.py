@@ -14,6 +14,7 @@ from django.core.urlresolvers import reverse
 from app.models import UnreadMessage, Patient, Doctor
 
 from .forms import QueryPatientsForm
+from .forms import PatientNotesForm
 from .forms import SignupForm 
 from django.forms.utils import ErrorList
 
@@ -83,7 +84,6 @@ def login_redirect(request, **kwargs):
     else:
         return auth_views.login(request, **kwargs)
 
-
 def patients(request):
     """Renders the patients page."""
     assert isinstance(request, HttpRequest)
@@ -135,6 +135,31 @@ def patients(request):
     return render(
         request,
         'app/patients.html',
+        context
+    )
+
+
+def patient_profile(request):
+    """Renders the patient profile page."""
+    assert isinstance(request, HttpRequest)
+
+    # Check if user is logged in. Otherwise redirect to login page.
+    if not request.user.is_authenticated():
+        return HttpResponseRedirect(reverse('login'))
+
+    notes_form = PatientNotesForm()
+
+    context = {
+        'title': 'Patient Profile',
+        'message': 'Patient profile.',
+        'year': datetime.now().year,
+        'patient': {'full_name': 'TESTING'},
+        'notes_form': notes_form,
+    }
+
+    return render(
+        request,
+        'app/patient_profile.html',
         context
     )
 

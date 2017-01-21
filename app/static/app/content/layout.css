@@ -1,3 +1,6 @@
+body {
+    overflow-x: hidden;
+}
 
 label {
     padding-right: 10px;

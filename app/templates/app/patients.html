@@ -38,7 +38,7 @@
     <!-- Search results -->
     {% for patient_result in patient_results %}
     <tr>
-        <td>{{ patient_result.full_name}} </td>
+        <td><a href="{% url 'patient-profile' %}?patient={{patient_result.u_id}}">{{ patient_result.full_name}}</a> </td>
         <td>{{ patient_result.gender}} </td>
         <td>{{ patient_result.age}} </td>
     </tr>
@@ -54,4 +54,18 @@
 
 {% endif %}
 
+
 {% endblock %}
+
+
+
+
+
+{% block scripts %}
+
+{% load staticfiles %}
+
+<script src="{% static 'app/scripts/patients.js' %}"></script>
+
+{% endblock %}
+

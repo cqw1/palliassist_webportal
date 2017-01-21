@@ -33,6 +33,7 @@ urlpatterns = [
         name='login'),
     url(r'^(?i)dashboard$', app_views.dashboard, name='dashboard'),
     url(r'^(?i)patients', app_views.patients, name='patients'),
+    url(r'^(?i)patient-profile', app_views.patient_profile, name='patient-profile'),
     url(r'^(?i)signup-success', app_views.signup_success, name='signup-success'),
     url(r'^(?i)signup', app_views.signup, name='signup'),
     url(r'^(?i)messages', app_views.messages, name='messages'),

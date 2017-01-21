@@ -27,6 +27,10 @@ class QueryPatientsForm(forms.Form):
     """ Queries for patients by name"""
     patient_query = forms.CharField(label=_("Search"), widget=forms.TextInput({ 'class': 'form-control', 'placeholder':'Search for patient'})) 
 
+class PatientNotesForm(forms.Form):
+    """ Queries for patients by name"""
+    notes = forms.CharField(widget=forms.Textarea({ 'class': 'form-control', 'placeholder':'Add notes here.'}), label='') 
+
 class SignupForm(forms.Form):
     """ Registering new users, both doctors and patients. """
 
