@@ -24,8 +24,8 @@ function saveNotes(patient_id) {
 }
 
 function updateNotes(notes) {
-    console.log('updateNotes('+ notes + ')');
-    $("#id_notes").val(notes);
+    console.log('updateNotes('+ decodeURIComponent(notes) + ')');
+    $("#id_notes").val(decodeURIComponent(notes));
 }
 
 $(function() {

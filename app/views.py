@@ -24,6 +24,7 @@ from django.contrib.auth.models import User
 import logging
 #import MySQLdb
 from redcap import Project, RedcapError
+import urllib
 
 from twilio.access_token import AccessToken, IpMessagingGrant
 
@@ -346,10 +347,12 @@ def save_notes(request):
     assert isinstance(request, HttpRequest)
 
     doctor_notes = request.POST['notes']
+    print "doctor_notes:", doctor_notes
+    print "doctor_notes:", urllib.quote(doctor_notes)
     patient_id = request.POST['u_id']
 
     patient = Patient.objects.get(u_id=patient_id)
-    patient.doctor_notes = doctor_notes
+    patient.doctor_notes = urllib.quote(doctor_notes)
     patient.save()
 
     return JsonResponse({})
