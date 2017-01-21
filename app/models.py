@@ -36,6 +36,7 @@ class Patient(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     u_id = models.IntegerField()
     full_name = models.CharField(max_length=NAME_MAX_LENGTH)
+    doctor_notes = models.TextField(default="")
 
     def __unicode__(self):
         return "[Patient] " + str(self.user.username)

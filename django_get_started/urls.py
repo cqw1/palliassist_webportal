@@ -38,6 +38,7 @@ urlpatterns = [
     url(r'^(?i)signup', app_views.signup, name='signup'),
     url(r'^(?i)messages', app_views.messages, name='messages'),
     url(r'^(?i)save-message', app_views.save_message, name='save-message'),
+    url(r'^(?i)save-notes', app_views.save_notes, name='save-notes'),
     url(r'^(?i)token', app_views.token, name='token'),
     url(r'^(?i)login/$',
         auth_views.login,

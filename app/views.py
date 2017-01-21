@@ -147,13 +147,18 @@ def patient_profile(request):
     if not request.user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
 
+    patient_id = request.GET['u_id']
+    print "patient_id:", patient_id
+
+    patient = Patient.objects.get(u_id=patient_id)
+
     notes_form = PatientNotesForm()
 
     context = {
         'title': 'Patient Profile',
         'message': 'Patient profile.',
         'year': datetime.now().year,
-        'patient': {'full_name': 'TESTING'},
+        'patient': patient,
         'notes_form': notes_form,
     }
 
@@ -332,3 +337,19 @@ def token(request):
     #return jsonify(identity=identity, token=token.to_jwt())
     return JsonResponse({'identity': identity, 'token': token.to_jwt()})
 
+def save_notes(request):
+    """
+    Saves notes about patients. POST request from 
+    PatientNotesForm on the patient profile page. 
+    jQuery runs when save button is clicked.
+    """
+    assert isinstance(request, HttpRequest)
+
+    doctor_notes = request.POST['notes']
+    patient_id = request.POST['u_id']
+
+    patient = Patient.objects.get(u_id=patient_id)
+    patient.doctor_notes = doctor_notes
+    patient.save()
+
+    return JsonResponse({})

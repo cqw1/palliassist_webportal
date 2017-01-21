@@ -42,12 +42,13 @@
         <h3>Notes</h3>
 
         <form method="POST" action="/save-notes/" id="notes-form" class="form-group">
+            {% csrf_token %}
             <div>
                 {{ notes_form }}
             </div>
         </form>
         <div>
-            <input class="btn btn-default" type="submit" form="notes-form" value="Save">
+            <input id="save-notes-button" class="btn btn-default" type="submit" onclick="saveNotes('{{patient.u_id}}')" value="Save">
             <input class="btn btn-default" type="button" onclick="clearNotes()" value="Clear">
         </div>
 
@@ -67,6 +68,10 @@
 {% load staticfiles %}
 <link rel="stylesheet" type="text/css" href="{% static 'app/content/patient_profile.css' %}" />
 <script src="{% static 'app/scripts/patient_profile.js' %}"></script>
+<script>
+    updateNotes('{{patient.doctor_notes}}');
+    console.log('called updateNotes');
+</script>
 
 {% endblock %}
 
