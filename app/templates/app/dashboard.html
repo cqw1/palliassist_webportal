@@ -16,7 +16,7 @@
 
             <div class="list-group">
                 {% for unread_message in unread_messages %}
-                <a href="#" class="list-group-item">{{ unread_message.patient_name }}<span class="badge">{{ unread_message.num_unread }}</span></a>
+                <a href="{% url 'patient-profile' %}?u_id={{unread_message.u_id}}#messages" class="list-group-item">{{ unread_message.full_name }}<span class="badge">{{ unread_message.unread_messages}}</span></a>
                 {% endfor %}
             </div>
         </div>

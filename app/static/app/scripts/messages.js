@@ -19,7 +19,9 @@ $(function() {
 
     // The server will assign the client a random username - store that value
     // here
+    // django_username is saved from html
     var username = django_username
+    console.log('django_username: ' + django_username);
 
     // Helper function to print info messages to the chat window
     function print(infoMessage, asHtml) {
@@ -173,5 +175,17 @@ $(function() {
             $saveInput.val('');
         }
     });
+
+    // Javascript to enable link to tab
+    var url = document.location.toString();
+    if (url.match('#')) {
+        $('.nav-tabs a[href="#' + url.split('#')[1] + '"]').tab('show');
+    } 
+
+    // Change hash for page-reload
+    $('.nav-tabs a').on('shown.bs.tab', function (e) {
+        window.location.hash = e.target.hash;
+    })
+
 
 });

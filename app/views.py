@@ -11,7 +11,8 @@ from cgi import parse_qs, escape
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import views as auth_views
 from django.core.urlresolvers import reverse
-from app.models import UnreadMessage, Patient, Doctor
+#from app.models import UnreadMessage
+from app.models import Patient, Doctor
 
 from .forms import QueryPatientsForm
 from .forms import PatientNotesForm
@@ -44,16 +45,14 @@ def dashboard(request):
     if not request.user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
 
-    unread_messages = []
+    unread_messages_patients = []
 
-    for i in range(4):
-        temp = UnreadMessage.objects.create(patient_id=i*10, patient_name="Patient " + str(i), num_unread=i*10)
-        unread_messages.append(temp)
+    unread_messages_patients = Patient.objects.filter(unread_messages__gt=0)
 
     context = {
         'title':'Dashboard',
         'year':datetime.now().year,
-        'unread_messages': unread_messages
+        'unread_messages': unread_messages_patients,
     }
 
     """
@@ -151,7 +150,7 @@ def patient_profile(request):
     patient_id = request.GET['u_id']
     print "patient_id:", patient_id
 
-    patient = Patient.objects.get(u_id=patient_id)
+    patient = Patient.objects.get(u_id = patient_id)
 
     notes_form = PatientNotesForm()
 
@@ -235,10 +234,13 @@ def messages(request):
     if not request.user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
 
+    patients = Patient.objects.all()
+
     context = {
         'title':'Messages',
         'message':'Send messages.',
         'year':datetime.now().year,
+        'patients': patients,
     }
 
     return render(

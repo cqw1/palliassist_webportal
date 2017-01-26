@@ -2,35 +2,106 @@
 
 {% block content %}
 
-<link rel="shortcut icon" href="//www.twilio.com/marketing/bundles/marketing/img/favicons/favicon.ico">
-<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-<link rel="stylesheet" href="/static/index.css">
-
-<h2>{{ title }}.</h2>
-<h3>{{ message }}</h3>
+<div class="page-header">
+    <h1>{{ title }}<small><!--Subtext for header--></small></h1>
+</div>
 
 
+{% comment %}{% endcomment %}
+{% comment %}{% endcomment %}
 
-<p>Use this area to provide additional information.</p>
+<div class="row">
+    <div class="col-md-3">
+        <div class="panel panel-default">
+            <!-- Default panel contents -->
+            <div class="panel-heading">
+                <h3 class="panel-title">Contacts</h3>
+            </div>
+            <div class="panel-body">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search" aria-describedby="basic-addon2">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></button>
+                    </span>
+                </div>
+            </div>
 
-<section>
-    <div id="chat-messages"></div>
-    <input id="chat-input" type="text" placeholder="say anything" autofocus/>
-</section>
+            <!-- Contacts List -->
+            <ul class="list-group">
+                {% for p in patients %}
+                    <a data-toggle="tab" href="#{{p.u_id}}" class="list-group-item">{{ p.full_name }}<span class="badge">{{ p.unread_messages }}</span></a>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
 
-<hr>
-<br><br><br>
+    <!-- Messaging Panel -->
+    <div class="col-md-9">
+        <div class="panel panel-default" id="messages-panel">
+            <div class="panel-heading">
+                <h3 class="panel-title">Panel title</h3>
+            </div>
+            <div class="panel-body tab-content" id="messages-panel-body">
+                {% for p in patients %}
+                    {% if forloop.first %}
+                    <div id="{{ p.u_id }}" class="tab-pane fade in active">
+                    {% else %} 
+                    <div id="{{ p.u_id }}" class="tab-pane fade in">
+                    {% endif %}
+                        {{p.u_id}}
+                        <div id="chat-messages"></div>
+                    </div>
+                {% endfor %}
 
-<section>
+                {% comment %}
+                <div id="chat1" class="tab-pane fade in active">
+                    <div id="chat-messages"></div>
+                </div>
+                {% endcomment %}
+
+
+
+            </div>
+            <!-- Input text box at bottom -->
+            <ul class="list-group">
+                <li class="list-group-item">
+
+                {% comment %}
+                <input id="chat-input" type="text" placeholder="say anything" autofocus/>
+                {% endcomment %}
+
+                <div class="input-group">
+                    <span id="chat-input-span">
+                        <input id="chat-input" type="text" class="form-control" placeholder="say anything" autofocus aria-label="...">
+                    </span>
+                    <div class="input-group-btn">
+                        <!-- Buttons -->
+                        <button class="btn btn-default" type="button">
+                            <span class="glyphicon glyphicon-tasks" aria-hidden="true"></span>
+                        </button>
+                        <button class="btn btn-default" type="button">
+                            <span class=" glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                        </button>
+                        <button class="btn btn-primary" type="button">Send</button>
+                    </div>
+                </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+{% comment %}
 <div id="saved-messages"></div>
 <input id="save-input" type="text" placeholder="save message" autofocus/>
-</section>
+{% endcomment %}
 
 {% endblock %}
 
 {% block scripts %}
 
 {% load staticfiles %}
+
 <script src="https://media.twiliocdn.com/sdk/js/common/v0.1/twilio-common.min.js"></script>
 <script src="https://media.twiliocdn.com/sdk/js/chat/v0.11/twilio-chat.min.js"></script>
 
@@ -42,6 +113,7 @@
     var django_username = "{{user.username}}";
 </script>
 
+<link rel="stylesheet" type="text/css" href="{% static 'app/content/messages.css' %}" />
 <script src="{% static 'app/scripts/messages.js' %}"></script>
 
 {% endblock %}

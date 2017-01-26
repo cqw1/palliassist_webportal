@@ -1,60 +1,86 @@
 ﻿<!DOCTYPE html>
 <html>
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ title }}</title>
-    {% load staticfiles %}
-    <link rel="stylesheet" type="text/css" href="{% static 'app/content/bootstrap.min.css' %}" />
-    <link rel="stylesheet" type="text/css" href="{% static 'app/content/site.css' %}" />
-    <link rel="stylesheet" type="text/css" href="{% static 'app/content/layout.css' %}" />
-    <script src="{% static 'app/scripts/modernizr-2.6.2.js' %}"></script>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{{ title }}</title>
+        {% load staticfiles %}
+        <link rel="stylesheet" type="text/css" href="{% static 'app/content/bootstrap.min.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'app/content/site.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'app/content/layout.css' %}" />
+        <script src="{% static 'app/scripts/modernizr-2.6.2.js' %}"></script>
 
-</head>
+        <link rel="shortcut icon" href="//www.twilio.com/marketing/bundles/marketing/img/favicons/favicon.ico">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 
-<body>
-    <div class="pa-body-container">
-
-        <!-- <div class="navbar navbar-inverse navbar-fixed-top"> -->
-        <div class="navbar pa-navbar">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a href="/" class="navbar-brand">PalliAssist</a>
-                </div>
-                <div class="navbar-collapse collapse">
-                    <!-- <ul class="nav navbar-nav"> -->
-                    <ul class="nav nav-pills nav-stacked">
-                        <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
-                        <li><a href="{% url 'messages' %}">Messages <span class="badge">4</span></a></li>
-                        <li><a href="{% url 'patients' %}">Patients</a></li>
-                    </ul>
-                    {% include 'app/loginpartial.html' %}
-                </div>
-            </div>
-        </div>
-
-        <div class="container body-content pa-body-content">
-        {% block content %}{% endblock %}
-        </div>
-
+        <!-- FIREBASE STUFF -->
         <script src="{% static 'app/scripts/jquery-1.10.2.js' %}"></script>
         <script src="{% static 'app/scripts/bootstrap.js' %}"></script>
         <script src="{% static 'app/scripts/respond.js' %}"></script>
-        {% block scripts %}{% endblock %}
 
-    </div>
 
-    <div class="container">
-        <hr/>
-        <footer>
-            <p>&copy; {{ year }} - PalliAssist</p>
-        </footer>
-    </div>
+        <script src="https://www.gstatic.com/firebasejs/3.6.6/firebase.js"></script>
+        <script>
+            // Initialize Firebase
+            var config = {
+                apiKey: "AIzaSyBatpKZJklVC12dUKP5jzY60_4-dinSTpI",
+                authDomain: "palliassist-12702.firebaseapp.com",
+                databaseURL: "https://palliassist-12702.firebaseio.com",
+                storageBucket: "palliassist-12702.appspot.com",
+                messagingSenderId: "444649914055"
+            };
+            firebase.initializeApp(config);
 
-</body>
-</html>
+            const firebaseMessaging = firebase.messaging();
+            consolel.log("firebaseMessaging: " + firebaseMessaging);
+
+        </script>
+        <script src="{% static 'app/scripts/fcm.js' %}"></script>
+        <!-- END FIREBASE STUFF -->
+
+    </head>
+
+    <body>
+        <div class="pa-body-container">
+
+            <!-- <div class="navbar navbar-inverse navbar-fixed-top"> -->
+                <div class="navbar pa-navbar">
+                    <div class="container">
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                            <a href="/" class="navbar-brand">PalliAssist</a>
+                        </div>
+                        <div class="navbar-collapse collapse">
+                            <!-- <ul class="nav navbar-nav"> -->
+                                <ul class="nav nav-pills nav-stacked">
+                                    <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                                    <li><a href="{% url 'messages' %}">Messages <span class="badge">4</span></a></li>
+                                    <li><a href="{% url 'patients' %}">Patients</a></li>
+                                </ul>
+                                {% include 'app/loginpartial.html' %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="container body-content pa-body-content">
+                        {% block content %}{% endblock %}
+                    </div>
+
+
+                    {% block scripts %}{% endblock %}
+
+                </div>
+
+                <div class="container">
+                    <hr/>
+                    <footer>
+                    <p>&copy; {{ year }} - PalliAssist</p>
+                    </footer>
+                </div>
+
+            </body>
+        </html>

@@ -23,11 +23,10 @@ class DashboardAlert(models.Model):
 
 """
 Contains info on dashboard alerts of unread messages.
-"""
 class UnreadMessage(DashboardAlert):
-    patient_id = models.IntegerField()
-    patient_name = models.CharField(max_length=NAME_MAX_LENGTH)
+    patient = models.OneToOneField(Patient, on_delete=models.CASCADE, primary_key=True)
     num_unread = models.IntegerField()
+"""
 
 """
 Contains info on a patient.
@@ -37,6 +36,7 @@ class Patient(models.Model):
     u_id = models.IntegerField()
     full_name = models.CharField(max_length=NAME_MAX_LENGTH)
     doctor_notes = models.TextField(default="")
+    unread_messages = models.IntegerField(default=0)
 
     def __unicode__(self):
         return "[Patient] " + str(self.user.username)

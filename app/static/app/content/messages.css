@@ -1,0 +1,21 @@
+#messages-panel {
+    min-height: 30%;
+    height: 30%;
+}
+
+#messages-panel-body {
+    height: 60%;
+}
+
+#chat-messages {
+    height: 100%;
+    overflow: auto;
+}
+
+#chat-input {
+    max-width: initial;
+}
+
+#chat-input-span {
+    display:block;
+}
