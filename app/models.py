@@ -9,6 +9,9 @@ from django.db.models.signals import post_save
 from django.contrib.auth.signals import user_logged_in
 from django.conf import settings
 
+from twilio.access_token import AccessToken, IpMessagingGrant
+from twilio.rest.ip_messaging import TwilioIpMessagingClient
+
 # Create your models here.
 NAME_MAX_LENGTH = 100
 
@@ -54,6 +57,7 @@ class Doctor(models.Model):
     u_id = models.IntegerField()
     full_name = models.CharField(max_length=NAME_MAX_LENGTH)
     patients = models.ManyToManyField(Patient)
+    twilio_token = models.TextField(default="")
 
     def __unicode__(self):
         return "[Doctor] " + str(self.user.username)
@@ -98,7 +102,31 @@ def update_redcap_user(sender, **kwargs):
 def generateTwilioAccessToken(sender, **kwargs):
     print "user_logged_in receiver"
     print sender
-    #print kwargs['request']
-    #print kwargs['user']
+    print kwargs['request']
+    user = kwargs['user']
+
+    try:
+        doctor = user.doctor;
+
+        # create a randomly generated username for the client
+        identity = user.username;
+
+        # <unique app>:<user>:<device>
+        endpoint = "PalliAssist:" + identity + ":web"
+
+        # Create access token with credentials
+        token = AccessToken(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_API_KEY, settings.TWILIO_API_SECRET, identity)
+
+        # Create an IP Messaging grant and add to token
+        ipm_grant = IpMessagingGrant(endpoint_id=endpoint, service_sid=settings.TWILIO_SERVICE_SID)
+        token.add_grant(ipm_grant)
+
+
+        doctor.twilio_token = token
+
+    except Doctor.DoesNotExist:
+        print "error. not a doctor logging in?"
+
+
     #pass
 

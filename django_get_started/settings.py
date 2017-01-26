@@ -5,12 +5,26 @@ Django settings for django_get_started project.
 from os import path
 from redcap import Project, RedcapError
 
+from twilio.access_token import AccessToken, IpMessagingGrant
+from twilio.rest.ip_messaging import TwilioIpMessagingClient
+
 PROJECT_ROOT = path.dirname(path.abspath(path.dirname(__file__)))
 
 USER_URL = 'https://hcbredcap.com.br/api/'
 USER_TOKEN = 'F2C5AEE8A2594B0A9E442EE91C56CC7A'
 
 REDCAP_USER_PROJECT = Project(USER_URL, USER_TOKEN)
+
+# get credentials for environment variables
+TWILIO_ACCOUNT_SID = 'ACbf05fc8a591d9136132c9d62d8319eb1'
+TWILIO_API_KEY = 'SKeed5a60867e8f918ac7f2e9fa819d98a'
+TWILIO_API_SECRET = 'R3W2DYt3Eq1hbwj2GRKQV531XeVDU9sJ'
+
+# old one with testchannel nd general
+#TWILIO_SERVICE_SID = 'IS7d421d86df064d9698e91ee6e3d4bcf5'
+
+TWILIO_SERVICE_SID = 'IS2ec68050ef5e4c79b15b78c3ded7ddc5'
+
 
 
 

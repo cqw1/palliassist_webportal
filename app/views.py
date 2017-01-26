@@ -30,16 +30,6 @@ import urllib
 from twilio.access_token import AccessToken, IpMessagingGrant
 from twilio.rest.ip_messaging import TwilioIpMessagingClient
 
-# get credentials for environment variables
-TWILIO_ACCOUNT_SID = 'ACbf05fc8a591d9136132c9d62d8319eb1'
-TWILIO_API_KEY = 'SKeed5a60867e8f918ac7f2e9fa819d98a'
-TWILIO_API_SECRET = 'R3W2DYt3Eq1hbwj2GRKQV531XeVDU9sJ'
-
-# old one with testchannel nd general
-#TWILIO_SERVICE_SID = 'IS7d421d86df064d9698e91ee6e3d4bcf5'
-
-TWILIO_SERVICE_SID = 'IS2ec68050ef5e4c79b15b78c3ded7ddc5'
-
 
 class DivErrorList(ErrorList):
     def __unicode__(self):              # __unicode__ on Python 2
@@ -332,10 +322,10 @@ def token(request):
     endpoint = "TwilioChatDemo:8:29"
 
     # Create access token with credentials
-    token = AccessToken(TWILIO_ACCOUNT_SID, TWILIO_API_KEY, TWILIO_API_SECRET, identity)
+    token = AccessToken(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_API_KEY, settings.TWILIO_API_SECRET, identity)
 
     # Create an IP Messaging grant and add to token
-    ipm_grant = IpMessagingGrant(endpoint_id=endpoint, service_sid=TWILIO_SERVICE_SID)
+    ipm_grant = IpMessagingGrant(endpoint_id=endpoint, service_sid=settings.TWILIO_SERVICE_SID)
     token.add_grant(ipm_grant)
 
     # COMMENTED CAUSE FLASK THING - Return token info as JSON 
