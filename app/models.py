@@ -6,6 +6,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.dispatch import receiver
 from django.db.models.signals import post_save
+from django.contrib.auth.signals import user_logged_in
 from django.conf import settings
 
 # Create your models here.
@@ -93,4 +94,11 @@ def update_redcap_user(sender, **kwargs):
         print "[receiver - update_redcap_user]"
     """
 
+@receiver(user_logged_in)
+def generateTwilioAccessToken(sender, **kwargs):
+    print "user_logged_in receiver"
+    print sender
+    #print kwargs['request']
+    #print kwargs['user']
+    #pass
 
