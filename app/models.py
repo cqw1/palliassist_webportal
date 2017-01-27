@@ -123,10 +123,11 @@ def generateTwilioAccessToken(sender, **kwargs):
 
 
         doctor.twilio_token = token
+        doctor.save()
+
+        print doctor.twilio_token
 
     except Doctor.DoesNotExist:
         print "error. not a doctor logging in?"
 
-
-    #pass
 

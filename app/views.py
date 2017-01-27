@@ -236,6 +236,17 @@ def messages(request):
     if not request.user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
 
+    channels = []
+    # List the channels
+    for c in settings.TWILIO_IPM_SERVICE.channels.list():
+        channels.append(c)
+        print "== Channel =="
+        print "\tsid: ", c.sid
+        print "\tunique_name: ", c.unique_name
+        print "\tfriendly_name: ", c.friendly_name
+        print "\tattributes: ", c.attributes
+        print "\tlinks: ", c.links
+
     patients = Patient.objects.all()
 
     context = {
@@ -243,6 +254,7 @@ def messages(request):
         'message':'Send messages.',
         'year':datetime.now().year,
         'patients': patients,
+        'channels': channels,
     }
 
     return render(
@@ -325,7 +337,7 @@ def token(request):
     token = AccessToken(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_API_KEY, settings.TWILIO_API_SECRET, identity)
 
     # Create an IP Messaging grant and add to token
-    ipm_grant = IpMessagingGrant(endpoint_id=endpoint, service_sid=settings.TWILIO_SERVICE_SID)
+    ipm_grant = IpMessagingGrant(endpoint_id=endpoint, service_sid=settings.TWILIO_IPM_SERVICE_SID)
     token.add_grant(ipm_grant)
 
     # COMMENTED CAUSE FLASK THING - Return token info as JSON 
@@ -350,3 +362,16 @@ def save_notes(request):
     patient.save()
 
     return JsonResponse({})
+
+def test_url(request):
+    """ NOT IN USE """
+    assert isinstance(request, HttpRequest)
+
+    notification = settings.TWILIO_NOTIFY_CLIENT.notify.services(settings.TWILIO_NOTIFY_SERVICE_SID).notifications.create(
+            tag="all",
+            body="Hello World from PalliAssist"
+    )
+
+    print notification
+
+    return JsonResponse({'notification': notification})

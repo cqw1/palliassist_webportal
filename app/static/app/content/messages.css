@@ -19,3 +19,7 @@
 #chat-input-span {
     display:block;
 }
+
+#new-message-btn {
+    width: 100%;
+}

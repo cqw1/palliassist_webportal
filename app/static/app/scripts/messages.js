@@ -7,6 +7,7 @@ $(function() {
 
     console.log('chatWindow: ' + $chatWindow);
 
+    /*
     // Manages the state of our access token we got from the server
     var accessManager;
 
@@ -153,6 +154,7 @@ $(function() {
             $chatInput.val('');
         }
     });
+    */
 
     // Save a message to db
     var $saveInput = $('#save-input');
@@ -185,6 +187,10 @@ $(function() {
     // Change hash for page-reload
     $('.nav-tabs a').on('shown.bs.tab', function (e) {
         window.location.hash = e.target.hash;
+    })
+
+    $('#new-message-btn').click(function() {
+        console.log('messages.js: new message');
     })
 
 

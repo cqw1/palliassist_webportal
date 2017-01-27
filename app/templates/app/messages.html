@@ -15,21 +15,30 @@
         <div class="panel panel-default">
             <!-- Default panel contents -->
             <div class="panel-heading">
-                <h3 class="panel-title">Contacts</h3>
+                <h3 class="panel-title">Chats</h3>
             </div>
             <div class="panel-body">
+                <button id="new-message-btn" class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"></span> New Message</button>
+
+
+                {% comment %}
                 <div class="input-group">
                     <input type="text" class="form-control" placeholder="Search" aria-describedby="basic-addon2">
                     <span class="input-group-btn">
-                        <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></button>
                     </span>
                 </div>
+                {% endcomment %}
             </div>
 
             <!-- Contacts List -->
             <ul class="list-group">
+                {% comment %}
                 {% for p in patients %}
                     <a data-toggle="tab" href="#{{p.u_id}}" class="list-group-item">{{ p.full_name }}<span class="badge">{{ p.unread_messages }}</span></a>
+                {% endfor %}
+                {% endcomment %}
+                {% for ch in channels %}
+                    <a data-toggle="tab" href="#{{ch.sid}}" class="list-group-item">{{ch.friendly_name}}<span class="badge">3</span></a>
                 {% endfor %}
             </ul>
         </div>
@@ -42,6 +51,7 @@
                 <h3 class="panel-title">Panel title</h3>
             </div>
             <div class="panel-body tab-content" id="messages-panel-body">
+                {% comment %}
                 {% for p in patients %}
                     {% if forloop.first %}
                     <div id="{{ p.u_id }}" class="tab-pane fade in active">
@@ -52,7 +62,18 @@
                         <div id="chat-messages"></div>
                     </div>
                 {% endfor %}
+                {% endcomment %}
 
+                {% for ch in channels %}
+                    {% if forloop.first %}
+                    <div id="{{ch.sid }}" class="tab-pane fade in active">
+                    {% else %} 
+                    <div id="{{ch.sid }}" class="tab-pane fade in">
+                    {% endif %}
+                        {{ch.friendly_name}}
+                        <div id="chat-messages"></div>
+                    </div>
+                {% endfor %}
                 {% comment %}
                 <div id="chat1" class="tab-pane fade in active">
                     <div id="chat-messages"></div>
