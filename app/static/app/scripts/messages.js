@@ -66,7 +66,7 @@ $(function() {
     console.log('messagingClient: ' + messagingClient);
 
     // TODO. need to set channelName
-    var channelName = channels[1]['unique_name'];
+    var channelName = channels[0]['unique_name'];
     console.log('channel unique_name: ' + channelName);
     // Get the general chat channel, which is where all the messages are
     // sent in this simple application

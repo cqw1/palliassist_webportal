@@ -238,21 +238,33 @@ def messages(request):
         return HttpResponseRedirect(reverse('login'))
 
     channels = []
-    # List the channels
+    # List the channels that the user is a member of
     for c in settings.TWILIO_IPM_SERVICE.channels.list():
-        # str() needed to get rid of u'hello' when escaping the string to javascript.
-        channel_json = {
-            'sid': str(c.sid),
-            'unique_name': str(c.unique_name),
-            'friendly_name': str(c.friendly_name),
-        }
-        channels.append(channel_json)
+        print "channel", c.friendly_name
+        for m in c.members.list():
+            print m.identity
+            # Assuming that all twilio identities are based off of usernames
+            if m.identity == request.user.username:
+                # str() needed to get rid of u'hello' when escaping the string to javascript.
+                channel_json = {
+                    'sid': str(c.sid),
+                    'unique_name': str(c.unique_name),
+                    'friendly_name': str(c.friendly_name),
+                }
+                channels.append(channel_json)
+                break
+
+        """
         print "== Channel =="
         print "\tsid: ", c.sid
         print "\tunique_name: ", c.unique_name
         print "\tfriendly_name: ", c.friendly_name
         print "\tattributes: ", c.attributes
         print "\tlinks: ", c.links
+        print "\tmembers:"
+        for m in c.members.list():
+            print "\t\t", m.identity
+        """
 
     patients = Patient.objects.all()
     
