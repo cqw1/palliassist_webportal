@@ -24,3 +24,23 @@
     width: 100%;
 }
 
+/* Modal css */
+.modal-row {
+    margin-bottom: 10px;
+}
+.modal-label {
+    text-align: right;
+}
+
+.modal-input input {
+    max-width: inherit;
+}
+
+.additional-input {
+    border-style: dashed;
+}
+
+.modal-add {
+    color: #ccc;
+}
+

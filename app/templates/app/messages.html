@@ -16,7 +16,10 @@
                 <h3 class="panel-title">Chats</h3>
             </div>
             <div class="panel-body">
-                <button id="new-message-btn" class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"></span> New Message</button>
+                <!-- Modal HTML at bottom -->
+                <button id="new-message-btn" type="button" class="btn btn-primary" data-toggle="modal" data-target="#new-message-modal">
+                    <span class="glyphicon glyphicon-plus"></span> New Message
+                </button>
             </div>
 
             <!-- Contacts List -->
@@ -73,6 +76,51 @@
                     </div>
                     </li>
                 </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for creating new message -->
+    <div class="modal fade" id="new-message-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Start a new message</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row modal-row">
+                        <div class="col-md-4 modal-label">
+                            <strong>Name of new message</strong>
+                        </div>
+                        <div class="col-md-7 modal-input">
+                            <input id="new-message-name" type="text" class="form-control" placeholder="New name">
+                        </div>
+                    </div>
+
+                    <div class="row modal-row">
+                        <div class="col-md-4 modal-label">
+                            <strong>Add Members</strong>
+                        </div>
+                        <div class="col-md-7 modal-input">
+                            <input type="text" id="new-member-username" class="form-control" placeholder="Member username">
+                        </div>
+                    </div>
+                    
+                    <div class="row modal-row">
+                        <div class="col-md-push-4 col-md-7 modal-input">
+                            <input type="text" class="form-control additional-input" placeholder="Add another member">
+                        </div>
+                        <div class="col-md-push-4 col-md-1 modal-add">
+                            <span class="glyphicon glyphicon-plus"></span>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
             </div>
         </div>
     </div>
