@@ -5,22 +5,23 @@ function sendNotification() {
 
     // Authorization key taken from firebase console
     $.ajax({
-            type: "POST",
-            url: "https://fcm.googleapis.com/fcm/send",
-            dataType: 'json',
-            async: true,
-            headers: {
-                "Authorization": "key=AAAAZ4czPsc:APA91bGapJWFGh7h97L7_TO9TV6UB9vqjeA1rMxATMwDTvleJr9hvn5cB9Dppz7y_Sa4mmYD6UfePK0FOriwphvyJmEM-_MJLwkkas21uFRZgflqbk_f367uqwcWyAQ6AThRDSe_275_"
+        type: "POST",
+        url: "https://fcm.googleapis.com/fcm/send",
+        dataType: 'json',
+        async: true,
+        headers: {
+            "Authorization": "key=AAAAZ4czPsc:APA91bGapJWFGh7h97L7_TO9TV6UB9vqjeA1rMxATMwDTvleJr9hvn5cB9Dppz7y_Sa4mmYD6UfePK0FOriwphvyJmEM-_MJLwkkas21uFRZgflqbk_f367uqwcWyAQ6AThRDSe_275_",
+            "Content-Type": "application/json"
         },
-        data: {
+        data: JSON.stringify({
             "to" : "/topics/test",
             "notification" : {
                   "body" : "Hello World!",
-                  "title" : "PalliAssist",
-                  "icon" : ""
+                  "title" : "PalliAssist"
             }
-        },
-        success: function (){
+        }),
+        success: function (data) {
+            console.log('returned data: ' + data);
             alert('Sent message to topic "test"'); 
         }
     });

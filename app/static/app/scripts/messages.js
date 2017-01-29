@@ -1,27 +1,26 @@
 console.log("messaging.js");
 
 $(function() {
+    console.log('channels: ' + channels);
     // Get handle to the chat div 
     var $chatWindow = $('#chat-messages');
     var $savedWindow = $('#saved-messages');
 
     console.log('chatWindow: ' + $chatWindow);
 
-    /*
     // Manages the state of our access token we got from the server
     var accessManager;
 
     // Our interface to the IP Messaging service
     var messagingClient;
 
-    // A handle to the "general" chat channel - the one and only channel we
+    // A handle to the chat channel - the one and only channel we
     // will have in this sample app
     var channel;
 
     // The server will assign the client a random username - store that value
     // here
     // django_username is saved from html
-    var username = django_username
     console.log('django_username: ' + django_username);
 
     // Helper function to print info messages to the chat window
@@ -43,7 +42,7 @@ $(function() {
         console.log(timestamp.toLocaleString());
         console.log(timestamp.toTimeString());
         var $user = $('<span class="username">').text(fromUser + ' [' + timestamp.toString() + ']: ');
-        if (fromUser === username) {
+        if (fromUser === django_username) {
             $user.addClass('me');
         }
         var $message = $('<span class="message">').text(message);
@@ -56,6 +55,33 @@ $(function() {
     // Alert the user they have been assigned a random username
     print('Logging in...');
 
+    print('Your django_username: ' 
+        + '<span class="me">' + django_username + '</span>', true);
+
+    // Initialize the IP messaging client
+    console.log('twilio token: ' + token);
+    // var token set in html. from django variable.
+    accessManager = new Twilio.AccessManager(token);
+    messagingClient = new Twilio.IPMessaging.Client(accessManager);
+    console.log('messagingClient: ' + messagingClient);
+
+    // TODO. need to set channelName
+    var channelName = channels[1]['unique_name'];
+    console.log('channel unique_name: ' + channelName);
+    // Get the general chat channel, which is where all the messages are
+    // sent in this simple application
+    var promise = messagingClient.getChannelByUniqueName(channelName);
+    promise.then(function(ch) {
+        channel = ch;
+        console.log('channel: ' + channel);
+        if (!channel) {
+            console.log('ERROR channel = null');
+        } else {
+            setupChannel();
+        }
+    });
+
+    /*
     // Get an access token for the current user, passing a username (identity)
     // and a device ID - for browser-based apps, we'll always just use the 
     // value "browser"
@@ -111,6 +137,7 @@ $(function() {
             }
         })
     });
+    */
 
     function loadPreviousMessages() {
         console.log(channel);
@@ -132,9 +159,11 @@ $(function() {
     // Set up channel after it has been found
     function setupChannel() {
         // Join the general channel
+        /*
         channel.join().then(function(channel) { print('Joined channel as ' 
-                + '<span class="me">' + username + '</span>.', true);
+                + '<span class="me">' + django_username + '</span>.', true);
         });
+        */
 
         // Listen for new messages sent to the channel
         channel.on('messageAdded', function(message) {
@@ -150,11 +179,11 @@ $(function() {
     var $chatInput = $('#chat-input');
     $chatInput.on('keydown', function(e) {
         if (e.keyCode == 13) {
+            console.log('sent message: ' + $chatInput.val());
             channel.sendMessage($chatInput.val())
             $chatInput.val('');
         }
     });
-    */
 
     // Save a message to db
     var $saveInput = $('#save-input');
@@ -167,7 +196,7 @@ $(function() {
 
             $.getJSON('/save-message', {
                 content: $saveInput.val(),
-                sender: username,
+                sender: django_username,
                 channel: channelName,
                 time_sent: $.now(),
                 type: 'text'
@@ -178,16 +207,22 @@ $(function() {
         }
     });
 
+    /*
     // Javascript to enable link to tab
     var url = document.location.toString();
     if (url.match('#')) {
-        $('.nav-tabs a[href="#' + url.split('#')[1] + '"]').tab('show');
-    } 
+        console.log(url.split('#')[1]);
+        $('.list-group a[href="#' + url.split('#')[1] + '"]').tab('show');
+    }  else {
+        $('.list-group a[href="#' + channels[0]['sid'] + '"]').tab('show');
+    }
 
     // Change hash for page-reload
-    $('.nav-tabs a').on('shown.bs.tab', function (e) {
+    $('.list-group a').on('shown.bs.tab', function (e) {
+        console.log('e.target.has');
         window.location.hash = e.target.hash;
     })
+    */
 
     $('#new-message-btn').click(function() {
         console.log('messages.js: new message');

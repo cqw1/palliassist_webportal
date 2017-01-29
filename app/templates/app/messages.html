@@ -6,8 +6,6 @@
     <h1>{{ title }}<small><!--Subtext for header--></small></h1>
 </div>
 
-
-{% comment %}{% endcomment %}
 {% comment %}{% endcomment %}
 
 <div class="row">
@@ -19,26 +17,12 @@
             </div>
             <div class="panel-body">
                 <button id="new-message-btn" class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"></span> New Message</button>
-
-
-                {% comment %}
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search" aria-describedby="basic-addon2">
-                    <span class="input-group-btn">
-                    </span>
-                </div>
-                {% endcomment %}
             </div>
 
             <!-- Contacts List -->
             <ul class="list-group">
-                {% comment %}
-                {% for p in patients %}
-                    <a data-toggle="tab" href="#{{p.u_id}}" class="list-group-item">{{ p.full_name }}<span class="badge">{{ p.unread_messages }}</span></a>
-                {% endfor %}
-                {% endcomment %}
                 {% for ch in channels %}
-                    <a data-toggle="tab" href="#{{ch.sid}}" class="list-group-item">{{ch.friendly_name}}<span class="badge">3</span></a>
+                <a data-toggle="tab" class="list-group-item" href="#{{ch.sid}}">{{ch.friendly_name}}<span class="badge">3</span></a>
                 {% endfor %}
             </ul>
         </div>
@@ -51,91 +35,79 @@
                 <h3 class="panel-title">Panel title</h3>
             </div>
             <div class="panel-body tab-content" id="messages-panel-body">
-                {% comment %}
-                {% for p in patients %}
-                    {% if forloop.first %}
-                    <div id="{{ p.u_id }}" class="tab-pane fade in active">
-                    {% else %} 
-                    <div id="{{ p.u_id }}" class="tab-pane fade in">
-                    {% endif %}
-                        {{p.u_id}}
-                        <div id="chat-messages"></div>
-                    </div>
-                {% endfor %}
-                {% endcomment %}
 
                 {% for ch in channels %}
-                    {% if forloop.first %}
-                    <div id="{{ch.sid }}" class="tab-pane fade in active">
-                    {% else %} 
-                    <div id="{{ch.sid }}" class="tab-pane fade in">
-                    {% endif %}
-                        {{ch.friendly_name}}
-                        <div id="chat-messages"></div>
-                    </div>
-                {% endfor %}
-                {% comment %}
-                <div id="chat1" class="tab-pane fade in active">
+                {% if forloop.first %}
+                <div id="{{ ch.sid }}" class="tab-pane fade in active">
+                {% else %} 
+                <div id="{{ ch.sid }}" class="tab-pane fade in">
+                {% endif %}
+                    {{ch.friendly_name}}
                     <div id="chat-messages"></div>
                 </div>
-                {% endcomment %}
+                {% endfor %}
 
 
 
-            </div>
-            <!-- Input text box at bottom -->
-            <ul class="list-group">
-                <li class="list-group-item">
-
-                {% comment %}
-                <input id="chat-input" type="text" placeholder="say anything" autofocus/>
-                {% endcomment %}
-
-                <div class="input-group">
-                    <span id="chat-input-span">
-                        <input id="chat-input" type="text" class="form-control" placeholder="say anything" autofocus aria-label="...">
-                    </span>
-                    <div class="input-group-btn">
-                        <!-- Buttons -->
-                        <button class="btn btn-default" type="button">
-                            <span class="glyphicon glyphicon-tasks" aria-hidden="true"></span>
-                        </button>
-                        <button class="btn btn-default" type="button">
-                            <span class=" glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                        </button>
-                        <button class="btn btn-primary" type="button">Send</button>
-                    </div>
                 </div>
-                </li>
-            </ul>
+                <!-- Input text box at bottom -->
+                <ul class="list-group">
+                    <li class="list-group-item">
+
+                    <div class="input-group">
+                        <span id="chat-input-span">
+                            <input id="chat-input" type="text" class="form-control" placeholder="say anything" autofocus aria-label="...">
+                        </span>
+
+                        <!-- Buttons -->
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" type="button">
+                                <span class="glyphicon glyphicon-tasks" aria-hidden="true"></span>
+                            </button>
+                            <button class="btn btn-default" type="button">
+                                <span class=" glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                            </button>
+                            <button class="btn btn-primary" type="button">Send</button>
+                        </div>
+
+                    </div>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
-</div>
 
-{% comment %}
-<div id="saved-messages"></div>
-<input id="save-input" type="text" placeholder="save message" autofocus/>
-{% endcomment %}
+    {% comment %}
+    <div id="saved-messages"></div>
+    <input id="save-input" type="text" placeholder="save message" autofocus/>
+    {% endcomment %}
 
-{% endblock %}
+    {% endblock %}
 
-{% block scripts %}
+    {% block scripts %}
 
-{% load staticfiles %}
+    {% load staticfiles %}
 
-<script src="https://media.twiliocdn.com/sdk/js/common/v0.1/twilio-common.min.js"></script>
-<script src="https://media.twiliocdn.com/sdk/js/chat/v0.11/twilio-chat.min.js"></script>
+    <script src="https://media.twiliocdn.com/sdk/js/common/v0.1/twilio-common.min.js"></script>
+    <script src="https://media.twiliocdn.com/sdk/js/chat/v0.11/twilio-chat.min.js"></script>
 
-<!--<script src="//media.twiliocdn.com/sdk/js/common/v0.1/twilio-common.min.js"></script>-->
-<script src="//media.twiliocdn.com/sdk/rtc/js/ip-messaging/v0.9/twilio-ip-messaging.min.js"></script>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <!--<script src="//media.twiliocdn.com/sdk/js/common/v0.1/twilio-common.min.js"></script>-->
+    <script src="//media.twiliocdn.com/sdk/rtc/js/ip-messaging/v0.9/twilio-ip-messaging.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 
-<script>
-    var django_username = "{{user.username}}";
-</script>
+    <script>
+        // Passing Django variables along to javascript side by setting variables.
+        // Probably not best practice but eh.
+        {% autoescape off %}
+        var django_username = "{{user.username}}";
+        var channels = {{channels}};
+        console.log(channels);
+        var token = "{{token}}";
+        {% endautoescape %}
+    </script>
 
-<link rel="stylesheet" type="text/css" href="{% static 'app/content/messages.css' %}" />
-<script src="{% static 'app/scripts/messages.js' %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'app/content/messages.css' %}" />
+    <script src="{% static 'app/scripts/messages.js' %}"></script>
 
-{% endblock %}
+    {% endblock %}
 

@@ -13,6 +13,7 @@ from django.contrib.auth import views as auth_views
 from django.core.urlresolvers import reverse
 #from app.models import UnreadMessage
 from app.models import Patient, Doctor
+import json
 
 from .forms import QueryPatientsForm
 from .forms import PatientNotesForm
@@ -239,7 +240,13 @@ def messages(request):
     channels = []
     # List the channels
     for c in settings.TWILIO_IPM_SERVICE.channels.list():
-        channels.append(c)
+        # str() needed to get rid of u'hello' when escaping the string to javascript.
+        channel_json = {
+            'sid': str(c.sid),
+            'unique_name': str(c.unique_name),
+            'friendly_name': str(c.friendly_name),
+        }
+        channels.append(channel_json)
         print "== Channel =="
         print "\tsid: ", c.sid
         print "\tunique_name: ", c.unique_name
@@ -248,6 +255,12 @@ def messages(request):
         print "\tlinks: ", c.links
 
     patients = Patient.objects.all()
+    
+    token = AccessToken(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_API_KEY, settings.TWILIO_API_SECRET, request.user.username)
+    endpoint = "PalliAssist:" + request.user.username + ":web"
+    # Create an IP Messaging grant and add to token
+    ipm_grant = IpMessagingGrant(endpoint_id=endpoint, service_sid=settings.TWILIO_IPM_SERVICE_SID)
+    token.add_grant(ipm_grant)
 
     context = {
         'title':'Messages',
@@ -255,6 +268,7 @@ def messages(request):
         'year':datetime.now().year,
         'patients': patients,
         'channels': channels,
+        'token': token,
     }
 
     return render(
@@ -331,7 +345,7 @@ def token(request):
     identity = request.GET['identity']
 
     # <unique app>:<user>:<device>
-    endpoint = "TwilioChatDemo:8:29"
+    endpoint = "PalliAssist:" + identity + ":mobile"
 
     # Create access token with credentials
     token = AccessToken(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_API_KEY, settings.TWILIO_API_SECRET, identity)
