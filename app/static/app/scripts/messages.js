@@ -228,7 +228,7 @@ $(function() {
         console.log('messages.js: new message');
     })
 
-    /* Autofocus on modal in HTML 5 */
+    /* Autofocus on modal in HTML 5. Not working */
     $('#new-message-modal').on('shown.bs.modal', function () {
       $('#new-message-name').focus()
     })
