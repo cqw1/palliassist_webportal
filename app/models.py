@@ -118,7 +118,7 @@ def generateTwilioAccessToken(sender, **kwargs):
         token = AccessToken(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_API_KEY, settings.TWILIO_API_SECRET, identity)
 
         # Create an IP Messaging grant and add to token
-        ipm_grant = IpMessagingGrant(endpoint_id=endpoint, service_sid=settings.TWILIO_SERVICE_SID)
+        ipm_grant = IpMessagingGrant(endpoint_id=endpoint, service_sid=settings.TWILIO_IPM_SERVICE_SID)
         token.add_grant(ipm_grant)
 
 

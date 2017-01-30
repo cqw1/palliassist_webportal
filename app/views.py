@@ -237,6 +237,11 @@ def messages(request):
     if not request.user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
 
+    if request.method == 'POST':
+        print request.POST['reason']
+        # Don't need to go through other stuff. We're reloading the page on success anyways.
+        return JsonResponse({})
+
     channels = []
     # List the channels that the user is a member of
     for c in settings.TWILIO_IPM_SERVICE.channels.list():

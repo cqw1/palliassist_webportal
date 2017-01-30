@@ -228,6 +228,21 @@ $(function() {
         console.log('messages.js: new message');
     })
 
+    $('#create-message-btn').click(function() {
+        $('#new-message-name').val();
+        $('#new-member-username').val();
+        data = {
+            'csrfmiddlewaretoken': Cookies.get('csrftoken'),
+            'reason': 'CREATE CHANNEL',
+            'channel_name': $('#new-message-name').val(),
+            'add_member': $('#new-member-username').val(),
+        }
+
+        $.post('/create-channel', data, function() {location.reload();});
+
+        console.log('messages.js: create message');
+    });
+
     /* Autofocus on modal in HTML 5. Not working */
     $('#new-message-modal').on('shown.bs.modal', function () {
       $('#new-message-name').focus()
