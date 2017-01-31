@@ -23,16 +23,22 @@ $(function() {
     // django_username is saved from html
     console.log('django_username: ' + django_username);
 
-    function clearModal() {
-        $('#new-message-name').val('');
-        $('#new-member-username').val('');
+    function clearNewChatModal() {
+        $('#new-chat-name').val('');
+        $('#new-chat-username').val('');
     }
+    $('#close-chat-modal-btn').click(clearNewChatModal);
+    $('#x-chat-modal-btn').click(clearNewChatModal);
 
-    $('#close-modal-btn').click(clearModal);
-    $('#x-modal-btn').click(clearModal);
+    function clearAddMemberModal() {
+        $('#add-username').val('');
+    }
+    $('#close-add-modal-btn').click(clearAddMemberModal);
+    $('#x-add-modal-btn').click(clearAddMemberModal);
 
-    // Clear it initially upon page load.
-    clearModal();
+     // Clear it initially upon page load.
+    clearNewChatModal();
+    clearAddMemberModal();
 
     // Helper function to print info messages to the chat window
     function print(infoMessage, asHtml) {
@@ -175,6 +181,8 @@ $(function() {
                 + '<span class="me">' + django_username + '</span>.', true);
         });
         */
+        console.log('in setupchannel');
+        console.log(channel.friendlyName);
 
         // Listen for new messages sent to the channel
         channel.on('messageAdded', function(message) {
@@ -235,18 +243,18 @@ $(function() {
     })
     */
 
-    $('#new-message-btn').click(function() {
+    $('#new-chat-btn').click(function() {
         console.log('messages.js: new message');
     })
 
-    $('#create-message-btn').click(function() {
-        $('#create-message-btn').html('Loading...');
-        $('#create-message-btn').prop('disabled', true);
+    $('#create-chat-btn').click(function() {
+        $('#create-chat-btn').html('Loading...');
+        $('#create-chat-btn').prop('disabled', true);
 
         data = {
             'csrfmiddlewaretoken': Cookies.get('csrftoken'),
-            'channel_name': $('#new-message-name').val(),
-            'add_member': $('#new-member-username').val(),
+            'channel_name': $('#new-chat-name').val(),
+            'add_member': $('#new-chat-username').val(),
         }
 
         $.post('/create-channel', data, function(response) {
@@ -254,12 +262,45 @@ $(function() {
             location.reload();
         });
 
-        console.log('messages.js: create message');
     });
 
-    /* Autofocus on modal in HTML 5. Not working */
-    $('#new-message-modal').on('shown.bs.modal', function () {
-      $('#new-message-name').focus()
+    $('#add-member-btn').click(function() {
+        $('#add-member-btn').html('Adding...');
+        $('#add-member-btn').prop('disabled', true);
+
+        data = {
+            'csrfmiddlewaretoken': Cookies.get('csrftoken'),
+            'channel_name': $('#new-message-name').val(),
+            'new_members': $('#add-username').val(),
+        }
+
+        $.post('/add-member', data, function(response) {
+            console.log(response);
+            location.reload();
+        });
+
+    });
+
+    $('.list-group-item').each(function() {
+        console.log($(this));
+        $(this).click(function() {
+            console.log('clicked');
+            console.log($(this));
+            var sid = $(this).attr('href').slice(1); // Ignore the # in the href
+            console.log(sid);
+            var promise = messagingClient.getChannelBySid(sid);
+            //console.log($(this).addClass('active'));
+            promise.then(function(ch) {
+                channel = ch;
+                console.log('channel: ' + channel);
+                if (!channel) {
+                    console.log('ERROR channel = null');
+                } else {
+                    setupChannel();
+                }
+            });
+        })
     })
+
 
 });

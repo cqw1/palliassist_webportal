@@ -400,8 +400,6 @@ def create_channel(request):
     print request.POST['channel_name']
     channel_name = request.POST['channel_name']
 
-    # TODO: check if channel already exists
-
     new_channel = settings.TWILIO_IPM_SERVICE.channels.create(friendly_name=channel_name, type="private")
     new_channel.members.create(identity=request.user.username)
 
