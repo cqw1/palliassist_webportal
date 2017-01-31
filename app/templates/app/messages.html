@@ -85,7 +85,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <button id="x-modal-btn" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title" id="myModalLabel">Start a new message</h4>
                 </div>
                 <div class="modal-body">
@@ -118,8 +118,8 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button id="create-message-btn" type="button" class="btn btn-primary">Create</button>
+                    <button id="close-modal-btn" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button id="create-message-btn" type="button" class="btn btn-primary" data-loading-text="Creating..." autocomplete="off">Create</button>
                 </div>
             </div>
         </div>

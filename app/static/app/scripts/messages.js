@@ -23,6 +23,17 @@ $(function() {
     // django_username is saved from html
     console.log('django_username: ' + django_username);
 
+    function clearModal() {
+        $('#new-message-name').val('');
+        $('#new-member-username').val('');
+    }
+
+    $('#close-modal-btn').click(clearModal);
+    $('#x-modal-btn').click(clearModal);
+
+    // Clear it initially upon page load.
+    clearModal();
+
     // Helper function to print info messages to the chat window
     function print(infoMessage, asHtml) {
         var $msg = $('<div class="info">');
@@ -229,16 +240,19 @@ $(function() {
     })
 
     $('#create-message-btn').click(function() {
-        $('#new-message-name').val();
-        $('#new-member-username').val();
+        $('#create-message-btn').html('Loading...');
+        $('#create-message-btn').prop('disabled', true);
+
         data = {
             'csrfmiddlewaretoken': Cookies.get('csrftoken'),
-            'reason': 'CREATE CHANNEL',
             'channel_name': $('#new-message-name').val(),
             'add_member': $('#new-member-username').val(),
         }
 
-        $.post('/create-channel', data, function() {location.reload();});
+        $.post('/create-channel', data, function(response) {
+            console.log(response);
+            location.reload();
+        });
 
         console.log('messages.js: create message');
     });
