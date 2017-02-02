@@ -33,10 +33,10 @@
             </div>
             {% endcomment %}
 
-            <!-- Contacts List -->
+            <!-- Chat channels list -->
             <ul class="list-group">
                 {% for ch in channels %}
-                <a data-toggle="tab" class="list-group-item" href="#{{ch.sid}}">{{ch.friendly_name}}<span class="badge">3</span></a>
+                <a data-toggle="tab" class="list-group-item chat-list-item" href="#{{ch.sid}}">{{ch.friendly_name}}<span class="badge">3</span></a>
                 {% endfor %}
             </ul>
         </div>
@@ -61,7 +61,7 @@
                 <div id="{{ ch.sid }}" class="tab-pane fade in">
                 {% endif %}
                     {{ch.friendly_name}}
-                    <div id="chat-messages"></div>
+                    <div id="{{ch.sid}}-chat-messages"></div>
                 </div>
                 {% endfor %}
 
@@ -85,7 +85,7 @@
                             <button class="btn btn-default" type="button">
                                 <span class=" glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                             </button>
-                            <button class="btn btn-primary" type="button">Send</button>
+                            <button id="send-message-btn" class="btn btn-primary" type="button">Send</button>
                         </div>
 
                     </div>
@@ -201,7 +201,6 @@
         {% autoescape off %}
         var django_username = "{{user.username}}";
         var channels = {{channels}};
-        console.log(channels);
         var token = "{{token}}";
         {% endautoescape %}
     </script>
