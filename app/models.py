@@ -15,10 +15,10 @@ from twilio.rest.ip_messaging import TwilioIpMessagingClient
 # Create your models here.
 NAME_MAX_LENGTH = 100
 
-"""
-Parent class of all possible dashboard alerts.
-"""
 class DashboardAlert(models.Model):
+    """
+    Parent class of all possible dashboard alerts.
+    """
     resolved = models.BooleanField(default=False)
 
     class Meta:
@@ -32,12 +32,12 @@ class UnreadMessage(DashboardAlert):
     num_unread = models.IntegerField()
 """
 
-"""
-Contains info on a patient.
-"""
 class Patient(models.Model):
+    """
+    Contains info on a patient.
+    """
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    u_id = models.IntegerField()
+    sid = models.IntegerField()
     full_name = models.CharField(max_length=NAME_MAX_LENGTH)
     doctor_notes = models.TextField(default="")
     unread_messages = models.IntegerField(default=0)
@@ -49,12 +49,12 @@ class Patient(models.Model):
         ordering = ('user_id',)
 
 
-"""
-Contains info on a doctor.
-"""
 class Doctor(models.Model):
+    """
+    Contains info on a doctor.
+    """
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    u_id = models.IntegerField()
+    sid = models.IntegerField()
     full_name = models.CharField(max_length=NAME_MAX_LENGTH)
     patients = models.ManyToManyField(Patient)
     twilio_token = models.TextField(default="")
@@ -64,6 +64,42 @@ class Doctor(models.Model):
 
     class Meta:
         ordering = ('user_id',)
+
+class ESASQuestion(models.Model):
+    """ Represents one question and answer on the ESAS survey. """
+    question = models.TextField(default="")
+    answer = models.TextField(default="")
+
+class ESAS(models.Model):
+    """ Encapsulates one survey. """
+    sid = models.IntegerField()
+    timestamp = models.BigIntegerField()
+    patient = models.OneToOneField(Patient, on_delete=models.CASCADE)
+    questions = models.ManyToManyField(ESASQuestion)
+
+class PainPoint(models.Model):
+    """ Represents one question and answer on the ESAS survey. """
+    x = models.IntegerField()
+    y = models.IntegerField()
+    intensity = models.IntegerField()
+
+class PainSurvey(models.Model):
+    """ Encapsulates one survey. """
+    sid = models.IntegerField()
+    timestamp = models.BigIntegerField()
+    patient = models.OneToOneField(Patient, on_delete=models.CASCADE)
+    width = models.IntegerField()
+    height = models.IntegerField()
+    points = models.ManyToManyField(PainPoint)
+
+    
+
+
+
+
+    
+
+
 
 
 @receiver(post_save, sender=User)

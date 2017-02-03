@@ -150,10 +150,10 @@ def patient_profile(request):
     if not request.user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
 
-    patient_id = request.GET['u_id']
+    patient_id = request.GET['sid']
     print "patient_id:", patient_id
 
-    patient = Patient.objects.get(u_id = patient_id)
+    patient = Patient.objects.get(sid=patient_id)
 
     notes_form = PatientNotesForm()
 
@@ -191,11 +191,11 @@ def signup(request):
             if role == 'patient':
                 # Create User and Patient object.
                 patients_doctor_username = signup_form.cleaned_data['patients_doctor_username']
-                patient = Patient.objects.create(user=user, u_id=10, full_name=full_name)
+                patient = Patient.objects.create(user=user, sid=10, full_name=full_name)
                 Doctor.objects.get(user=User.objects.get(username=patients_doctor_username)).patients.add(patient)
             else:
                 # Create User and Doctor object.
-                doctor = Doctor.objects.create(user=user, u_id=10, full_name=full_name)
+                doctor = Doctor.objects.create(user=user, sid=10, full_name=full_name)
 
             return HttpResponseRedirect("/signup-success/")
 
@@ -240,12 +240,13 @@ def messages(request):
     channels = []
     # List the channels that the user is a member of
     for c in settings.TWILIO_IPM_SERVICE.channels.list():
-        #print "channel", c.friendly_name
+        print "channel", c.friendly_name
         for m in c.members.list():
             #print m.identity
             # Assuming that all twilio identities are based off of usernames
-            if m.identity == request.user.username:
+            if m.identity == request.user.username or c.friendly_name == "DemoChannel":
                 # str() needed to get rid of u'hello' when escaping the string to javascript.
+                print "selected channel", c.friendly_name
                 channel_json = {
                     'sid': str(c.sid),
                     'unique_name': str(c.unique_name),
@@ -369,6 +370,7 @@ def token(request):
     # COMMENTED CAUSE FLASK THING - Return token info as JSON 
     #return jsonify(identity=identity, token=token.to_jwt())
     return JsonResponse({'identity': identity, 'token': token.to_jwt()})
+    #return JsonResponse({'identity': identity, 'token': token})
 
 def save_notes(request):
     """
@@ -381,9 +383,9 @@ def save_notes(request):
     doctor_notes = request.POST['notes']
     print "doctor_notes:", doctor_notes
     print "doctor_notes:", urllib.quote(doctor_notes)
-    patient_id = request.POST['u_id']
+    patient_id = request.POST['sid']
 
-    patient = Patient.objects.get(u_id=patient_id)
+    patient = Patient.objects.get(sid=patient_id)
     patient.doctor_notes = urllib.quote(doctor_notes)
     patient.save()
 

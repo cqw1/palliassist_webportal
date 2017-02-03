@@ -2,10 +2,79 @@
 
 <br>
 
-patient_profile_esas.html
 
-<div id="chart_div" style="width: 400px; height: 400px"></div>
-      
+<div id="linechart_material" style="width: 400px; height: 400px"></div>
+
+{% comment %}
+<div class="row">
+    <div class="col-md-3">
+        <div class="panel panel-default">
+            <!-- Default panel contents -->
+
+            <div class="panel-heading clearfix">
+                <strong class="panel-title">Surveys</strong>
+            </div>
+
+            <!-- Chat channels list -->
+            <ul class="list-group">
+                {% for ch in channels %}
+                <a data-toggle="tab" class="list-group-item chat-list-item" href="#{{ch.sid}}">{{ch.friendly_name}}<span class="badge">3</span></a>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <!-- Messaging Panel -->
+    <div class="col-md-9">
+        <div class="panel panel-default" id="messages-panel">
+
+            <div class="panel-heading clearfix">
+                <strong class="panel-title">Panel Title</strong>
+                <button id="add-member-modal-btn" type="button" class="btn btn-primary pull-right" autocomplete="off" data-toggle="modal" data-target="#add-member-modal">
+                    <span class="glyphicon glyphicon-plus"></span> Add Member
+                </button>
+            </div>
+            <div class="panel-body tab-content" id="messages-panel-body">
+
+                {% for ch in channels %}
+                {% if forloop.first %}
+                <div id="{{ ch.sid }}" class="tab-pane fade in active">
+                {% else %} 
+                <div id="{{ ch.sid }}" class="tab-pane fade in">
+                {% endif %}
+                    {{ch.friendly_name}}
+                    <div id="{{ch.sid}}-chat-messages"></div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Input text box at bottom -->
+            <ul class="list-group">
+                <li class="list-group-item">
+
+                <div class="input-group">
+                    <span id="chat-input-span">
+                        <input id="chat-input" type="text" class="form-control" placeholder="say anything" autofocus aria-label="...">
+                    </span>
+
+                    <!-- Buttons -->
+                    <div class="input-group-btn">
+                        <button class="btn btn-default" type="button">
+                            <span class="glyphicon glyphicon-tasks" aria-hidden="true"></span>
+                        </button>
+                        <button class="btn btn-default" type="button">
+                            <span class=" glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                        </button>
+                        <button id="send-message-btn" class="btn btn-primary" type="button">Send</button>
+                    </div>
+
+                </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endcomment %}
 
 
 

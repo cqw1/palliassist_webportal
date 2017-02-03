@@ -6,8 +6,8 @@ function clearNotes() {
 };
 
 function saveNotes(patient_id) {
-    console.log($("#notes-form").serialize()) + "&u_id=" + patient_id;
-    $.post('/save-notes', $("#notes-form").serialize() + "&u_id=" + patient_id, function() {
+    console.log($("#notes-form").serialize()) + "&sid=" + patient_id;
+    $.post('/save-notes', $("#notes-form").serialize() + "&sid=" + patient_id, function() {
         console.log('posted');
 
     })
