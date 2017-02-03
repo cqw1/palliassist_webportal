@@ -373,8 +373,8 @@ def token(request):
 
     # COMMENTED CAUSE FLASK THING - Return token info as JSON 
     #return jsonify(identity=identity, token=token.to_jwt())
-    return JsonResponse({'identity': identity, 'token': token.to_jwt()})
-    #return JsonResponse({'identity': identity, 'token': token})
+    #return JsonResponse({'identity': identity, 'token': token.to_jwt()})
+    return JsonResponse({'identity': identity, 'token': token})
 
 def save_notes(request):
     """
