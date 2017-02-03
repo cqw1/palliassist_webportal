@@ -240,11 +240,10 @@ def messages(request):
     channels = []
     # List the channels that the user is a member of
     for c in settings.TWILIO_IPM_SERVICE.channels.list():
-        print "channel", c.friendly_name
         for m in c.members.list():
             #print m.identity
             # Assuming that all twilio identities are based off of usernames
-            if m.identity == request.user.username or c.friendly_name == "DemoChannel":
+            if m.identity == request.user.username:
                 # str() needed to get rid of u'hello' when escaping the string to javascript.
                 print "selected channel", c.friendly_name
                 channel_json = {
