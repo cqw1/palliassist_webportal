@@ -3,7 +3,16 @@
 <br>
 
 
+{% comment %}
 <div id="linechart_material" style="width: 400px; height: 400px"></div>
+{% endcomment %}
+
+{% for survey in esas_surveys %}
+    {% for question in survey.questions.all %}
+        {{question.question}} {{question.answer}}
+    {% endfor %}
+    <br>
+{% endfor %}
 
 {% comment %}
 <div class="row">

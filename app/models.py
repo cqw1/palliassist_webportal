@@ -78,7 +78,7 @@ class ESASQuestion(models.Model):
 class ESAS(models.Model):
     """ Encapsulates one survey. """
     created_date = models.DateTimeField(default=datetime.datetime.now)
-    patient = models.OneToOneField(Patient, on_delete=models.CASCADE)
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     questions = models.ManyToManyField(ESASQuestion)
 
 class PainPoint(models.Model):
@@ -90,7 +90,7 @@ class PainPoint(models.Model):
 class PainSurvey(models.Model):
     """ Encapsulates one survey. """
     created_date = models.DateTimeField(default=datetime.datetime.now)
-    patient = models.OneToOneField(Patient, on_delete=models.CASCADE)
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     width = models.IntegerField()
     height = models.IntegerField()
     points = models.ManyToManyField(PainPoint)
