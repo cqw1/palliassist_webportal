@@ -6,14 +6,16 @@ from django.conf import settings
 from django.shortcuts import render
 from django.http import HttpRequest, JsonResponse, HttpResponseRedirect
 from django.template import RequestContext
-from datetime import datetime
 from cgi import parse_qs, escape
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import views as auth_views
 from django.core.urlresolvers import reverse
 #from app.models import UnreadMessage
-from app.models import Patient, Doctor
+#from app.models import Patient, Doctor
+from app.models import *
+
 import json
+import datetime
 
 from .forms import QueryPatientsForm
 from .forms import PatientNotesForm
@@ -54,7 +56,7 @@ def dashboard(request):
 
     context = {
         'title':'Dashboard',
-        'year':datetime.now().year,
+        'year':datetime.datetime.now().year,
         'unread_messages': unread_messages_patients,
     }
 
@@ -130,7 +132,7 @@ def patients(request):
     context = {
         'title': 'Patients',
         'message': 'List of patients.',
-        'year': datetime.now().year,
+        'year': datetime.datetime.now().year,
         'patient_results': patient_results,
         'form': query_patients_form,
     }
@@ -153,16 +155,19 @@ def patient_profile(request):
     patient_id = request.GET['sid']
     print "patient_id:", patient_id
 
-    patient = Patient.objects.get(sid=patient_id)
+    patient_obj = Patient.objects.get(sid=patient_id)
 
     notes_form = PatientNotesForm()
+
+    esas_surveys = list(ESAS.objects.filter(patient=patient_obj))
 
     context = {
         'title': 'Patient Profile',
         'message': 'Patient profile.',
-        'year': datetime.now().year,
-        'patient': patient,
+        'year': datetime.datetime.now().year,
+        'patient': patient_obj,
         'notes_form': notes_form,
+        'esas_surveys': esas_surveys,
     }
 
     return render(
@@ -202,7 +207,7 @@ def signup(request):
 
     context = {
         'title': 'Sign Up',
-        'year': datetime.now().year,
+        'year': datetime.datetime.now().year,
         'form': signup_form,
     }
 
@@ -219,7 +224,7 @@ def signup_success(request):
 
     context = {
         'title': 'Sign Up',
-        'year': datetime.now().year,
+        'year': datetime.datetime.now().year,
     }
 
     return render(
@@ -277,7 +282,7 @@ def messages(request):
     context = {
         'title':'Messages',
         'message':'Send messages.',
-        'year':datetime.now().year,
+        'year':datetime.datetime.now().year,
         'patients': patients,
         'channels': channels,
         'token': token,

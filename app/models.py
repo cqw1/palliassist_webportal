@@ -12,6 +12,8 @@ from django.conf import settings
 from twilio.access_token import AccessToken, IpMessagingGrant
 from twilio.rest.ip_messaging import TwilioIpMessagingClient
 
+import datetime
+
 # Create your models here.
 NAME_MAX_LENGTH = 100
 
@@ -70,10 +72,13 @@ class ESASQuestion(models.Model):
     question = models.TextField(default="")
     answer = models.TextField(default="")
 
+    def __unicode__(self):
+        return "[ESASQuestion] " + str(self.question) + ": " + str(self.answer)
+
 class ESAS(models.Model):
     """ Encapsulates one survey. """
-    created_date = models.DateTimeField()
-    patient = models.OneToOneField(Patient, on_delete=models.CASCADE)
+    created_date = models.DateTimeField(default=datetime.datetime.now)
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     questions = models.ManyToManyField(ESASQuestion)
 
 class PainPoint(models.Model):
@@ -84,8 +89,8 @@ class PainPoint(models.Model):
 
 class PainSurvey(models.Model):
     """ Encapsulates one survey. """
-    created_date = models.DateTimeField()
-    patient = models.OneToOneField(Patient, on_delete=models.CASCADE)
+    created_date = models.DateTimeField(default=datetime.datetime.now)
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     width = models.IntegerField()
     height = models.IntegerField()
     points = models.ManyToManyField(PainPoint)

@@ -34,7 +34,7 @@
             </div>
             <div id="esas" class="tab-pane fade">
                 <h3>ESAS</h3>
-                {% include "patient_profile_esas.html" %}
+                {% include "patient_profile_esas.html" with esas_surveys=esas_surveys %}
             </div>
             <div id="pain" class="tab-pane fade">
                 <h3>ESAS</h3>
@@ -79,6 +79,7 @@
     console.log(document.getElementById('chart_div'));
     updateNotes('{{patient.doctor_notes}}');
     console.log('called updateNotes');
+    createChart({{esas_surveys}});
 </script>
 
 {% endblock %}
