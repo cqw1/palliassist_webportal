@@ -15,23 +15,7 @@
 
             <div class="panel-heading clearfix">
                 <strong class="panel-title">Chats</strong>
-                <button id="create-chat-modal-btn" type="button" class="btn btn-primary pull-right" autocomplete="off" data-toggle="modal" data-target="#new-chat-modal">
-                    <span class="glyphicon glyphicon-plus"></span> New Chat 
-                </button>
             </div>
-
-            {% comment %}
-            <div class="panel-heading">
-                <h3 class="panel-title">Chats</h3>
-            </div>
-
-            <div class="panel-body">
-                <!-- Modal HTML at bottom -->
-                <button id="new-message-btn" type="button" class="btn btn-primary" data-toggle="modal" data-target="#new-message-modal">
-                    <span class="glyphicon glyphicon-plus"></span> New Chat 
-                </button>
-            </div>
-            {% endcomment %}
 
             <!-- Chat channels list -->
             <ul class="list-group">
@@ -132,50 +116,6 @@
         </div>
     </div>
 
-    <!-- Modal for creating new message -->
-    <div class="modal fade" id="new-chat-modal" tabindex="-1" role="dialog" aria-labelledby="new-chat-title">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button id="x-chat-modal-btn" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="new-chat-title">Start a new chat</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="row modal-row">
-                        <div class="col-md-4 modal-label">
-                            <strong>Name of new chat</strong>
-                        </div>
-                        <div class="col-md-7 modal-input">
-                            <input id="new-chat-name" type="text" class="form-control" placeholder="New name">
-                        </div>
-                    </div>
-
-                    <div class="row modal-row">
-                        <div class="col-md-4 modal-label">
-                            <strong>Add Members</strong>
-                        </div>
-                        <div class="col-md-7 modal-input">
-                            <input type="text" id="new-chat-username" class="form-control" placeholder="Member username">
-                        </div>
-                    </div>
-                    
-                    <div class="row modal-row">
-                        <div class="col-md-push-4 col-md-7 modal-input">
-                            <input type="text" class="form-control additional-input" placeholder="Add another member">
-                        </div>
-                        <div class="col-md-push-4 col-md-1 modal-add">
-                            <span class="glyphicon glyphicon-plus"></span>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="modal-footer">
-                    <button id="close-chat-modal-btn" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button id="create-chat-btn" type="button" class="btn btn-primary" data-loading-text="Creating..." autocomplete="off">Create</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
     {% comment %}
     <div id="saved-messages"></div>

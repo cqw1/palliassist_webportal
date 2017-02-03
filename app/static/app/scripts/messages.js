@@ -18,14 +18,6 @@ $(function() {
      * channels = list of channels
      */
 
-    // Clears input fields in the modal to create a new chat.
-    function clearNewChatModal() {
-        $('#new-chat-name').val('');
-        $('#new-chat-username').val('');
-    }
-    $('#close-chat-modal-btn').click(clearNewChatModal);
-    $('#x-chat-modal-btn').click(clearNewChatModal);
-
     // Clears the input fields in the modal to add a new member.
     function clearAddMemberModal() {
         $('#add-username').val('');
@@ -34,7 +26,6 @@ $(function() {
     $('#x-add-modal-btn').click(clearAddMemberModal);
 
      // Clear it initially upon page load.
-    clearNewChatModal();
     clearAddMemberModal();
 
     // Initialize the IP messaging client
@@ -114,26 +105,6 @@ $(function() {
         $chatInput.val('');
 
     })
-
-    /* 
-     * Send a POST request to create a channel on the backend with the given 
-     * channel name and any members to add.
-     */
-    $('#create-chat-btn').click(function() {
-        $('#create-chat-btn').html('Loading...');
-        $('#create-chat-btn').prop('disabled', true);
-
-        data = {
-            'csrfmiddlewaretoken': Cookies.get('csrftoken'),
-            'channel_name': $('#new-chat-name').val(),
-            'add_member': $('#new-chat-username').val(),
-        }
-
-        $.post('/create-channel', data, function(response) {
-            location.reload();
-        });
-
-    });
 
     /* 
      * Send a POST request to add members to current channel on the backend.
