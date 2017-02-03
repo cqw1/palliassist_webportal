@@ -79,7 +79,15 @@
     console.log(document.getElementById('chart_div'));
     updateNotes('{{patient.doctor_notes}}');
     console.log('called updateNotes');
+    createChart({{esas_surveys}});
 </script>
+
+{% for survey in esas_surveys %}
+    {% for question in survey.questions.all %}
+        {{question.question}} {{question.answer}}
+    {% endfor %}
+    <br>
+{% endfor %}
 
 {% endblock %}
 

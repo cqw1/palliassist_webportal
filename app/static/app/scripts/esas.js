@@ -3,9 +3,16 @@ $(function() {
     google.charts.load('current', {'packages':['line']});
     google.charts.setOnLoadCallback(drawChart);
 
-    function drawChart() {
+    var data;
+    var chart;
 
-        var data = new google.visualization.DataTable();
+    function createChart(esas_surveys) {
+        console.log(esas_surveys);
+
+    }
+
+    function drawChart() {
+        data = new google.visualization.DataTable();
         data.addColumn('number', 'Day');
         data.addColumn('number', 'Guardians of the Galaxy');
         data.addColumn('number', 'The Avengers');
@@ -37,7 +44,7 @@ $(function() {
             height: 500
         };
 
-        var chart = new google.charts.Line(document.getElementById('linechart_material'));
+        chart = new google.charts.Line(document.getElementById('linechart_material'));
 
         chart.draw(data, google.charts.Line.convertOptions(options));
         console.log(chart);
