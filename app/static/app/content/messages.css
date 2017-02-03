@@ -1,3 +1,9 @@
+.panel-title{
+    display: inline-block;
+    padding-top: 6px;
+    padding-bottom: 6px;
+}
+
 #messages-panel {
     min-height: 30%;
     height: 30%;
@@ -43,4 +49,18 @@
 .modal-add {
     color: #ccc;
 }
+
+/* Vertical tabs css */
+/*
+.list-group {
+    list-style: none;
+}
+
+.panel > .list-group .list-group-item:last-child {
+    border-bottom: 1px solid rgb(221, 221, 221);
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+*/
+
 

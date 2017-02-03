@@ -12,20 +12,31 @@
     <div class="col-md-3">
         <div class="panel panel-default">
             <!-- Default panel contents -->
-            <div class="panel-heading">
-                <h3 class="panel-title">Chats</h3>
-            </div>
-            <div class="panel-body">
-                <!-- Modal HTML at bottom -->
-                <button id="new-message-btn" type="button" class="btn btn-primary" data-toggle="modal" data-target="#new-message-modal">
-                    <span class="glyphicon glyphicon-plus"></span> New Message
+
+            <div class="panel-heading clearfix">
+                <strong class="panel-title">Chats</strong>
+                <button id="create-chat-modal-btn" type="button" class="btn btn-primary pull-right" autocomplete="off" data-toggle="modal" data-target="#new-chat-modal">
+                    <span class="glyphicon glyphicon-plus"></span> New Chat 
                 </button>
             </div>
 
-            <!-- Contacts List -->
+            {% comment %}
+            <div class="panel-heading">
+                <h3 class="panel-title">Chats</h3>
+            </div>
+
+            <div class="panel-body">
+                <!-- Modal HTML at bottom -->
+                <button id="new-message-btn" type="button" class="btn btn-primary" data-toggle="modal" data-target="#new-message-modal">
+                    <span class="glyphicon glyphicon-plus"></span> New Chat 
+                </button>
+            </div>
+            {% endcomment %}
+
+            <!-- Chat channels list -->
             <ul class="list-group">
                 {% for ch in channels %}
-                <a data-toggle="tab" class="list-group-item" href="#{{ch.sid}}">{{ch.friendly_name}}<span class="badge">3</span></a>
+                <a data-toggle="tab" class="list-group-item chat-list-item" href="#{{ch.sid}}">{{ch.friendly_name}}<span class="badge">3</span></a>
                 {% endfor %}
             </ul>
         </div>
@@ -34,8 +45,12 @@
     <!-- Messaging Panel -->
     <div class="col-md-9">
         <div class="panel panel-default" id="messages-panel">
-            <div class="panel-heading">
-                <h3 class="panel-title">Panel title</h3>
+
+            <div class="panel-heading clearfix">
+                <strong class="panel-title">Panel Title</strong>
+                <button id="add-member-modal-btn" type="button" class="btn btn-primary pull-right" autocomplete="off" data-toggle="modal" data-target="#add-member-modal">
+                    <span class="glyphicon glyphicon-plus"></span> Add Member
+                </button>
             </div>
             <div class="panel-body tab-content" id="messages-panel-body">
 
@@ -46,7 +61,7 @@
                 <div id="{{ ch.sid }}" class="tab-pane fade in">
                 {% endif %}
                     {{ch.friendly_name}}
-                    <div id="chat-messages"></div>
+                    <div id="{{ch.sid}}-chat-messages"></div>
                 </div>
                 {% endfor %}
 
@@ -70,7 +85,7 @@
                             <button class="btn btn-default" type="button">
                                 <span class=" glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                             </button>
-                            <button class="btn btn-primary" type="button">Send</button>
+                            <button id="send-message-btn" class="btn btn-primary" type="button">Send</button>
                         </div>
 
                     </div>
@@ -80,30 +95,22 @@
         </div>
     </div>
 
-    <!-- Modal for creating new message -->
-    <div class="modal fade" id="new-message-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <!-- Modal for adding members to current chat -->
+    <div class="modal fade" id="add-member-modal" tabindex="-1" role="dialog" aria-labelledby="add-member-title">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Start a new message</h4>
+                    <button id="x-add-modal-btn" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="add-member-title">Add members</h4>
                 </div>
                 <div class="modal-body">
-                    <div class="row modal-row">
-                        <div class="col-md-4 modal-label">
-                            <strong>Name of new message</strong>
-                        </div>
-                        <div class="col-md-7 modal-input">
-                            <input id="new-message-name" type="text" class="form-control" placeholder="New name">
-                        </div>
-                    </div>
 
                     <div class="row modal-row">
                         <div class="col-md-4 modal-label">
                             <strong>Add Members</strong>
                         </div>
                         <div class="col-md-7 modal-input">
-                            <input type="text" id="new-member-username" class="form-control" placeholder="Member username">
+                            <input type="text" id="add-username" class="form-control" placeholder="Member username">
                         </div>
                     </div>
                     
@@ -118,8 +125,53 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button id="close-add-modal-btn" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button id="add-member-btn" type="button" class="btn btn-primary" autocomplete="off">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for creating new message -->
+    <div class="modal fade" id="new-chat-modal" tabindex="-1" role="dialog" aria-labelledby="new-chat-title">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button id="x-chat-modal-btn" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="new-chat-title">Start a new chat</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row modal-row">
+                        <div class="col-md-4 modal-label">
+                            <strong>Name of new chat</strong>
+                        </div>
+                        <div class="col-md-7 modal-input">
+                            <input id="new-chat-name" type="text" class="form-control" placeholder="New name">
+                        </div>
+                    </div>
+
+                    <div class="row modal-row">
+                        <div class="col-md-4 modal-label">
+                            <strong>Add Members</strong>
+                        </div>
+                        <div class="col-md-7 modal-input">
+                            <input type="text" id="new-chat-username" class="form-control" placeholder="Member username">
+                        </div>
+                    </div>
+                    
+                    <div class="row modal-row">
+                        <div class="col-md-push-4 col-md-7 modal-input">
+                            <input type="text" class="form-control additional-input" placeholder="Add another member">
+                        </div>
+                        <div class="col-md-push-4 col-md-1 modal-add">
+                            <span class="glyphicon glyphicon-plus"></span>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button id="close-chat-modal-btn" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button id="create-chat-btn" type="button" class="btn btn-primary" data-loading-text="Creating..." autocomplete="off">Create</button>
                 </div>
             </div>
         </div>
@@ -149,7 +201,6 @@
         {% autoescape off %}
         var django_username = "{{user.username}}";
         var channels = {{channels}};
-        console.log(channels);
         var token = "{{token}}";
         {% endautoescape %}
     </script>

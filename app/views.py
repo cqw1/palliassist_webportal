@@ -240,9 +240,9 @@ def messages(request):
     channels = []
     # List the channels that the user is a member of
     for c in settings.TWILIO_IPM_SERVICE.channels.list():
-        print "channel", c.friendly_name
+        #print "channel", c.friendly_name
         for m in c.members.list():
-            print m.identity
+            #print m.identity
             # Assuming that all twilio identities are based off of usernames
             if m.identity == request.user.username:
                 # str() needed to get rid of u'hello' when escaping the string to javascript.
@@ -389,15 +389,24 @@ def save_notes(request):
 
     return JsonResponse({})
 
-def test_url(request):
-    """ NOT IN USE """
+def create_channel(request):
+    """
+    Saves notes about patients. POST request from 
+    PatientNotesForm on the patient profile page. 
+    jQuery runs when save button is clicked.
+    """
     assert isinstance(request, HttpRequest)
 
-    notification = settings.TWILIO_NOTIFY_CLIENT.notify.services(settings.TWILIO_NOTIFY_SERVICE_SID).notifications.create(
-            tag="all",
-            body="Hello World from PalliAssist"
-    )
+    print request.POST['channel_name']
+    channel_name = request.POST['channel_name']
 
-    print notification
+    new_channel = settings.TWILIO_IPM_SERVICE.channels.create(friendly_name=channel_name, type="private")
+    new_channel.members.create(identity=request.user.username)
 
-    return JsonResponse({'notification': notification})
+    print new_channel
+    print new_channel.type
+    print new_channel.friendly_name
+    print new_channel.unique_name
+
+    return JsonResponse({})
+
