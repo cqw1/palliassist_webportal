@@ -22,7 +22,10 @@
             </div>
             <div id="messages" class="tab-pane fade">
                 <h3>ESAS</h3>
+                {% comment %}
                 {% include "patient_profile_esas.html" %}
+                {% endcomment %}
+                <div id="chart_div" style="width: 400px; height: 400px"></div>
             </div>
             <div id="medication" class="tab-pane fade">
                 <h3>ESAS</h3>
@@ -68,7 +71,9 @@
 {% load staticfiles %}
 <link rel="stylesheet" type="text/css" href="{% static 'app/content/patient_profile.css' %}" />
 <script src="{% static 'app/scripts/patient_profile.js' %}"></script>
+<script src="{% static 'app/scripts/esas.js' %}"></script>
 <script>
+    console.log(document.getElementById('chart_div'));
     updateNotes('{{patient.doctor_notes}}');
     console.log('called updateNotes');
 </script>
