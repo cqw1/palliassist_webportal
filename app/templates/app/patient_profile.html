@@ -76,10 +76,12 @@
 <script src="{% static 'app/scripts/patient_profile.js' %}"></script>
 <script src="{% static 'app/scripts/esas.js' %}"></script>
 <script>
-    console.log(document.getElementById('chart_div'));
+    {% autoescape off %}
     updateNotes('{{patient.doctor_notes}}');
-    console.log('called updateNotes');
+    var esas_surveys = {{esas_surveys}}
+    console.log({{esas_surveys}});
     createChart({{esas_surveys}});
+    {% endautoescape %}
 </script>
 
 {% endblock %}

@@ -7,14 +7,14 @@ from redcap import Project, RedcapError
 
 from twilio.access_token import AccessToken, IpMessagingGrant
 from twilio.rest.ip_messaging import TwilioIpMessagingClient
-#from twilio.rest import TwilioRestClient
+from twilio.rest import TwilioRestClient
 
 PROJECT_ROOT = path.dirname(path.abspath(path.dirname(__file__)))
 
 USER_URL = 'https://hcbredcap.com.br/api/'
 USER_TOKEN = 'F2C5AEE8A2594B0A9E442EE91C56CC7A'
 
-REDCAP_USER_PROJECT = Project(USER_URL, USER_TOKEN)
+#REDCAP_USER_PROJECT = Project(USER_URL, USER_TOKEN)
 
 # get credentials for environment variables
 TWILIO_ACCOUNT_SID = 'ACbf05fc8a591d9136132c9d62d8319eb1'

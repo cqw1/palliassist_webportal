@@ -70,12 +70,12 @@ class Doctor(models.Model):
 class ESASQuestion(models.Model):
     """ Represents one question and answer on the ESAS survey. """
     question = models.TextField(default="")
-    answer = models.TextField(default="")
+    answer = models.IntegerField(default=0)
 
     def __unicode__(self):
         return "[ESASQuestion] " + str(self.question) + ": " + str(self.answer)
 
-class ESAS(models.Model):
+class ESASSurvey(models.Model):
     """ Encapsulates one survey. """
     created_date = models.DateTimeField(default=datetime.datetime.now)
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)

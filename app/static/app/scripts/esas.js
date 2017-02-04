@@ -6,42 +6,78 @@ $(function() {
     var data;
     var chart;
 
-    function createChart(esas_surveys) {
-        console.log(esas_surveys);
-
-    }
+    /*
+     * Django-passed variables
+     * esas_surveys: Array of Objects. created in views.py patient_profile
+     */
 
     function drawChart() {
         data = new google.visualization.DataTable();
-        data.addColumn('number', 'Day');
-        data.addColumn('number', 'Guardians of the Galaxy');
-        data.addColumn('number', 'The Avengers');
-        data.addColumn('number', 'Transformers: Age of Extinction');
 
-        data.addRows([
-            [1,  37.8, 80.8, 41.8],
-            [2,  30.9, 69.5, 32.4],
-            [3,  25.4,   57, 25.7],
-            [4,  11.7, 18.8, 10.5],
-            [5,  11.9, 17.6, 10.4],
-            [6,   8.8, 13.6,  7.7],
-            [7,   7.6, 12.3,  9.6],
-            [8,  12.3, 29.2, 10.6],
-            [9,  16.9, 42.9, 14.8],
-            [10, 12.8, 30.9, 11.6],
-            [11,  5.3,  7.9,  4.7],
-            [12,  6.6,  8.4,  5.2],
-            [13,  4.8,  6.3,  3.6],
-            [14,  4.2,  6.2,  3.4]
-            ]);
+        var values = {"Date (DD/MM)": []};
+        var esasCount = 0;
+        console.log(values);
+        esas_surveys.forEach(function(esas) {
+
+            var date = new Date(esas.created_date);
+            values["Date (DD/MM)"].push(date.getDate() + '/' + (date.getMonth() + 1));
+            esas.questions.forEach(function(question) {
+
+                if (values.hasOwnProperty(question["question"])) {
+                    // Array of answers for this question already exists. Just add.
+                    values[question["question"]].push(question["answer"])
+                } else {
+                    // Haven't seen this question before. 
+                    var new_answers = [];
+
+                    for (var i = 0; i < esasCount; i++) {
+                        new_answers.push(0);
+                    }
+                    new_answers.push(question["answer"]);
+                    values[question["question"]] = new_answers;
+                }
+            });
+
+            // Keep track of how many ESAS surveys we've seen.
+            // Lets us know how many default answers we should insert when we 
+            // see an esas with a question we haven't seen before. Should cover 
+            // the case when doctors add in a new question that old esas 
+            // surveys don't have a field for.
+            esasCount += 1;
+        });
+        console.log(values);
+
+        keys = Object.keys(values);
+        keys.sort(); // Alphabetizes the keys/questions.
+
+        data.addColumn('string', 'Date (DD/MM)');
+
+        keys.forEach(function(key) {
+            if (key != 'Date (DD/MM)') {
+                data.addColumn('number', key.charAt(0).toUpperCase() + key.slice(1));
+            }
+        })
+
+        var rows = [];
+        for (var i = 0; i < values[keys[0]].length; i++) {
+            var new_row = [];
+            for (var j = 0; j < keys.length; j++) {
+                new_row.push(values[keys[j]][i]);
+            }
+            rows.push(new_row);
+        }
+
+        data.addRows(rows);
+
+
 
         var options = {
             chart: {
-                title: 'Box Office Earnings in First Two Weeks of Opening',
-                subtitle: 'in millions of dollars (USD)'
+                title: 'ESAS Responses',
+                subtitle: 'Over time'
             },
-            width: 900,
-            height: 500
+            width: 500,
+            height: 400
         };
 
         chart = new google.charts.Line(document.getElementById('linechart_material'));
@@ -50,4 +86,4 @@ $(function() {
         console.log(chart);
     }
 
-});
+})
