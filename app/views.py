@@ -160,6 +160,27 @@ def patient_profile(request):
 
     notes_form = PatientNotesForm()
 
+    ### Messages tab.
+    channels = []
+    # List the channels that the user is a member of
+    for c in settings.TWILIO_IPM_SERVICE.channels.list():
+        if c.unique_name == patient_obj.user.username:
+            print "selected channel", c.friendly_name, c.sid
+            channel_json = {
+                'sid': str(c.sid),
+                'unique_name': str(c.unique_name),
+                'friendly_name': str(c.friendly_name),
+            }
+            channels.append(channel_json)
+            break
+
+    token = AccessToken(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_API_KEY, settings.TWILIO_API_SECRET, request.user.username)
+    endpoint = "PalliAssist:" + request.user.username + ":web"
+    # Create an IP Messaging grant and add to token
+    ipm_grant = IpMessagingGrant(endpoint_id=endpoint, service_sid=settings.TWILIO_IPM_SERVICE_SID)
+    token.add_grant(ipm_grant)
+
+    ### ESAS tab.
     esas_objects = ESASSurvey.objects.filter(patient=patient_obj)
 
     esas_surveys = []
@@ -185,6 +206,8 @@ def patient_profile(request):
         'patient': patient_obj,
         'notes_form': notes_form,
         'esas_surveys': esas_surveys,
+        'channels': channels, 
+        'token': token, # Twilio token for messaging tab.
     }
 
     return render(
@@ -259,6 +282,21 @@ def messages(request):
     if not request.user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
 
+    """
+    How to delete a channel:
+    raisins_channel = settings.TWILIO_IPM_SERVICE.channels.get(sid="CH1ed5a9a7f8444dcd9c76bbdc0f39973b")
+    response = raisins_channel.delete()
+    print "delete raisins:", response   # response = True on success.
+    
+    patient0 = "patient0"
+    # patient0 channel sid="CHd4c969e1d91946aeb1ebde3fa5cb85a2"
+    new_channel = settings.TWILIO_IPM_SERVICE.channels.create(unique_name=patient0, friendly_name=patient0, type="private")
+    new_channel.members.create(identity=request.user.username)
+    new_channel.members.create(identity=patient0)
+    """
+
+
+
     channels = []
     # List the channels that the user is a member of
     for c in settings.TWILIO_IPM_SERVICE.channels.list():
@@ -267,7 +305,7 @@ def messages(request):
             # Assuming that all twilio identities are based off of usernames
             if m.identity == request.user.username:
                 # str() needed to get rid of u'hello' when escaping the string to javascript.
-                print "selected channel", c.friendly_name
+                print "selected channel", c.friendly_name, c.sid
                 channel_json = {
                     'sid': str(c.sid),
                     'unique_name': str(c.unique_name),

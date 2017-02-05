@@ -26,94 +26,12 @@
         </div>
     </div>
 
-    <!-- Messaging Panel -->
     <div class="col-md-9">
-        <div class="panel panel-default" id="messages-panel">
-
-            <div class="panel-heading clearfix">
-                <strong class="panel-title">Panel Title</strong>
-                <button id="add-member-modal-btn" type="button" class="btn btn-primary pull-right" autocomplete="off" data-toggle="modal" data-target="#add-member-modal">
-                    <span class="glyphicon glyphicon-plus"></span> Add Member
-                </button>
-            </div>
-            <div class="panel-body tab-content" id="messages-panel-body">
-
-                {% for ch in channels %}
-                {% if forloop.first %}
-                <div id="{{ ch.sid }}" class="tab-pane fade in active">
-                {% else %} 
-                <div id="{{ ch.sid }}" class="tab-pane fade in">
-                {% endif %}
-                    {{ch.friendly_name}}
-                    <div id="{{ch.sid}}-chat-messages"></div>
-                </div>
-                {% endfor %}
-            </div>
-
-            <!-- Input text box at bottom -->
-            <ul class="list-group">
-                <li class="list-group-item">
-
-                <div class="input-group">
-                    <span id="chat-input-span">
-                        <input id="chat-input" type="text" class="form-control" placeholder="say anything" autofocus aria-label="...">
-                    </span>
-
-                    <!-- Buttons -->
-                    <div class="input-group-btn">
-                        <button class="btn btn-default" type="button">
-                            <span class="glyphicon glyphicon-tasks" aria-hidden="true"></span>
-                        </button>
-                        <button class="btn btn-default" type="button">
-                            <span class=" glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                        </button>
-                        <button id="send-message-btn" class="btn btn-primary" type="button">Send</button>
-                    </div>
-
-                </div>
-                </li>
-            </ul>
-        </div>
+        {% include "messages_panel.html" with channels=channels %}
     </div>
 </div>
 
-<!-- Modal for adding members to current chat -->
-<div class="modal fade" id="add-member-modal" tabindex="-1" role="dialog" aria-labelledby="add-member-title">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button id="x-add-modal-btn" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="add-member-title">Add members</h4>
-            </div>
-            <div class="modal-body">
-
-                <div class="row modal-row">
-                    <div class="col-md-4 modal-label">
-                        <strong>Add Members</strong>
-                    </div>
-                    <div class="col-md-7 modal-input">
-                        <input type="text" id="add-username" class="form-control" placeholder="Member username">
-                    </div>
-                </div>
-                
-                <div class="row modal-row">
-                    <div class="col-md-push-4 col-md-7 modal-input">
-                        <input type="text" class="form-control additional-input" placeholder="Add another member">
-                    </div>
-                    <div class="col-md-push-4 col-md-1 modal-add">
-                        <span class="glyphicon glyphicon-plus"></span>
-                    </div>
-                </div>
-
-            </div>
-            <div class="modal-footer">
-                <button id="close-add-modal-btn" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button id="add-member-btn" type="button" class="btn btn-primary" autocomplete="off">Add</button>
-            </div>
-        </div>
-    </div>
-</div>
-
+{% include "messages_add_member_modal.html" %}
 
 {% comment %}
 <div id="saved-messages"></div>
@@ -125,13 +43,6 @@
 {% block scripts %}
 
 {% load staticfiles %}
-
-<script src="https://media.twiliocdn.com/sdk/js/common/v0.1/twilio-common.min.js"></script>
-<script src="https://media.twiliocdn.com/sdk/js/chat/v0.11/twilio-chat.min.js"></script>
-
-<!--<script src="//media.twiliocdn.com/sdk/js/common/v0.1/twilio-common.min.js"></script>-->
-<script src="//media.twiliocdn.com/sdk/rtc/js/ip-messaging/v0.9/twilio-ip-messaging.min.js"></script>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 
 <script>
     // Passing Django variables along to javascript side by setting variables.

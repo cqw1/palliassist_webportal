@@ -18,8 +18,11 @@ $(function() {
 
     /*
      * Django variables passed in from patient_profile.html
-     * esasSurveys: Array of Objects. created in views.py patient_profile
+     * django_username: Username of currently logged in user.
+     * esasSurveys: Array of Objects. created in views.py patient_profile.
      * patientFullName: Full name of patient whose page we're on.
+     * channels: List of channels the patient is in.
+     * token: Twilio IPMessaging access token.
      */
 
     $('.millis-date').each(function() {

@@ -21,10 +21,7 @@
                 <p>Some content.</p>
             </div>
             <div id="messages" class="tab-pane fade">
-                <h3>ESAS</h3>
-                {% comment %}
-                {% include "patient_profile_esas.html" %}
-                {% endcomment %}
+                {% include "patient_profile_messages.html" with channels=channels%}
             </div>
             <div id="medication" class="tab-pane fade">
                 <h3>ESAS</h3>
@@ -72,12 +69,18 @@
 
 {% load staticfiles %}
 <link rel="stylesheet" type="text/css" href="{% static 'app/content/patient_profile.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app/content/messages.css' %}" />
+
 <script src="{% static 'app/scripts/patient_profile.js' %}"></script>
 <script src="{% static 'app/scripts/esas.js' %}"></script>
+<script src="{% static 'app/scripts/messages.js' %}"></script>
 <script>
     {% autoescape off %}
+    var django_username = "{{user.username}}";
     var esasSurveys = {{esas_surveys}};
     var patientFullName = "{{patient.full_name}}";
+    var channels = {{channels}};
+    var token = "{{token}}";
     updateNotes('{{patient.doctor_notes}}');
     {% endautoescape %}
 </script>
