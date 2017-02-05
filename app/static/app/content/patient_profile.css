@@ -4,3 +4,9 @@
     max-width: 100%;
     resize: none;
 }
+
+.patient-field {
+    /* Used in patient_profile.html */
+    font-weight: bold;
+    padding-right: 10px;
+}

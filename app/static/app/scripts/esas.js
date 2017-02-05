@@ -37,7 +37,6 @@ $(function() {
 
         var values = {"Date (DD/MM)": []};
         var esasCount = 0;
-        console.log(values);
         esasSurveys.forEach(function(esas) {
 
             var date = new Date(esas.created_date);

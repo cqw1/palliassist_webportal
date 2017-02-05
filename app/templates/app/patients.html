@@ -27,23 +27,23 @@
 
 <!-- Table of search results --> 
 <table class="table table-striped">
-    <!-- Table headers -->
-    <tr>
-        <th>Name</th>
-        <th>Gender</th>
-        <th>Age</th>
-    </tr>
-
-
-    <!-- Search results -->
-    {% for patient_result in patient_results %}
-    <tr>
-        <td><a href="{% url 'patient-profile' %}?sid={{patient_result.sid}}">{{ patient_result.full_name}}</a> </td>
-        <td>{{ patient_result.gender}} </td>
-        <td>{{ patient_result.age}} </td>
-    </tr>
-    {% endfor %}
-
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Gender</th>
+            <th>Age</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Search results -->
+        {% for patient_result in patient_results %}
+        <tr>
+            <td><a href="{% url 'patient-profile' %}?sid={{patient_result.sid}}">{{ patient_result.full_name}}</a> </td>
+            <td>{{ patient_result.gender}} </td>
+            <td>{{ patient_result.age}} </td>
+        </tr>
+        {% endfor %}
+    </tbody>
 </table>
 
 {% else %}

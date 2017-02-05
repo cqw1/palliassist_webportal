@@ -17,14 +17,13 @@
 
         <div class="tab-content">
             <div id="home" class="tab-pane fade in active">
-                <h3>HOME</h3>
-                <p>Some content.</p>
+                {% include "patient_profile_home.html" with patient=patient %}
             </div>
             <div id="messages" class="tab-pane fade">
                 {% include "patient_profile_messages.html" with channels=channels%}
             </div>
             <div id="medication" class="tab-pane fade">
-                <h3>ESAS</h3>
+                <h3>Medication</h3>
                 {% comment %}
                 {% include "patient_profile_esas.html" %}
                 {% endcomment %}
@@ -33,7 +32,7 @@
                 {% include "patient_profile_esas.html" with esas_surveys=esas_surveys %}
             </div>
             <div id="pain" class="tab-pane fade">
-                <h3>ESAS</h3>
+                <h3>Pain</h3>
                 {% comment %}
                 {% include "patient_profile_esas.html" %}
                 {% endcomment %}
@@ -53,13 +52,6 @@
             <input id="save-notes-button" class="btn btn-default" type="submit" onclick="saveNotes('{{patient.u_id}}')" value="Save">
             <input class="btn btn-default" type="button" onclick="clearNotes()" value="Clear">
         </div>
-
-        {% comment %}
-        <div class="form-group">
-            <!-- <label for="comment">Comment:</label>_-->
-            <textarea class="form-control" rows="4" id="patient-notes"></textarea>
-        </div>
-        {% endcomment %}
     </div>
 </div>
 
