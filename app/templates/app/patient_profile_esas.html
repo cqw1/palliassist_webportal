@@ -24,6 +24,8 @@
         </div>
     </div>
 
+    {% comment %}
+    {% endcomment %}
     <!-- Messaging Panel -->
     <div class="col-md-9">
         <div class="panel panel-default" id="esas-panel">
@@ -45,12 +47,12 @@
                                 <th>Answer</th>
                             </tr>
                             {% for q in esas.questions|dictsort:"question" %}
-                                {% if q.answer < 4 %}
-                                <tr class="danger">
+                                {% if q.answer < 3 %}
+                                <tr class="success">
                                 {% elif q.answer < 8 %}
                                 <tr class="warning">
                                 {% else %}
-                                <tr class="success">
+                                <tr class="danger">
                                 {% endif %}
                                     <td>{{ q.question|title }}</td>
                                     <td>{{ q.answer|title }}</td>
@@ -65,6 +67,8 @@
 
         </div>
     </div>
+    {% comment %}
+    {% endcomment %}
 </div>
 
 
