@@ -45,6 +45,8 @@
         <!-- Cookie plugin -->
         <script src="{% static 'app/scripts/js-cookie-1.5.1/src/js.cookie.js' %}"></script>
 
+        {% block scripts %}{% endblock %}
+
     </head>
 
     <body>
@@ -77,8 +79,6 @@
                         {% block content %}{% endblock %}
                     </div>
 
-
-                    {% block scripts %}{% endblock %}
 
                 </div>
 

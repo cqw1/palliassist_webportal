@@ -160,20 +160,20 @@ def patient_profile(request):
 
     notes_form = PatientNotesForm()
 
-    esas_surveys = ESASSurvey.objects.filter(patient=patient_obj)
+    esas_objects = ESASSurvey.objects.filter(patient=patient_obj)
 
-    esas_list = []
+    esas_surveys = []
 
-    for esas in esas_surveys:
+    for esas in esas_objects:
         temp_esas = {}
-        print esas.created_date
         temp_esas["created_date"] = (esas.created_date.replace(tzinfo=None) - datetime.datetime(1970, 1, 1)).total_seconds() * 1000
         temp_questions = []
         for q in esas.questions.all():
             temp_questions.append({"question": str(q.question), "answer": q.answer})
 
         temp_esas["questions"] = temp_questions
-        esas_list.append(temp_esas)
+        temp_esas["primary_key"] = esas.pk;
+        esas_surveys.append(temp_esas)
 
 
 
@@ -184,7 +184,7 @@ def patient_profile(request):
         'year': datetime.datetime.now().year,
         'patient': patient_obj,
         'notes_form': notes_form,
-        'esas_surveys': esas_list,
+        'esas_surveys': esas_surveys,
     }
 
     return render(

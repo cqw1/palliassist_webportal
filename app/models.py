@@ -81,6 +81,9 @@ class ESASSurvey(models.Model):
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     questions = models.ManyToManyField(ESASQuestion)
 
+    class Meta:
+        ordering = ('-created_date',)
+
 class PainPoint(models.Model):
     """ Represents one question and answer on the ESAS survey. """
     x = models.IntegerField()

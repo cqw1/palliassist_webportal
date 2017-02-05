@@ -1,20 +1,7 @@
-<button type="button" class="btn btn-danger" onclick="sendNotification()">Request</button>
-
 <br>
-
-
-<div id="linechart_material" style="width: 400px; height: 400px"></div>
 {% comment %}
-{% for survey in esas_surveys %}
-    {% for question in survey.questions.all %}
-        {{question.question}} {{question.answer}}
-    {% endfor %}
-    <br>
-{% endfor %}
-
 {% endcomment %}
 
-{% comment %}
 <div class="row">
     <div class="col-md-3">
         <div class="panel panel-default">
@@ -22,12 +9,16 @@
 
             <div class="panel-heading clearfix">
                 <strong class="panel-title">Surveys</strong>
+                <button type="button" class="btn btn-danger" onclick="sendNotification()">Request</button>
             </div>
 
             <!-- Chat channels list -->
             <ul class="list-group">
-                {% for ch in channels %}
-                <a data-toggle="tab" class="list-group-item chat-list-item" href="#{{ch.sid}}">{{ch.friendly_name}}<span class="badge">3</span></a>
+                
+                <a data-toggle="tab" class="list-group-item" href="#esas-overview">Overview</a>
+
+                {% for esas in esas_surveys %}
+                <a data-toggle="tab" class="list-group-item millis-date" href="#{{esas.primary_key}}">{{esas.created_date}}</a>
                 {% endfor %}
             </ul>
         </div>
@@ -35,55 +26,38 @@
 
     <!-- Messaging Panel -->
     <div class="col-md-9">
-        <div class="panel panel-default" id="messages-panel">
+        <div class="panel panel-default" id="esas-panel">
 
-            <div class="panel-heading clearfix">
+            <div class="panel-heading">
                 <strong class="panel-title">Panel Title</strong>
-                <button id="add-member-modal-btn" type="button" class="btn btn-primary pull-right" autocomplete="off" data-toggle="modal" data-target="#add-member-modal">
-                    <span class="glyphicon glyphicon-plus"></span> Add Member
-                </button>
             </div>
-            <div class="panel-body tab-content" id="messages-panel-body">
+            <div class="panel-body tab-content" id="esas-panel-body">
+                <div id="esas-overview" class="tab-pane fade in active">
+                    <div id="linechart_material" style="width: 100%; height: 400px"></div>
+                </div>
 
-                {% for ch in channels %}
-                {% if forloop.first %}
-                <div id="{{ ch.sid }}" class="tab-pane fade in active">
-                {% else %} 
-                <div id="{{ ch.sid }}" class="tab-pane fade in">
-                {% endif %}
-                    {{ch.friendly_name}}
-                    <div id="{{ch.sid}}-chat-messages"></div>
+                {% for esas in esas_surveys%}
+                <div id="{{ esas.primary_key }}" class="tab-pane fade in">
+                    <div id="{{esas.primary_key}}-esas-responses">
+                        <table class="table table-bordered table-hover">
+                            <tr>
+                                <th>Question</th>
+                                <th>Answer</th>
+                            </tr>
+                            <tr>
+                                <td>hi</td>
+                                <td>8</td>
+                            </tr>
+                        </table>
+
+                    </div>
                 </div>
                 {% endfor %}
             </div>
 
-            <!-- Input text box at bottom -->
-            <ul class="list-group">
-                <li class="list-group-item">
-
-                <div class="input-group">
-                    <span id="chat-input-span">
-                        <input id="chat-input" type="text" class="form-control" placeholder="say anything" autofocus aria-label="...">
-                    </span>
-
-                    <!-- Buttons -->
-                    <div class="input-group-btn">
-                        <button class="btn btn-default" type="button">
-                            <span class="glyphicon glyphicon-tasks" aria-hidden="true"></span>
-                        </button>
-                        <button class="btn btn-default" type="button">
-                            <span class=" glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                        </button>
-                        <button id="send-message-btn" class="btn btn-primary" type="button">Send</button>
-                    </div>
-
-                </div>
-                </li>
-            </ul>
         </div>
     </div>
 </div>
-{% endcomment %}
 
 
 

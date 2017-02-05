@@ -33,7 +33,6 @@
                 {% endcomment %}
             </div>
             <div id="esas" class="tab-pane fade">
-                <h3>ESAS</h3>
                 {% include "patient_profile_esas.html" with esas_surveys=esas_surveys %}
             </div>
             <div id="pain" class="tab-pane fade">
@@ -77,10 +76,9 @@
 <script src="{% static 'app/scripts/esas.js' %}"></script>
 <script>
     {% autoescape off %}
+    var esasSurveys = {{esas_surveys}};
+    var patientFullName = "{{patient.full_name}}";
     updateNotes('{{patient.doctor_notes}}');
-    var esas_surveys = {{esas_surveys}}
-    console.log({{esas_surveys}});
-    createChart({{esas_surveys}});
     {% endautoescape %}
 </script>
 

@@ -1,4 +1,14 @@
 
+
+function parseMillis(millis) {
+    /*
+     * Takes a timestamp in milliseconds and returns it in
+     * locale date format and "HH:mm"
+     */
+    var date = new Date(Number(millis));
+    return date.toLocaleDateString() + ' ' + date.getHours() + ':' + date.getMinutes();
+}
+
 $(function() {
     google.charts.load('current', {'packages':['line']});
     google.charts.setOnLoadCallback(drawChart);
@@ -7,9 +17,17 @@ $(function() {
     var chart;
 
     /*
-     * Django-passed variables
-     * esas_surveys: Array of Objects. created in views.py patient_profile
+     * Django variables passed in from patient_profile.html
+     * esasSurveys: Array of Objects. created in views.py patient_profile
+     * patientFullName: Full name of patient whose page we're on.
      */
+
+    $('.millis-date').each(function() {
+        // Replace all the elements with class millis-date.
+        // Original value was timestamp in millis, returns a readable date string.
+        $(this).text(parseMillis($(this).text()));
+
+    })
 
     function drawChart() {
         data = new google.visualization.DataTable();
@@ -17,12 +35,14 @@ $(function() {
         var values = {"Date (DD/MM)": []};
         var esasCount = 0;
         console.log(values);
-        esas_surveys.forEach(function(esas) {
+        esasSurveys.forEach(function(esas) {
 
             var date = new Date(esas.created_date);
-            values["Date (DD/MM)"].push(date.getDate() + '/' + (date.getMonth() + 1));
-            esas.questions.forEach(function(question) {
 
+            // Always have date as first values.
+            values["Date (DD/MM)"].push(date.getDate() + '/' + (date.getMonth() + 1));
+
+            esas.questions.forEach(function(question) {
                 if (values.hasOwnProperty(question["question"])) {
                     // Array of answers for this question already exists. Just add.
                     values[question["question"]].push(question["answer"])
@@ -31,6 +51,8 @@ $(function() {
                     var new_answers = [];
 
                     for (var i = 0; i < esasCount; i++) {
+                        // Account for past esas's that dont have an answer for 
+                        // this new question.
                         new_answers.push(0);
                     }
                     new_answers.push(question["answer"]);
@@ -45,7 +67,6 @@ $(function() {
             // surveys don't have a field for.
             esasCount += 1;
         });
-        console.log(values);
 
         keys = Object.keys(values);
         keys.sort(); // Alphabetizes the keys/questions.
@@ -58,6 +79,7 @@ $(function() {
             }
         })
 
+        // Reformat the answers into proper row format for the google chart.
         var rows = [];
         for (var i = 0; i < values[keys[0]].length; i++) {
             var new_row = [];
@@ -73,17 +95,13 @@ $(function() {
 
         var options = {
             chart: {
-                title: 'ESAS Responses',
-                subtitle: 'Over time'
+                title: patientFullName + ' ESAS Responses',
             },
-            width: 500,
-            height: 400
         };
 
         chart = new google.charts.Line(document.getElementById('linechart_material'));
 
         chart.draw(data, google.charts.Line.convertOptions(options));
-        console.log(chart);
     }
 
 })
