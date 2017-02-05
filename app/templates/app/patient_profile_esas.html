@@ -44,10 +44,18 @@
                                 <th>Question</th>
                                 <th>Answer</th>
                             </tr>
-                            <tr>
-                                <td>hi</td>
-                                <td>8</td>
-                            </tr>
+                            {% for q in esas.questions|dictsort:"question" %}
+                                {% if q.answer < 4 %}
+                                <tr class="danger">
+                                {% elif q.answer < 8 %}
+                                <tr class="warning">
+                                {% else %}
+                                <tr class="success">
+                                {% endif %}
+                                    <td>{{ q.question|title }}</td>
+                                    <td>{{ q.answer|title }}</td>
+                                </tr>
+                            {% endfor %}
                         </table>
 
                     </div>
