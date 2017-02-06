@@ -69,6 +69,7 @@ $(function() {
 
             for (var i = 0; i < messages.length; i++) {
                 var message = messages[i];
+
                 printMessage(message, twilioChannel);
             }
         });
