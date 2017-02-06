@@ -500,10 +500,12 @@ def fcm(request):
     """
     assert isinstance(request, HttpRequest)
 
-    print request.POST["action"]
-    print request.POST["timestamp"]
-    print request.POST["type"]
-    print request.POST["questions"]
+    fcm_action = request.POST["action"]
+    fcm_timestamp = request.POST["timestamp"]
+    fcm_type = request.POST["type"]
+    fcm_questions = request.POST["questions"]
+
+    return JsonResponse({"action": fcm_action, "timestamp": fcm_timestamp, "type": fcm_type, "questions": fcm_questions})
 
     """
     data_str = request.POST["data"]
@@ -545,6 +547,3 @@ def fcm(request):
         print "Unknown request action", fcm_action 
     """
 
-
-
-    pass
