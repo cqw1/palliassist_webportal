@@ -500,6 +500,11 @@ def fcm(request):
     """
     assert isinstance(request, HttpRequest)
 
+    print request.POST["action"]
+    print request.POST["timestamp"]
+    print request.POST["type"]
+    print request.POST["questions"]
+
     """
     data_str = request.POST["data"]
     d = json.loads(data)
