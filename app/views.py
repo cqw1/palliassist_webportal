@@ -196,7 +196,24 @@ def patient_profile(request):
         temp_esas["primary_key"] = esas.pk;
         esas_surveys.append(temp_esas)
 
+    ### Pain tab.
+    pain_objects = PainSurvey.objects.filter(patient=patient_obj)
 
+    pain_surveys = []
+
+    for pain in pain_objects:
+        temp_pain = {}
+        temp_pain["created_date"] = (pain.created_date.replace(tzinfo=None) - datetime.datetime(1970, 1, 1)).total_seconds() * 1000
+        temp_pain["width"] = pain.width
+        temp_pain["height"] = pain.height
+
+        temp_points= []
+        for p in pain.points.all():
+            temp_points.append({"x": p.x, "y": p.y, "intensity": p.intensity})
+
+        temp_pain["points"] = temp_points;
+        temp_pain["primary_key"] = pain.pk;
+        pain_surveys.append(temp_pain)
 
 
     context = {
@@ -206,6 +223,9 @@ def patient_profile(request):
         'patient': patient_obj,
         'notes_form': notes_form,
         'esas_surveys': esas_surveys,
+        'pain_surveys': pain_surveys,
+        'pain_width': 207,
+        'pain_height': 400,
         'channels': channels, 
         'token': token, # Twilio token for messaging tab.
     }

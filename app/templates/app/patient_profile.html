@@ -1,8 +1,8 @@
 {% extends "app/layout.html" %}
 
 {% block content %}
-<div class="page-header">
-    <h1>{{ patient.full_name }}<small><!--Subtext for header--></small></h1>
+<div class="">
+    <h3>{{ patient.full_name }}<small><!--Subtext for header--></small></h3>
 </div>
 
 <div class="row">
@@ -11,7 +11,7 @@
             <li class="active"><a data-toggle="tab" href="#home">Home</a></li>
             <li><a data-toggle="tab" href="#messages">Messages</a></li>
             <li><a data-toggle="tab" href="#medication">Medication</a></li>
-            <li><a data-toggle="tab" href="#esas">ESAS</a></li>
+            <li><a data-toggle="tab" id="esas-tab" href="#esas">ESAS</a></li>
             <li><a data-toggle="tab" href="#pain">Pain</a></li>
         </ul>
 
@@ -32,10 +32,7 @@
                 {% include "patient_profile_esas.html" with esas_surveys=esas_surveys %}
             </div>
             <div id="pain" class="tab-pane fade">
-                <h3>Pain</h3>
-                {% comment %}
-                {% include "patient_profile_esas.html" %}
-                {% endcomment %}
+                {% include "patient_profile_pain.html" with pain_surveys=pain_surveys pain_width=pain_width pain_height=pain_height %}
             </div>
         </div>
     </div>
@@ -62,14 +59,18 @@
 {% load staticfiles %}
 <link rel="stylesheet" type="text/css" href="{% static 'app/content/patient_profile.css' %}" />
 <link rel="stylesheet" type="text/css" href="{% static 'app/content/messages.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app/content/pain.css' %}" />
 
 <script src="{% static 'app/scripts/patient_profile.js' %}"></script>
-<script src="{% static 'app/scripts/esas.js' %}"></script>
 <script src="{% static 'app/scripts/messages.js' %}"></script>
+<script src="{% static 'app/scripts/esas.js' %}"></script>
+<script src="{% static 'app/scripts/pain.js' %}"></script>
+
 <script>
     {% autoescape off %}
     var django_username = "{{user.username}}";
     var esasSurveys = {{esas_surveys}};
+    var painSurveys = {{pain_surveys}};
     var patientFullName = "{{patient.full_name}}";
     var channels = {{channels}};
     var token = "{{token}}";

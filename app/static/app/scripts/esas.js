@@ -1,20 +1,15 @@
 
 
-function parseMillis(millis) {
-    /*
-     * Takes a timestamp in milliseconds and returns it in
-     * locale date format and "HH:mm"
-     */
-    var date = new Date(Number(millis));
-    return date.toLocaleDateString() + ' ' + date.getHours() + ':' + date.getMinutes();
-}
-
 $(function() {
     google.charts.load('current', {'packages':['line']});
     google.charts.setOnLoadCallback(drawChart);
 
+    console.log('google charts load');
+
     var data;
+    var options;
     var chart;
+    var $chartDiv = $('#linechart_material');
 
     /*
      * Django variables passed in from patient_profile.html
@@ -31,6 +26,10 @@ $(function() {
         $(this).text(parseMillis($(this).text()));
 
     })
+
+    function initialize() {
+        drawChart();
+    }
 
     function drawChart() {
         data = new google.visualization.DataTable();
@@ -95,15 +94,34 @@ $(function() {
 
 
 
-        var options = {
+        options = {
             chart: {
                 title: patientFullName + ' ESAS Responses',
             },
         };
 
         chart = new google.charts.Line(document.getElementById('linechart_material'));
-
         chart.draw(data, google.charts.Line.convertOptions(options));
     }
+
+    // TODO: Google charts can't be drawn on hidden tabs.
+    $('#esas-tab').click(function(e) {
+        console.log('clicked #esas-tab');
+    })
+
+    /*
+    var hidden = false;
+    if ($chartDiv.parent().hasClass('active')) {
+        chart.draw(data, google.charts.Line.convertOptions(options));
+    } else {
+        $chartDiv.show();
+        chart.draw(data, google.charts.Line.convertOptions(options));
+        hidden = true;
+    }
+
+    if (hidden) {
+        $chartDiv.hide();
+    }
+    */
 
 })

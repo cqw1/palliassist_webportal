@@ -1,0 +1,63 @@
+<br>
+
+{% load staticfiles %}
+<div class="row">
+    <div class="col-md-3">
+        <div class="panel panel-default">
+            <!-- Default panel contents -->
+
+            <div class="panel-heading clearfix">
+                <strong class="panel-title">Surveys</strong>
+                <button type="button" class="btn btn-danger" onclick="sendNotification()">Request</button>
+            </div>
+
+            <!-- Chat channels list -->
+            <ul class="list-group">
+                
+                <a data-toggle="tab" class="list-group-item" href="#pain-overview">Overview</a>
+
+                {% for pain in pain_surveys %}
+                <a data-toggle="tab" class="list-group-item millis-date" href="#{{pain.primary_key}}">{{pain.created_date}}</a>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    {% comment %}
+    {% endcomment %}
+    <!-- Content Panel -->
+    <div class="col-md-9">
+        <div class="panel panel-default" id="pain-panel">
+
+            <div class="panel-heading">
+                <strong class="panel-title">Panel Title</strong>
+            </div>
+
+            <div class="tab-content">
+                <div id="pain-overview" class="tab-pane fade in active pain-tab">
+                    <svg width="{{pain_width}}" height="{{pain_height}}" class="body-svg">
+                        <image xlink:href="{% static 'app/images/body_image.png' %}" x="0" y="0" width="{{pain_width}}" height="{{pain_height}}"/> 
+                    </svg>
+                </div>
+
+                {% for pain in pain_surveys %}
+                <div id="{{pain.primary_key}}" class="tab-pane fade in pain-tab">
+                    <svg width="{{pain_width}}" height="{{pain_height}}" class="body-svg">
+                        <image xlink:href="{% static 'app/images/body_image.png' %}" x="0" y="0" width="{{pain_width}}" height="{{pain_height}}"/> 
+
+                        {% for point in pain.points %}
+                        <circle cx="{% widthratio point.x pain.width pain_width %}" cy="{% widthratio point.y pain.height pain_height %}" r="5" stroke="red" stroke-width="1" fill="red" />
+                        {% endfor %}
+                    </svg>
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+    </div>
+    {% comment %}
+    {% endcomment %}
+</div>
+
