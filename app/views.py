@@ -583,3 +583,5 @@ def fcm(request):
     else:
         print "Unknown request action", fcm_action 
 
+    return render(request, 'app/blank.html')
+
