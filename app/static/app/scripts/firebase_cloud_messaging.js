@@ -15,13 +15,14 @@ function sendNotification() {
         },
         data: JSON.stringify({
             "to" : "/topics/test",
-            "notification" : {
-                  "body" : "Hello World!",
-                  "title" : "PalliAssist"
+            "data" : {
+                  "action" : "REQUEST",
+                  "type" : "ESAS"
             }
         }),
         success: function (data) {
-            console.log('returned data: ' + data);
+            console.log('returned data: ');
+            console.log(data);
             alert('Sent message to topic "test"'); 
         }
     });

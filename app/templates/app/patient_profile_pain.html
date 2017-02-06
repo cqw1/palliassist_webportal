@@ -46,7 +46,8 @@
                         <image xlink:href="{% static 'app/images/body_image.png' %}" x="0" y="0" width="{{pain_width}}" height="{{pain_height}}"/> 
 
                         {% for point in pain.points %}
-                        <circle cx="{% widthratio point.x pain.width pain_width %}" cy="{% widthratio point.y pain.height pain_height %}" r="5" stroke="red" stroke-width="1" fill="red" />
+                        <circle cx="{% widthratio point.x pain.width pain_width %}" cy="{% widthratio point.y pain.height pain_height %}" r="10" stroke="red" stroke-width="1" fill="red" />
+                        <text x="{% widthratio point.x pain.width pain_width %}" dx="-3" y="{% widthratio point.y pain.height pain_height %}" dy="4" font-family="Arial" font-size="10" stroke="none" fill="white">{{point.intensity}}</text>
                         {% endfor %}
                     </svg>
                 </div>

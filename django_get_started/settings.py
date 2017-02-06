@@ -40,6 +40,7 @@ ALLOWED_HOSTS = (
     'localhost',
     'palliassist-dev-us.azurewebsites.net',
     '127.0.0.1',
+    '50f5539c.ngrok.io',
 )
 
 ADMINS = (

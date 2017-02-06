@@ -14,9 +14,11 @@ from django.core.urlresolvers import reverse
 #from app.models import Patient, Doctor
 from app.models import *
 from django.core import serializers
+from django.utils import timezone
 
 import json
 import datetime
+import pytz
 
 from .forms import QueryPatientsForm
 from .forms import PatientNotesForm
@@ -493,6 +495,7 @@ def create_channel(request):
 
     return JsonResponse({})
 
+@csrf_exempt
 def fcm(request):
     """
     Handle FCM requests from mobile.
@@ -501,24 +504,21 @@ def fcm(request):
     assert isinstance(request, HttpRequest)
 
     fcm_action = request.POST["action"]
-    fcm_timestamp = request.POST["timestamp"]
+    print "fcm_action", fcm_action
+
+    fcm_timestamp = request.POST["timestamp"] # milliseconds
+    dt_unaware = datetime.datetime.fromtimestamp(int(fcm_timestamp)/1000.0)
+    dt_aware = timezone.make_aware(dt_unaware, timezone.get_current_timezone())
+    print "dt_aware", dt_aware 
+
     fcm_type = request.POST["type"]
-    fcm_questions = request.POST["questions"]
+    print "fcm_type", fcm_type 
 
-    return JsonResponse({"action": fcm_action, "timestamp": fcm_timestamp, "type": fcm_type, "questions": fcm_questions})
+    fcm_patient = request.POST["patient"] # TODO hardcoded to patient0 right now 
+    patient_obj = User.objects.get(username=fcm_patient).patient
+    print "patient_obj", patient_obj 
 
-    """
-    data_str = request.POST["data"]
-    d = json.loads(data)
-
-    fcm_action = d["action"]
-    fcm_type = d["type"]
-
-    fcm_patient = d["patient"] # identity
-    patient = User.objects.get(username=fcm_patient).patient
-
-    fcm_timestamp = d["timestamp"] # milliseconds 
-    date = datetime
+    #return JsonResponse({"action": fcm_action, "timestamp": fcm_timestamp, "type": fcm_type, "questions": fcm_questions})
 
 
     if fcm_action == "REQUEST":
@@ -526,15 +526,52 @@ def fcm(request):
         pass
     elif fcm_action == "SAVE":
         if fcm_type == "ESAS":
-            ESASSurvey.objects.create(patient)
-            fcm_questions = d["questions"]
-            for q in fcm_questions:
+            fcm_questions = request.POST["questions"] # comes in string.
+            questions = json.loads(fcm_questions) # JSON object.
+            print "questions", questions
 
+            esas = ESASSurvey.objects.create(patient=patient_obj, created_date=dt_aware)
 
+            for q in questions:
+                temp_q = ESASQuestion.objects.create(question=q["question"], answer=q["answer"])
+                print temp_q
+                esas.questions.add(temp_q)
 
-            pass
+            esas.save()
+            print "esas", esas
+
         elif fcm_type == "PAIN":
-            pass
+            pain = PainSurvey.objects.create(created_date=dt_aware, patient=patient_obj, width=int(request.POST["width"]), height=int(request.POST["height"]))
+
+            # int(float()) to get around parsing a string with a decimal to an int
+            pain_point = PainPoint.objects.create(x=int(float(request.POST["x"])), y=int(float(request.POST["y"])), intensity=int(request.POST["intensity"]))
+
+            print int(request.POST["width"])
+            print int(request.POST["height"])
+            print int((float(request.POST["x"])))
+            print int((float(request.POST["y"])))
+            print int((float(request.POST["intensity"])))
+
+            print "pain_point", pain_point 
+            pain.points.add(pain_point)
+            print "points", pain.points.all()
+
+            pain.save()
+            print "pain", pain
+
+            """
+            fcm_points = request.POST["points"] # comes in string.
+            points = json.loads(fcm_points) # JSON object.
+
+            for p in points:
+                temp_p = PainPoint.objects.create(x=int(p["x"]), y=int(p["y"]), intensity=int(p["intensity"]))
+                print temp_p
+                pain.points.add(temp_p)
+
+            pain.save()
+            print pain
+            """
+
         elif fcm_type == "MEDICATION":
             # TODO
             pass
@@ -545,5 +582,4 @@ def fcm(request):
             print "Unknown request type", fcm_type 
     else:
         print "Unknown request action", fcm_action 
-    """
 

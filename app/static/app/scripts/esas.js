@@ -34,14 +34,15 @@ $(function() {
     function drawChart() {
         data = new google.visualization.DataTable();
 
-        var values = {"Date (DD/MM)": []};
+        var values = {"Date": []};
         var esasCount = 0;
         esasSurveys.forEach(function(esas) {
 
             var date = new Date(esas.created_date);
 
             // Always have date as first values.
-            values["Date (DD/MM)"].push(date.getDate() + '/' + (date.getMonth() + 1));
+            values["Date"].push(new Date(date.getYear(), date.getMonth(), date.getDate()))
+            //values["Date (DD/MM)"].push(date.getDate() + '/' + (date.getMonth() + 1));
 
             esas.questions.forEach(function(question) {
                 if (values.hasOwnProperty(question["question"])) {
@@ -72,10 +73,10 @@ $(function() {
         keys = Object.keys(values);
         keys.sort(); // Alphabetizes the keys/questions.
 
-        data.addColumn('string', 'Date (DD/MM)');
+        data.addColumn('date', 'Date');
 
         keys.forEach(function(key) {
-            if (key != 'Date (DD/MM)') {
+            if (key != 'Date') {
                 data.addColumn('number', key.charAt(0).toUpperCase() + key.slice(1));
             }
         })
@@ -97,6 +98,7 @@ $(function() {
         options = {
             chart: {
                 title: patientFullName + ' ESAS Responses',
+
             },
         };
 
