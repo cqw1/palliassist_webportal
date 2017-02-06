@@ -29,7 +29,7 @@ from django.contrib.auth.models import User
 import logging
 #import MySQLdb
 from redcap import Project, RedcapError
-import urllib
+#import urllib
 
 from twilio.access_token import AccessToken, IpMessagingGrant
 from twilio.rest.ip_messaging import TwilioIpMessagingClient
@@ -459,6 +459,7 @@ def save_notes(request):
     """
     assert isinstance(request, HttpRequest)
 
+    """
     doctor_notes = request.POST['notes']
     print "doctor_notes:", doctor_notes
     print "doctor_notes:", urllib.quote(doctor_notes)
@@ -467,6 +468,7 @@ def save_notes(request):
     patient = Patient.objects.get(sid=patient_id)
     patient.doctor_notes = urllib.quote(doctor_notes)
     patient.save()
+    """
 
     return JsonResponse({})
 
@@ -491,3 +493,53 @@ def create_channel(request):
 
     return JsonResponse({})
 
+def fcm(request):
+    """
+    Handle FCM requests from mobile.
+    Format described in Meeting Minutes Feb 2, 2017
+    """
+    assert isinstance(request, HttpRequest)
+
+    """
+    data_str = request.POST["data"]
+    d = json.loads(data)
+
+    fcm_action = d["action"]
+    fcm_type = d["type"]
+
+    fcm_patient = d["patient"] # identity
+    patient = User.objects.get(username=fcm_patient).patient
+
+    fcm_timestamp = d["timestamp"] # milliseconds 
+    date = datetime
+
+
+    if fcm_action == "REQUEST":
+        # TODO
+        pass
+    elif fcm_action == "SAVE":
+        if fcm_type == "ESAS":
+            ESASSurvey.objects.create(patient)
+            fcm_questions = d["questions"]
+            for q in fcm_questions:
+
+
+
+            pass
+        elif fcm_type == "PAIN":
+            pass
+        elif fcm_type == "MEDICATION":
+            # TODO
+            pass
+        elif fcm_type == "CUSTOM":
+            # TODO
+            pass
+        else:
+            print "Unknown request type", fcm_type 
+    else:
+        print "Unknown request action", fcm_action 
+    """
+
+
+
+    pass
