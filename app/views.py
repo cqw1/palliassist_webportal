@@ -306,10 +306,19 @@ def messages(request):
 
     """
     How to delete a channel:
-    raisins_channel = settings.TWILIO_IPM_SERVICE.channels.get(sid="CH1ed5a9a7f8444dcd9c76bbdc0f39973b")
-    response = raisins_channel.delete()
-    print "delete raisins:", response   # response = True on success.
+    """
+    """
+    # Delete current demo channel.
+    demo_channel = settings.TWILIO_IPM_SERVICE.channels.get(sid="CH775a5cc2b8ef42db8362f101e305569a")
+    response = demo_channel.delete()
+    print "delete Demo Channel:", response   # response = True on success.
+
+    # Recreate demo channel.
+    new_channel = settings.TWILIO_IPM_SERVICE.channels.create(friendly_name="Demo Channel", unique_name="Demo Channel", type="public")
+    new_channel.members.create(identity=request.user.username)
+    """
     
+    """
     patient0 = "patient0"
     # patient0 channel sid="CHd4c969e1d91946aeb1ebde3fa5cb85a2"
     new_channel = settings.TWILIO_IPM_SERVICE.channels.create(unique_name=patient0, friendly_name=patient0, type="private")
