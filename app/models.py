@@ -9,13 +9,15 @@ from django.db.models.signals import post_save
 from django.contrib.auth.signals import user_logged_in
 from django.conf import settings
 
+from phonenumber_field.modelfields import PhoneNumberField
+
 from twilio.access_token import AccessToken, IpMessagingGrant
 from twilio.rest.ip_messaging import TwilioIpMessagingClient
 
 import datetime
 
 # Create your models here.
-NAME_MAX_LENGTH = 100
+MAX_LENGTH = 255
 
 class DashboardAlert(models.Model):
     """
@@ -39,10 +41,24 @@ class Patient(models.Model):
     Contains info on a patient.
     """
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    sid = models.IntegerField()
-    full_name = models.CharField(max_length=NAME_MAX_LENGTH)
+    sid = models.IntegerField() #hospital_id
+    full_name = models.CharField(max_length=MAX_LENGTH)
     doctor_notes = models.TextField(default="")
     unread_messages = models.IntegerField(default=0)
+    telephone = PhoneNumberField(default="")
+    age = models.IntegerField(default=0) 
+    city_of_residence = models.TextField(default="")
+    caregiver_name = models.CharField(max_length=MAX_LENGTH, default="")
+
+    PALLIATIVE = "Palliative Care Only"
+    ANTICANCER = "Undergoing Anticancer Therapy"
+    TREATMENT_CHOICES = (
+        (PALLIATIVE, PALLIATIVE),
+        (ANTICANCER, ANTICANCER),
+    )
+    treatment_type = models.CharField(max_length=MAX_LENGTH, choices=TREATMENT_CHOICES, default=PALLIATIVE)
+    next_appointment = models.DateTimeField(default=datetime.datetime.now)
+
 
     def __unicode__(self):
         return "[Patient] " + str(self.user.username)
@@ -57,7 +73,7 @@ class Doctor(models.Model):
     """
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     sid = models.IntegerField()
-    full_name = models.CharField(max_length=NAME_MAX_LENGTH)
+    full_name = models.CharField(max_length=MAX_LENGTH)
     patients = models.ManyToManyField(Patient)
     twilio_token = models.TextField(default="")
 
@@ -98,12 +114,15 @@ class PainSurvey(models.Model):
     height = models.IntegerField()
     points = models.ManyToManyField(PainPoint)
 
-    
-
-
-
-
-    
+class Medication(models.Model):
+    """ Info for one medication prescription. """
+    created_date = models.DateTimeField(default=datetime.datetime.now)
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
+    name = models.CharField(max_length=MAX_LENGTH, default="")
+    form = models.CharField(max_length=MAX_LENGTH, default="")
+    dose = models.CharField(max_length=MAX_LENGTH, default="")
+    posology = models.CharField(max_length=MAX_LENGTH, default="")
+    rescue = models.TextField(default="")
 
 
 

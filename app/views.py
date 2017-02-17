@@ -217,6 +217,9 @@ def patient_profile(request):
         temp_pain["primary_key"] = pain.pk;
         pain_surveys.append(temp_pain)
 
+    ### Medication tab.
+    medications = Medication.objects.filter(patient=patient_obj)
+
 
     context = {
         'title': 'Patient Profile',
@@ -224,6 +227,7 @@ def patient_profile(request):
         'year': datetime.datetime.now().year,
         'patient': patient_obj,
         'notes_form': notes_form,
+        'medications': medications,
         'esas_surveys': esas_surveys,
         'pain_surveys': pain_surveys,
         'pain_width': 207,

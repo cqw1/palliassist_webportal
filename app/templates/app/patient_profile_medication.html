@@ -1,0 +1,52 @@
+{% extends "app/layout.html" %}
+
+{% block content %}
+
+{% if medication_results %}
+<!-- Table of search results --> 
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Form</th>
+            <th>Dosage</th>
+            <th>Posology</th>
+            <th>Rescue</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Search results -->
+        {% for medication in medications %}
+        <tr>
+            <td>{{ medication.name }}</td>
+            <td>{{ medication.form }}</td>
+            <td>{{ medication.dosage }}</td>
+            <td>{{ medication.posology }}</td>
+            <td>{{ medication.rescue }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% else %}
+
+<div class="pa-center-wrapper">
+    No patients found.
+</div>
+
+{% endif %}
+
+{% endblock %}
+
+
+
+
+
+{% block scripts %}
+
+{% load staticfiles %}
+
+<script src="{% static 'app/scripts/patients.js' %}"></script>
+
+{% endblock %}
+
