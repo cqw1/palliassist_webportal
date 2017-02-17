@@ -160,6 +160,16 @@ def patient_profile(request):
 
     patient_obj = Patient.objects.get(sid=patient_id)
 
+    patient = {}
+    patient["full_name"] = patient_obj.full_name
+    patient["sid"] = patient_obj.sid
+    patient["telephone"] = patient_obj.telephone
+    patient["age"] = patient_obj.age
+    patient["caregiver_name"] = patient_obj.caregiver_name
+    patient["city_of_residence"] = patient_obj.city_of_residence
+    patient["treatment_type"] = patient_obj.treatment_type
+    patient["next_appointment"] = convertDateTimeToMillis(patient_obj.next_appointment)
+
     notes_form = PatientNotesForm()
 
     ### Messages tab.
@@ -189,7 +199,8 @@ def patient_profile(request):
 
     for esas in esas_objects:
         temp_esas = {}
-        temp_esas["created_date"] = (esas.created_date.replace(tzinfo=None) - datetime.datetime(1970, 1, 1)).total_seconds() * 1000
+        #temp_esas["created_date"] = (esas.created_date.replace(tzinfo=None) - datetime.datetime(1970, 1, 1)).total_seconds() * 1000
+        temp_esas["created_date"] = convertDateTimeToMillis(esas.created_date)
         temp_questions = []
         for q in esas.questions.all():
             temp_questions.append({"question": str(q.question), "answer": q.answer})
@@ -205,7 +216,8 @@ def patient_profile(request):
 
     for pain in pain_objects:
         temp_pain = {}
-        temp_pain["created_date"] = (pain.created_date.replace(tzinfo=None) - datetime.datetime(1970, 1, 1)).total_seconds() * 1000
+        #temp_pain["created_date"] = (pain.created_date.replace(tzinfo=None) - datetime.datetime(1970, 1, 1)).total_seconds() * 1000
+        temp_pain["created_date"] = convertDateTimeToMillis(pain.created_date)
         temp_pain["width"] = pain.width
         temp_pain["height"] = pain.height
 
@@ -218,14 +230,25 @@ def patient_profile(request):
         pain_surveys.append(temp_pain)
 
     ### Medication tab.
-    medications = Medication.objects.filter(patient=patient_obj)
+    medications = []
+    medication_objects = Medication.objects.filter(patient=patient_obj)
+    for medication in medication_objects:
+        temp_medication = {}
+        temp_medication["created_date"] = convertDateTimeToMillis(medication.created_date)
+        temp_medication["name"] = medication.name
+        temp_medication["form"] = medication.form
+        temp_medication["dose"] = medication.dose
+        temp_medication["posology"] = medication.posology
+        temp_medication["rescue"] = medication.rescue
+
+        medications.append(temp_medication)
 
 
     context = {
         'title': 'Patient Profile',
         'message': 'Patient profile.',
         'year': datetime.datetime.now().year,
-        'patient': patient_obj,
+        'patient': patient,
         'notes_form': notes_form,
         'medications': medications,
         'esas_surveys': esas_surveys,
@@ -597,4 +620,7 @@ def fcm(request):
         print "Unknown request action", fcm_action 
 
     return render(request, 'app/blank.html')
+
+def convertDateTimeToMillis(dt):
+    return (dt.replace(tzinfo=None) - datetime.datetime(1970, 1, 1)).total_seconds() * 1000
 

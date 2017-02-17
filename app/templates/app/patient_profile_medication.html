@@ -1,11 +1,12 @@
-<div class="row">
+<br>
+
 {% if medications %}
 
 <!-- Table of search results --> 
 <table class="table table-striped">
     <thead>
         <tr>
-            <th>Date</th>
+            <!-- <th>Date</th> -->
             <th>Name</th>
             <th>Form</th>
             <th>Dose</th>
@@ -17,7 +18,7 @@
         <!-- Search results -->
         {% for medication in medications %}
         <tr>
-            <td class="millis-date">{{ medication.created_date }}</td>
+            <!-- <td class="millis-date">{{ medication.created_date }}</td> -->
             <td>{{ medication.name }}</td>
             <td>{{ medication.form }}</td>
             <td>{{ medication.dose }}</td>
@@ -36,4 +37,3 @@
 </div>
 
 {% endif %}
-</div>
