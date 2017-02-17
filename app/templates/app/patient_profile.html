@@ -24,10 +24,7 @@
                 {% include "patient_profile_messages.html" with channels=channels%}
             </div>
             <div id="medication" class="tab-pane fade">
-                <h3>Medication</h3>
-                {% comment %}
-                {% include "patient_profile_esas.html" %}
-                {% endcomment %}
+                {% include "patient_profile_medication.html" with medicatoins=medications %}
             </div>
             <div id="esas" class="tab-pane fade">
                 {% include "patient_profile_esas.html" with esas_surveys=esas_surveys %}

@@ -1,15 +1,14 @@
-{% extends "app/layout.html" %}
+<div class="row">
+{% if medications %}
 
-{% block content %}
-
-{% if medication_results %}
 <!-- Table of search results --> 
 <table class="table table-striped">
     <thead>
         <tr>
+            <th>Date</th>
             <th>Name</th>
             <th>Form</th>
-            <th>Dosage</th>
+            <th>Dose</th>
             <th>Posology</th>
             <th>Rescue</th>
         </tr>
@@ -18,9 +17,10 @@
         <!-- Search results -->
         {% for medication in medications %}
         <tr>
+            <td class="millis-date">{{ medication.created_date }}</td>
             <td>{{ medication.name }}</td>
             <td>{{ medication.form }}</td>
-            <td>{{ medication.dosage }}</td>
+            <td>{{ medication.dose }}</td>
             <td>{{ medication.posology }}</td>
             <td>{{ medication.rescue }}</td>
         </tr>
@@ -30,23 +30,10 @@
 
 {% else %}
 
+<br>
 <div class="pa-center-wrapper">
-    No patients found.
+    No medications found.
 </div>
 
 {% endif %}
-
-{% endblock %}
-
-
-
-
-
-{% block scripts %}
-
-{% load staticfiles %}
-
-<script src="{% static 'app/scripts/patients.js' %}"></script>
-
-{% endblock %}
-
+</div>
