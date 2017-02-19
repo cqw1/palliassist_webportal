@@ -159,16 +159,7 @@ def patient_profile(request):
     print "patient_id:", patient_id
 
     patient_obj = Patient.objects.get(sid=patient_id)
-
-    patient = {}
-    patient["full_name"] = patient_obj.full_name
-    patient["sid"] = patient_obj.sid
-    patient["telephone"] = patient_obj.telephone
-    patient["age"] = patient_obj.age
-    patient["caregiver_name"] = patient_obj.caregiver_name
-    patient["city_of_residence"] = patient_obj.city_of_residence
-    patient["treatment_type"] = patient_obj.treatment_type
-    patient["next_appointment"] = convertDateTimeToMillis(patient_obj.next_appointment)
+    patient_obj.next_appointment = convertDateTimeToMillis(patient_obj.next_appointment)
 
     notes_form = PatientNotesForm()
 
@@ -193,10 +184,11 @@ def patient_profile(request):
     token.add_grant(ipm_grant)
 
     ### ESAS tab.
-    esas_objects = ESASSurvey.objects.filter(patient=patient_obj)
+    esas_surveys = ESASSurvey.objects.filter(patient=patient_obj)
+    for esas in esas_surveys:
+        esas.created_date = convertDateTimeToMillis(esas.created_date)
 
-    esas_surveys = []
-
+    """
     for esas in esas_objects:
         temp_esas = {}
         #temp_esas["created_date"] = (esas.created_date.replace(tzinfo=None) - datetime.datetime(1970, 1, 1)).total_seconds() * 1000
@@ -208,47 +200,27 @@ def patient_profile(request):
         temp_esas["questions"] = temp_questions
         temp_esas["primary_key"] = esas.pk;
         esas_surveys.append(temp_esas)
+    """
+
+
 
     ### Pain tab.
-    pain_objects = PainSurvey.objects.filter(patient=patient_obj)
+    pain_surveys = PainSurvey.objects.filter(patient=patient_obj)
+    for pain in pain_surveys:
+        pain.created_date = convertDateTimeToMillis(pain.created_date)
 
-    pain_surveys = []
-
-    for pain in pain_objects:
-        temp_pain = {}
-        #temp_pain["created_date"] = (pain.created_date.replace(tzinfo=None) - datetime.datetime(1970, 1, 1)).total_seconds() * 1000
-        temp_pain["created_date"] = convertDateTimeToMillis(pain.created_date)
-        temp_pain["width"] = pain.width
-        temp_pain["height"] = pain.height
-
-        temp_points= []
-        for p in pain.points.all():
-            temp_points.append({"x": p.x, "y": p.y, "intensity": p.intensity})
-
-        temp_pain["points"] = temp_points;
-        temp_pain["primary_key"] = pain.pk;
-        pain_surveys.append(temp_pain)
 
     ### Medication tab.
-    medications = []
-    medication_objects = Medication.objects.filter(patient=patient_obj)
-    for medication in medication_objects:
-        temp_medication = {}
-        temp_medication["created_date"] = convertDateTimeToMillis(medication.created_date)
-        temp_medication["name"] = medication.name
-        temp_medication["form"] = medication.form
-        temp_medication["dose"] = medication.dose
-        temp_medication["posology"] = medication.posology
-        temp_medication["rescue"] = medication.rescue
-
-        medications.append(temp_medication)
+    medications = Medication.objects.filter(patient=patient_obj)
+    for medication in medications:
+        medication.created_date = convertDateTimeToMillis(medication.created_date)
 
 
     context = {
         'title': 'Patient Profile',
         'message': 'Patient profile.',
         'year': datetime.datetime.now().year,
-        'patient': patient,
+        'patient': patient_obj,
         'notes_form': notes_form,
         'medications': medications,
         'esas_surveys': esas_surveys,

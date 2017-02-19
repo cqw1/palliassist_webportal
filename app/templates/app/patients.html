@@ -31,6 +31,7 @@
     <thead>
         <tr>
             <th>Name</th>
+            <th>Hospital ID</th>
             <th>Gender</th>
             <th>Age</th>
         </tr>
@@ -40,8 +41,9 @@
         {% for patient_result in patient_results %}
         <tr>
             <td><a href="{% url 'patient-profile' %}?sid={{patient_result.sid}}">{{ patient_result.full_name}}</a> </td>
-            <td>{{ patient_result.gender}} </td>
-            <td>{{ patient_result.age}} </td>
+            <td>{{ patient_result.sid }} </td>
+            <td>{{ patient_result.gender }} </td>
+            <td>{{ patient_result.age }} </td>
         </tr>
         {% endfor %}
     </tbody>

@@ -43,12 +43,11 @@ class Patient(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     sid = models.IntegerField() #hospital_id
     full_name = models.CharField(max_length=MAX_LENGTH)
-    doctor_notes = models.TextField(default="")
-    unread_messages = models.IntegerField(default=0)
     telephone = PhoneNumberField(default="")
     age = models.IntegerField(default=0) 
     city_of_residence = models.TextField(default="")
     caregiver_name = models.CharField(max_length=MAX_LENGTH, default="")
+    next_appointment = models.DateTimeField(default=datetime.datetime.now)
 
     PALLIATIVE = "Palliative Care Only"
     ANTICANCER = "Undergoing Anticancer Therapy"
@@ -57,7 +56,17 @@ class Patient(models.Model):
         (ANTICANCER, ANTICANCER),
     )
     treatment_type = models.CharField(max_length=MAX_LENGTH, choices=TREATMENT_CHOICES, default=PALLIATIVE)
-    next_appointment = models.DateTimeField(default=datetime.datetime.now)
+
+    FEMALE = "Female"
+    MALE = "Male"
+    GENDER_CHOICES = (
+        (FEMALE, FEMALE),
+        (MALE, MALE),
+    )
+    gender = models.CharField(max_length=MAX_LENGTH, choices=GENDER_CHOICES, default="")
+
+    doctor_notes = models.TextField(default="")
+    unread_messages = models.IntegerField(default=0)
 
 
     def __unicode__(self):
@@ -95,7 +104,29 @@ class ESASSurvey(models.Model):
     """ Encapsulates one survey. """
     created_date = models.DateTimeField(default=datetime.datetime.now)
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
-    questions = models.ManyToManyField(ESASQuestion)
+    #questions = models.ManyToManyField(ESASQuestion)
+    pain = models.IntegerField(null=True)
+    fatigue = models.IntegerField(null=True)
+    nausea = models.IntegerField(null=True)
+    depression = models.IntegerField(null=True)
+    anxiety = models.IntegerField(null=True)
+    drowsiness = models.IntegerField(null=True)
+    appetite = models.IntegerField(null=True)
+    well_being = models.IntegerField(null=True)
+    lack_of_air = models.IntegerField(null=True)
+    insomnia = models.IntegerField(null=True)
+
+    # Custom questions
+    fever = models.BooleanField(default=False)
+
+    constipated = models.BooleanField(default=False)
+    constipated_days = models.IntegerField(default=0)
+    constipated_bothered = models.IntegerField(default=0)
+
+    vomiting = models.BooleanField(default=False)
+    vomiting_count = models.IntegerField(default=0)
+
+    confused = models.BooleanField(default=False)
 
     class Meta:
         ordering = ('-created_date',)

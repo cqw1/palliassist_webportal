@@ -17,7 +17,7 @@
                 <a data-toggle="tab" class="list-group-item" href="#pain-overview">Overview</a>
 
                 {% for pain in pain_surveys %}
-                <a data-toggle="tab" class="list-group-item millis-date" href="#{{pain.primary_key}}">{{pain.created_date}}</a>
+                <a data-toggle="tab" class="list-group-item millis-date" href="#{{pain.pk}}">{{pain.created_date}}</a>
                 {% endfor %}
             </ul>
         </div>
@@ -41,11 +41,11 @@
                 </div>
 
                 {% for pain in pain_surveys %}
-                <div id="{{pain.primary_key}}" class="tab-pane fade in pain-tab">
+                <div id="{{pain.pk}}" class="tab-pane fade in pain-tab">
                     <svg width="{{pain_width}}" height="{{pain_height}}" class="body-svg">
                         <image xlink:href="{% static 'app/images/body_image.png' %}" x="0" y="0" width="{{pain_width}}" height="{{pain_height}}"/> 
 
-                        {% for point in pain.points %}
+                        {% for point in pain.points.all %}
                         <circle cx="{% widthratio point.x pain.width pain_width %}" cy="{% widthratio point.y pain.height pain_height %}" r="10" stroke="red" stroke-width="1" fill="red" />
                         <text x="{% widthratio point.x pain.width pain_width %}" dx="-3" y="{% widthratio point.y pain.height pain_height %}" dy="4" font-family="Arial" font-size="10" stroke="none" fill="white">{{point.intensity}}</text>
                         {% endfor %}

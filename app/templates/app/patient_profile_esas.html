@@ -18,7 +18,7 @@
                 <a data-toggle="tab" class="list-group-item" href="#esas-overview">Overview</a>
 
                 {% for esas in esas_surveys %}
-                <a data-toggle="tab" class="list-group-item millis-date" href="#{{esas.primary_key}}">{{esas.created_date}}</a>
+                <a data-toggle="tab" class="list-group-item millis-date" href="#{{esas.pk}}">{{esas.created_date}}</a>
                 {% endfor %}
             </ul>
         </div>
@@ -35,29 +35,131 @@
             </div>
             <div class="panel-body tab-content" id="esas-panel-body">
                 <div id="esas-overview" class="tab-pane fade in active">
-                    <div id="linechart_material" style="width: 100%; height: 500px"></div>
+                    <div id="esas-chart" style="width: 500px; height: 500px"></div>
                 </div>
 
                 {% for esas in esas_surveys%}
-                <div id="{{ esas.primary_key }}" class="tab-pane fade in">
-                    <div id="{{esas.primary_key}}-esas-responses">
+                <div id="{{ esas.pk}}" class="tab-pane fade in">
+                    <div id="{{esas.pk}}-esas-responses">
+
+                        <!-- Standard questions -->
+                        <strong>Standard</strong>
                         <table class="table table-bordered table-hover">
+                            {% comment %}
                             <tr>
-                                <th>Question</th>
-                                <th>Answer</th>
+                                <th>Symptom</th>
+                                <th>Severity</th>
                             </tr>
-                            {% for q in esas.questions|dictsort:"question" %}
-                                {% if q.answer < 3 %}
-                                <tr class="success">
-                                {% elif q.answer < 8 %}
-                                <tr class="warning">
+                            {% endcomment %}
+
+                            <tr class="esas-standard-field">
+                                <td>Pain</td>
+                                <td class="esas-answer">{{esas.pain}}</td>
+                            </tr>
+
+                            <tr class="esas-standard-field">
+                                <td>Fatigue</td>
+                                <td class="esas-answer">{{esas.fatigue}}</td>
+                            </tr>
+
+                            <tr class="esas-standard-field">
+                                <td>Nausea</td>
+                                <td class="esas-answer">{{esas.nausea}}</td>
+                            </tr>
+
+                            <tr class="esas-standard-field">
+                                <td>Depression</td>
+                                <td class="esas-answer">{{esas.depression}}</td>
+                            </tr>
+
+                            <tr class="esas-standard-field">
+                                <td>Anxiety</td>
+                                <td class="esas-answer">{{esas.anxiety}}</td>
+                            </tr>
+
+                            <tr class="esas-standard-field">
+                                <td>Drowsiness</td>
+                                <td class="esas-answer">{{esas.drowsiness}}</td>
+                            </tr>
+
+                            <tr class="esas-standard-field">
+                                <td>Appetite</td>
+                                <td class="esas-answer">{{esas.appetite}}</td>
+                            </tr>
+
+                            <tr class="esas-standard-field">
+                                <td>Well-Being</td>
+                                <td class="esas-answer">{{esas.well_being}}</td>
+                            </tr>
+
+                            <tr class="esas-standard-field">
+                                <td>Lack of Air</td>
+                                <td class="esas-answer">{{esas.lack_of_air}}</td>
+                            </tr>
+
+                            <tr class="esas-standard-field">
+                                <td>Insomnia</td>
+                                <td class="esas-answer">{{esas.insomnia}}</td>
+                            </tr>
+                        </table>
+
+                        <br>
+
+                        <strong>Custom</strong>
+                        <!-- Custom questions -->
+                        <table class="table table-bordered table-hover">
+
+                            <!-- Fever -->
+                            {% if esas.fever %}
+                            <tr class="esas-custom-field danger">
+                            {% else %}
+                            <tr class="esas-custom-field success">
+                            {% endif %}
+                                <td>Fever</td>
+                                <td class="esas-answer">{{esas.fever|yesno:"Yes,No"}}</td>
+                            </tr>
+
+                            <!-- Constipated -->
+                            {% if esas.constipated %}
+                                {% if esas.bothered < 5 %}
+                                <tr class="esas-custom-field warning">
                                 {% else %}
-                                <tr class="danger">
+                                <tr class="esas-custom-field danger">
                                 {% endif %}
-                                    <td>{{ q.question|title }}</td>
-                                    <td>{{ q.answer|title }}</td>
+                                    <td>Constipated</td>
+                                    <td class="esas-answer">Yes, for {{esas.constipated_days}} days, severity of {{esas.constipated_bothered}}</td>
                                 </tr>
-                            {% endfor %}
+
+                            {% else %}
+                            <tr class="esas-custom-field success">
+                                <td>Constipated</td>
+                                <td class="esas-answer">No</td>
+                            </tr>
+                            {% endif %}
+
+                            <!-- Vomiting -->
+                            {% if esas.vomiting %}
+                            <tr class="esas-custom-field danger">
+                                <td>Vomiting</td>
+                                <td class="esas-answer">Yes, {{esas.vomiting_count}} times</td>
+                            </tr>
+                            {% else %}
+                            <tr class="esas-custom-field success">
+                                <td>Vomiting</td>
+                                <td class="esas-answer">No</td>
+                            </tr>
+                            {% endif %}
+
+                            <!-- Confused -->
+                            {% if esas.confused %}
+                            <tr class="esas-custom-field danger">
+                            {% else %}
+                            <tr class="esas-custom-field success">
+                            {% endif %}
+                                <td>Confused</td>
+                                <td class="esas-answer">{{esas.confused|yesno:"Yes,No"}}</td>
+                            </tr>
+
                         </table>
 
                     </div>

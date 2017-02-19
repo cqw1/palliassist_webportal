@@ -24,12 +24,3 @@ function parseMillis(millis) {
 
     return date.toLocaleDateString() + ' ' + hours + ':' + minutes
 }
-
-$(function() {
-    $('.millis-date').each(function() {
-        // Replace all the elements with class millis-date.
-        // Original value was timestamp in millis, returns a readable date string.
-        $(this).text(parseMillis($(this).text()));
-
-    })
-})
