@@ -27,7 +27,7 @@
                 {% include "patient_profile_medication.html" with medications=medications %}
             </div>
             <div id="esas" class="tab-pane fade">
-                {% include "patient_profile_esas.html" with esas_surveys=esas_surveys %}
+                {% include "patient_profile_esas.html" with esas_objects=esas_objects%}
             </div>
             <div id="pain" class="tab-pane fade">
                 {% include "patient_profile_pain.html" with pain_surveys=pain_surveys pain_width=pain_width pain_height=pain_height %}
@@ -68,7 +68,7 @@
 <script>
     {% autoescape off %}
     var django_username = "{{user.username}}";
-    //var esasSurveys = {{esas_surveys}};
+    var esasJSON = JSON.parse('{{esas_json}}');
     //var painSurveys = {{pain_surveys}};
     var patientFullName = "{{patient.full_name}}";
     var channels = {{channels}};

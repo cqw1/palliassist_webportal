@@ -16,7 +16,7 @@
                 
                 <a data-toggle="tab" class="list-group-item" href="#pain-overview">Overview</a>
 
-                {% for pain in pain_surveys %}
+                {% for pain in pain_objects %}
                 <a data-toggle="tab" class="list-group-item millis-date" href="#{{pain.pk}}">{{pain.created_date}}</a>
                 {% endfor %}
             </ul>
@@ -40,7 +40,7 @@
                     </svg>
                 </div>
 
-                {% for pain in pain_surveys %}
+                {% for pain in pain_objects %}
                 <div id="{{pain.pk}}" class="tab-pane fade in pain-tab">
                     <svg width="{{pain_width}}" height="{{pain_height}}" class="body-svg">
                         <image xlink:href="{% static 'app/images/body_image.png' %}" x="0" y="0" width="{{pain_width}}" height="{{pain_height}}"/> 

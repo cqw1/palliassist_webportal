@@ -184,9 +184,12 @@ def patient_profile(request):
     token.add_grant(ipm_grant)
 
     ### ESAS tab.
-    esas_surveys = ESASSurvey.objects.filter(patient=patient_obj)
-    for esas in esas_surveys:
+    esas_objects = ESASSurvey.objects.filter(patient=patient_obj)
+
+    for esas in esas_objects:
         esas.created_date = convertDateTimeToMillis(esas.created_date)
+
+    esas_json = serializers.serialize("json", esas_objects)
 
     """
     for esas in esas_objects:
@@ -205,8 +208,8 @@ def patient_profile(request):
 
 
     ### Pain tab.
-    pain_surveys = PainSurvey.objects.filter(patient=patient_obj)
-    for pain in pain_surveys:
+    pain_objects = PainSurvey.objects.filter(patient=patient_obj)
+    for pain in pain_objects:
         pain.created_date = convertDateTimeToMillis(pain.created_date)
 
 
@@ -223,8 +226,9 @@ def patient_profile(request):
         'patient': patient_obj,
         'notes_form': notes_form,
         'medications': medications,
-        'esas_surveys': esas_surveys,
-        'pain_surveys': pain_surveys,
+        'esas_objects': esas_objects,
+        'esas_json': esas_json,
+        'pain_objects': pain_objects,
         'pain_width': 207,
         'pain_height': 400,
         'channels': channels, 

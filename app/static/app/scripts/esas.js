@@ -1,24 +1,107 @@
-$(window).load(function() {
-    console.log('window.load width: ' + $('#esas-chart').css('width'));
-    console.log('window.load offsetWidth: ' + document.getElementById('esas-chart').offsetWidth);
-
-})
 
 $(function() {
     //google.charts.load('current', {'packages':['line']});
     //google.charts.setOnLoadCallback(drawChart);
 
-    var trace1 = {
-      x: [1, 2, 3, 4], 
-      y: [10, 15, 13, 17], 
-      type: 'lines+markers'
+    var datesX = [];
+    var painY = [];
+    var fatigueY = [];
+    var nauseaY = [];
+    var depressionY = [];
+    var anxietyY = [];
+    var drowsinessY = [];
+    var appetiteY = [];
+    var wellBeingY = [];
+    var lackOfAirY = [];
+    var insomniaY = [];
+
+    esasJSON.forEach(function(esas) {
+        datesX.push(new Date(Number(esas.fields.created_date)));
+
+        painY.push(esas.fields.pain)
+        fatigueY.push(esas.fields.fatigue)
+        nauseaY.push(esas.fields.nausea)
+        depressionY.push(esas.fields.depression)
+        anxietyY.push(esas.fields.anxiety)
+        drowsinessY.push(esas.fields.drowsiness)
+        appetiteY.push(esas.fields.appetite)
+        wellBeingY.push(esas.fields.well_being)
+        lackOfAirY.push(esas.fields.lack_of_air)
+        insomniaY.push(esas.fields.insomnia)
+
+    });
+
+    var painData = {
+      x: datesX,
+      y: painY,
+      type: 'lines+markers',
+      name: 'Pain'
     };
-    var trace2 = {
-      x: [1, 2, 3, 4], 
-      y: [16, 5, 11, 9], 
-      type: 'lines+markers'
+
+    var fatigueData = {
+      x: datesX,
+      y: fatigueY,
+      type: 'lines+markers',
+      name: 'Fatigue'
     };
-    var data = [trace1, trace2];
+
+    var nauseaData = {
+      x: datesX,
+      y: nauseaY,
+      type: 'lines+markers',
+      name: 'Nausea'
+    };
+
+    var depressionData = {
+      x: datesX,
+      y: depressionY,
+      type: 'lines+markers',
+      name: 'Depression'
+    };
+
+    var anxietyData = {
+      x: datesX,
+      y: anxietyY,
+      type: 'lines+markers',
+      name: 'Anxiety'
+    };
+
+    var drowsinessData = {
+      x: datesX,
+      y: drowsinessY,
+      type: 'lines+markers',
+      name: 'Depression'
+    };
+
+    var appetiteData = {
+      x: datesX,
+      y: appetiteY,
+      type: 'lines+markers',
+      name: 'Appetite'
+    };
+
+    var wellBeingData = {
+      x: datesX,
+      y: wellBeingY,
+      type: 'lines+markers',
+      name: 'Well-Being'
+    };
+
+    var lackOfAirData = {
+      x: datesX,
+      y: lackOfAirY,
+      type: 'lines+markers',
+      name: 'Lack of Air'
+    };
+
+    var insomniaData = {
+      x: datesX,
+      y: insomniaY,
+      type: 'lines+markers',
+      name: 'Insomnia'
+    };
+
+    var data = [painData, fatigueData, nauseaData, depressionData, anxietyData, drowsinessData, appetiteData, wellBeingData, lackOfAirData, insomniaData];
     
     var layout = {
         title: patientFullName + ' ESAS Responses',
@@ -36,15 +119,12 @@ $(function() {
     var data;
     var options;
     var chart;
-    var $chartDiv = $('#linechart_material');
-
-    console.log('document.ready width: ' + $('#esas-chart').css('width'));
-    console.log('document.ready offsetWidth: ' + document.getElementById('esas-chart').offsetWidth);
+    var $chartDiv = $('#esas-chart');
 
     /*
      * Django variables passed in from patient_profile.html
      * django_username: Username of currently logged in user.
-     * esasSurveys: Array of Objects. created in views.py patient_profile.
+     * esasJSON: String of json-serialized esas objects.
      * patientFullName: Full name of patient whose page we're on.
      * channels: List of channels the patient is in.
      * token: Twilio IPMessaging access token.
@@ -140,27 +220,4 @@ $(function() {
         chart = new google.charts.Line(document.getElementById('esas-chart'));
         chart.draw(data, google.charts.Line.convertOptions(options));
     }
-
-    // TODO: Google charts can't be drawn on hidden tabs.
-    $('#esas-tab').click(function(e) {
-        console.log('clicked #esas-tab');
-        //initialize();
-        //chart.draw(data, google.charts.Line.convertOptions(options));
-    })
-
-    /*
-    var hidden = false;
-    if ($chartDiv.parent().hasClass('active')) {
-        chart.draw(data, google.charts.Line.convertOptions(options));
-    } else {
-        $chartDiv.show();
-        chart.draw(data, google.charts.Line.convertOptions(options));
-        hidden = true;
-    }
-
-    if (hidden) {
-        $chartDiv.hide();
-    }
-    */
-
 })

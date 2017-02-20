@@ -117,16 +117,16 @@ class ESASSurvey(models.Model):
     insomnia = models.IntegerField(null=True)
 
     # Custom questions
-    fever = models.BooleanField(default=False)
+    fever = models.CharField(default="no", max_length=MAX_LENGTH)
 
-    constipated = models.BooleanField(default=False)
+    constipated = models.CharField(default="no", max_length=MAX_LENGTH)
     constipated_days = models.IntegerField(default=0)
     constipated_bothered = models.IntegerField(default=0)
 
-    vomiting = models.BooleanField(default=False)
+    vomiting = models.CharField(default="no", max_length=MAX_LENGTH)
     vomiting_count = models.IntegerField(default=0)
 
-    confused = models.BooleanField(default=False)
+    confused = models.CharField(default="no", max_length=MAX_LENGTH)
 
     class Meta:
         ordering = ('-created_date',)

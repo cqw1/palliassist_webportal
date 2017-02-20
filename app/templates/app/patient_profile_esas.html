@@ -17,7 +17,7 @@
                 
                 <a data-toggle="tab" class="list-group-item" href="#esas-overview">Overview</a>
 
-                {% for esas in esas_surveys %}
+                {% for esas in esas_objects %}
                 <a data-toggle="tab" class="list-group-item millis-date" href="#{{esas.pk}}">{{esas.created_date}}</a>
                 {% endfor %}
             </ul>
@@ -38,7 +38,7 @@
                     <div id="esas-chart" style="width: 500px; height: 500px"></div>
                 </div>
 
-                {% for esas in esas_surveys%}
+                {% for esas in esas_objects%}
                 <div id="{{ esas.pk}}" class="tab-pane fade in">
                     <div id="{{esas.pk}}-esas-responses">
 
@@ -110,54 +110,54 @@
                         <table class="table table-bordered table-hover">
 
                             <!-- Fever -->
-                            {% if esas.fever %}
+                            {% if esas.fever == "yes" %}
                             <tr class="esas-custom-field danger">
                             {% else %}
                             <tr class="esas-custom-field success">
                             {% endif %}
                                 <td>Fever</td>
-                                <td class="esas-answer">{{esas.fever|yesno:"Yes,No"}}</td>
+                                <td class="esas-answer">{{esas.fever|title}}</td>
                             </tr>
 
                             <!-- Constipated -->
-                            {% if esas.constipated %}
-                                {% if esas.bothered < 5 %}
+                            {% if esas.constipated == "yes" %}
+                                {% if esas.constipated_bothered < 5 %}
                                 <tr class="esas-custom-field warning">
                                 {% else %}
                                 <tr class="esas-custom-field danger">
                                 {% endif %}
                                     <td>Constipated</td>
-                                    <td class="esas-answer">Yes, for {{esas.constipated_days}} days, severity of {{esas.constipated_bothered}}</td>
+                                    <td class="esas-answer">{{esas.constipated|title}}, for {{esas.constipated_days}} days, severity of {{esas.constipated_bothered}}</td>
                                 </tr>
 
                             {% else %}
                             <tr class="esas-custom-field success">
                                 <td>Constipated</td>
-                                <td class="esas-answer">No</td>
+                                <td class="esas-answer">{{esas.constipated|title}}</td>
                             </tr>
                             {% endif %}
 
                             <!-- Vomiting -->
-                            {% if esas.vomiting %}
+                            {% if esas.vomiting == "yes" %}
                             <tr class="esas-custom-field danger">
                                 <td>Vomiting</td>
-                                <td class="esas-answer">Yes, {{esas.vomiting_count}} times</td>
+                                <td class="esas-answer">{{esas.vomiting|title}}, {{esas.vomiting_count}} times</td>
                             </tr>
                             {% else %}
                             <tr class="esas-custom-field success">
                                 <td>Vomiting</td>
-                                <td class="esas-answer">No</td>
+                                <td class="esas-answer">{{esas.vomiting|title}}</td>
                             </tr>
                             {% endif %}
 
                             <!-- Confused -->
-                            {% if esas.confused %}
+                            {% if esas.confused == "yes" %}
                             <tr class="esas-custom-field danger">
                             {% else %}
                             <tr class="esas-custom-field success">
                             {% endif %}
                                 <td>Confused</td>
-                                <td class="esas-answer">{{esas.confused|yesno:"Yes,No"}}</td>
+                                <td class="esas-answer">{{esas.confused|title}}</td>
                             </tr>
 
                         </table>
