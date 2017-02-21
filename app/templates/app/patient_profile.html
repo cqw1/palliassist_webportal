@@ -10,6 +10,7 @@
     <div class="col-md-9">
         <ul class="nav nav-tabs">
             <li class="active"><a data-toggle="tab" href="#home">Home</a></li>
+            <li><a data-toggle="tab" href="#notifications">Notifications</a></li>
             <li><a data-toggle="tab" href="#messages">Messages</a></li>
             <li><a data-toggle="tab" href="#medication">Medication</a></li>
             <li><a data-toggle="tab" id="esas-tab" href="#esas">ESAS</a></li>
@@ -20,14 +21,17 @@
             <div id="home" class="tab-pane fade in active">
                 {% include "patient_profile_home.html" with patient=patient %}
             </div>
+            <div id="notifications" class="tab-pane fade">
+                {% include "patient_profile_notifications.html" with notifications=notifications %}
+            </div>
             <div id="messages" class="tab-pane fade">
-                {% include "patient_profile_messages.html" with channels=channels%}
+                {% include "patient_profile_messages.html" with channels=channels %}
             </div>
             <div id="medication" class="tab-pane fade">
                 {% include "patient_profile_medication.html" with medications=medications %}
             </div>
             <div id="esas" class="tab-pane fade">
-                {% include "patient_profile_esas.html" with esas_objects=esas_objects%}
+                {% include "patient_profile_esas.html" with esas_objects=esas_objects %}
             </div>
             <div id="pain" class="tab-pane fade">
                 {% include "patient_profile_pain.html" with pain_surveys=pain_surveys pain_width=pain_width pain_height=pain_height %}
@@ -56,11 +60,13 @@
 
 {% load staticfiles %}
 <link rel="stylesheet" type="text/css" href="{% static 'app/content/patient_profile.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app/content/notifications.css' %}" />
 <link rel="stylesheet" type="text/css" href="{% static 'app/content/messages.css' %}" />
 <link rel="stylesheet" type="text/css" href="{% static 'app/content/pain.css' %}" />
 <link rel="stylesheet" type="text/css" href="{% static 'app/content/esas.css' %}" />
 
 <script src="{% static 'app/scripts/patient_profile.js' %}"></script>
+<script src="{% static 'app/scripts/notifications.js' %}"></script>
 <script src="{% static 'app/scripts/messages.js' %}"></script>
 <script src="{% static 'app/scripts/esas.js' %}"></script>
 <script src="{% static 'app/scripts/pain.js' %}"></script>

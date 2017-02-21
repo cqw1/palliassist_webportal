@@ -163,6 +163,12 @@ def patient_profile(request):
 
     notes_form = PatientNotesForm()
 
+    ### Notifications tab.
+    #notifications = Notification.objects.filter(patient=patient_obj)
+    notifications = []
+    # TODO
+
+
     ### Messages tab.
     channels = []
     # List the channels that the user is a member of
@@ -225,6 +231,7 @@ def patient_profile(request):
         'year': datetime.datetime.now().year,
         'patient': patient_obj,
         'notes_form': notes_form,
+        'notifications': notifications,
         'medications': medications,
         'esas_objects': esas_objects,
         'esas_json': esas_json,

@@ -155,6 +155,23 @@ class Medication(models.Model):
     posology = models.CharField(max_length=MAX_LENGTH, default="")
     rescue = models.TextField(default="")
 
+class Notification(models.Model):
+    """ A notification for a patient or doctor. """
+    created_date = models.DateTimeField(default=datetime.datetime.now)
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
+    text = models.TextField(default="")
+
+    ESAS = "ESAS"
+    PAIN = "Pain"
+    MEDICATION = "Medication"
+    OTHER = "Other"
+    CATEGORY_CHOICES = (
+        (ESAS, ESAS),
+        (PAIN, PAIN),
+        (MEDICATION, MEDICATION),
+        (OTHER, OTHER),
+    )
+    category = models.CharField(max_length=MAX_LENGTH, choices=CATEGORY_CHOICES, default=OTHER)
 
 
 
