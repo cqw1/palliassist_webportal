@@ -20,9 +20,7 @@ import json
 import datetime
 import pytz
 
-from .forms import QueryPatientsForm
-from .forms import PatientNotesForm
-from .forms import SignupForm 
+from .forms import *
 from django.forms.utils import ErrorList
 
 from django.contrib.auth.models import User
@@ -162,11 +160,16 @@ def patient_profile(request):
     patient_obj.next_appointment = convertDateTimeToMillis(patient_obj.next_appointment)
 
     notes_form = PatientNotesForm()
+    create_notification_form = CreateNotificationForm()
 
     ### Notifications tab.
-    #notifications = Notification.objects.filter(patient=patient_obj)
-    notifications = []
-    # TODO
+    notifications = Notification.objects.filter(patient=patient_obj)
+
+    for notification in notifications:
+        notification.created_date = convertDateTimeToMillis(notification.created_date)
+    
+    print notifications[0].created_date
+
 
 
     ### Messages tab.
@@ -231,6 +234,7 @@ def patient_profile(request):
         'year': datetime.datetime.now().year,
         'patient': patient_obj,
         'notes_form': notes_form,
+        'create_notification_form': create_notification_form,
         'notifications': notifications,
         'medications': medications,
         'esas_objects': esas_objects,
@@ -493,6 +497,13 @@ def save_notes(request):
 
     return JsonResponse({})
 
+def create_notification(request):
+
+    patient_obj = Patient.objects.get(sid=request.POST["sid"])
+    Notification.objects.create(created_date=timezone.now(), category=request.POST["category"], text=request.POST["text"], patient=patient_obj)
+
+    return JsonResponse({})
+
 def create_channel(request):
     """
     Saves notes about patients. POST request from 
@@ -521,6 +532,8 @@ def fcm(request):
     Format described in Meeting Minutes Feb 2, 2017
     """
     assert isinstance(request, HttpRequest)
+
+    print request.POST
 
     fcm_action = request.POST["action"]
     print "fcm_action", fcm_action
@@ -593,6 +606,21 @@ def fcm(request):
 
         elif fcm_type == "MEDICATION":
             # TODO
+            pass
+        elif fcm_type == "NOTIFICATION":
+            # TODO
+            fcm_data = request.POST["data"] # comes in string.
+            data_json = json.loads(fcm_data) # JSON object.
+            notification_category = data_json["category"]
+            notification_text = data_json["text"]
+
+            notification_matches = Notification.objects.filter(text=notification_text, patient=patient_obj, category=notification_category)
+            print notification_matches
+
+            for notification in notification_matches:
+                print "deleted", notification
+                notification.delete()
+
             pass
         elif fcm_type == "CUSTOM":
             # TODO

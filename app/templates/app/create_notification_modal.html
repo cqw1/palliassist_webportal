@@ -1,5 +1,5 @@
 
-<!-- Modal for createing a new notification to send to patient. -->
+<!-- Modal for creating a new notification to send to patient. -->
 <div class="modal fade" id="create-notification-modal" tabindex="-1" role="dialog" aria-labelledby="create-notification-title">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -7,6 +7,8 @@
                 <button id="x-create-notification-modal-btn" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title" id="create-notification-title">Create notification</h4>
             </div>
+
+            {% comment %}
             <div class="modal-body">
 
                 <!-- Select notification category -->
@@ -40,6 +42,46 @@
                 <button id="close-create-notification-btn" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 <button id="create-notification-btn" type="button" class="btn btn-primary" autocomplete="off">Create</button>
             </div>
+            {% endcomment %}
+
+
+
+
+
+            <div class="modal-body">
+                <form method="POST" action="/create-notification/" id="create-notification-form" class="form-group">
+                    {% csrf_token %}
+
+                    <strong>Select Category:</strong>
+
+                    <div id="category-radio-container">
+                        {% for choice in create_notification_form.category %}
+                            <div class="radio">
+                                {{choice.tag}}
+                                {{choice.choice_label}}
+                            </div >
+                        {% endfor %}
+                    </div>
+
+                    <br>
+
+                    {{ create_notification_form.text.label_tag }}
+                    {{ create_notification_form.text }}
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button id="close-create-notification-btn" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button id="create-notification-btn" type="button" class="btn btn-primary" onclick="createNotification('{{patient.sid}}')" autocomplete="off">Create</button>
+            </div>
+
+
+
+
+
+
+
+
         </div>
     </div>
 </div>

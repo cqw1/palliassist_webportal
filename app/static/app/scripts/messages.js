@@ -13,7 +13,7 @@ $(function() {
 
     /*
      * Variables passed from Django
-     * django_username = identity / username logged in
+     * djangoUsername = identity / username logged in
      * token = twilio token
      * channels = list of channels
      */
@@ -78,7 +78,7 @@ $(function() {
     // Helper function to print chat message to the chat window
     function printMessage(message, twilioChannel) {
         var $user = $('<span class="username">').text(message.author+ ' [' + message.timestamp.toString() + ']: ');
-        if (message.author === django_username) {
+        if (message.author === djangoUsername) {
             $user.addClass('me');
         }
         var $message = $('<span class="message">').text(message.body);

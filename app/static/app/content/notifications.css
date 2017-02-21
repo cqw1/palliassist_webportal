@@ -3,6 +3,7 @@
     margin-left: 20px;
 }
 
-#create-notification-message {
+#id_text {
+    /* Auto-generated id for the CreateNotificationForm text field. */
     max-width: 100%;
 }

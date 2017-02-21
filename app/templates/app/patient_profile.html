@@ -22,7 +22,7 @@
                 {% include "patient_profile_home.html" with patient=patient %}
             </div>
             <div id="notifications" class="tab-pane fade">
-                {% include "patient_profile_notifications.html" with notifications=notifications %}
+                {% include "patient_profile_notifications.html" with notifications=notifications patient=patient %}
             </div>
             <div id="messages" class="tab-pane fade">
                 {% include "patient_profile_messages.html" with channels=channels %}
@@ -48,7 +48,7 @@
             </div>
         </form>
         <div>
-            <input id="save-notes-button" class="btn btn-default" type="submit" onclick="saveNotes('{{patient.u_id}}')" value="Save">
+            <input id="save-notes-button" class="btn btn-default" type="submit" onclick="saveNotes('{{patient.sid}}')" value="Save">
             <input class="btn btn-default" type="button" onclick="clearNotes()" value="Clear">
         </div>
     </div>
@@ -73,10 +73,11 @@
 
 <script>
     {% autoescape off %}
-    var django_username = "{{user.username}}";
+    var djangoUsername = "{{user.username}}";
     var esasJSON = JSON.parse('{{esas_json}}');
     //var painSurveys = {{pain_surveys}};
     var patientFullName = "{{patient.full_name}}";
+    var patientUsername = "{{patient.user.username}}";
     var channels = {{channels}};
     var token = "{{token}}";
     updateNotes('{{patient.doctor_notes}}');

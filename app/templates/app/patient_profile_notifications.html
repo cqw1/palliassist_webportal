@@ -17,7 +17,7 @@
     <tbody>
         {% for notification in notifications %}
         <tr>
-            <td class="millis-date">{{ medication.created_date }}</td>
+            <td class="millis-date">{{ notification.created_date }}</td>
             <td>{{ notification.text }}</td>
             <td><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></td>
         </tr>
@@ -25,4 +25,4 @@
     </tbody>
 </table>
 
-{% include "create_notification_modal.html" %}
+{% include "create_notification_modal.html" with patient=patient %}

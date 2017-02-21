@@ -13,28 +13,47 @@ function handleRadioClick(radio) {
     if (radio.value == "other") {
         $('#create-notification-message').focus();
     }
+}
 
+function createNotification(patient_id) {
+    fcmRequestESAS(patientUsername, $('#create-notification-message').val());
+
+    $.post('/create-notification', $("#create-notification-form").serialize() + "&sid=" + patient_id, function() {
+        console.log('posted');
+        location.reload();
+    })
 }
 
 $(function() {
-    /*
-    // Clears the input fields in the modal to add a new member.
-    function clearCreateNotificationModal() {
-        $('#create-notification-message').val('Complete ESAS survey');
-    }
-    $('#close-create-notification-btn').click(clearCreateNotificationModal);
-    $('#x-create-notification-modal-btn').click(clearCreateNotificationModal);
+    // Django variables
+    //
+    // djangoUsername: username of logged in user
+    // esasJSON: JSON array of ESAS objects
+    // patientFullName: full name of patient
+    // patientUsername: username of patient
+    // channels: list of twilio channel names
+    // token: twilio token
 
-     // Clear it initially upon page load.
-    clearCreateNotificationModal();
-    */
-
+    // Resets the radio option to be the ESAS survey category. Correspondingly updates the message text box.
     function resetCreateNotificationModal() {
-        $('#esas-radio').prop('checked', true);
-        $('#create-notification-message').val(radioMap[$('input[name=category]:checked').val()]);
+        // id is auto-generated in CreateNotificationForm based on category field.
+        $('#id_category_0').prop('checked', true);
+        $('#id_text').val(radioMap[$('input[name=category]:checked').val()]);
     }
 
     $('#create-notification-modal-btn').click(resetCreateNotificationModal);
+
+    $('#create-notification-btn').click(function() {
+    })
+
+    $('input:radio').click(function() {
+        // id is auto-generated in CreateNotificationForm based on category field.
+        $('#id_text').val(radioMap[$(this).val()]);
+
+        if ($(this).val() == "other") {
+            $('#id_text').focus();
+        }
+    });
 
 });
 

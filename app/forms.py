@@ -28,8 +28,24 @@ class QueryPatientsForm(forms.Form):
     patient_query = forms.CharField(label=_("Search"), widget=forms.TextInput({ 'class': 'form-control', 'placeholder':'Search for patient'})) 
 
 class PatientNotesForm(forms.Form):
-    """ Queries for patients by name"""
+    """ Notes on a patient """
     notes = forms.CharField(widget=forms.Textarea({ 'class': 'form-control', 'placeholder':'Add notes here.'}), label='') 
+
+class CreateNotificationForm(forms.Form):
+    ESAS = "ESAS"
+    PAIN = "Pain"
+    MEDICATION = "Medication"
+    OTHER = "Other"
+    CATEGORY_CHOICES = (
+        ("esas", "ESAS"),
+        ("pain", "Pain"),
+        ("medication", "Medication"),
+        ("other", "Other"),
+    )
+
+    category = forms.ChoiceField(choices=CATEGORY_CHOICES, widget=forms.RadioSelect())
+    text = forms.CharField(widget=forms.Textarea({'class': 'form-control'}))
+
 
 class SignupForm(forms.Form):
     """ Registering new users, both doctors and patients. """
