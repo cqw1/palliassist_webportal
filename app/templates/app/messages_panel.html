@@ -34,7 +34,7 @@
             <!-- Buttons -->
             <div class="input-group-btn">
                 <button id="upload-image-modal-btn" data-toggle="modal" data-target="#upload-image-modal" class="btn btn-default" type="button">
-                    <span class="glyphicon glyphicon-paperclip" aria-hidden="true"></span>
+                    <span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
                 </button>
                 <!--
                 <button class="btn btn-default" type="button">
@@ -48,3 +48,6 @@
         </li>
     </ul>
 </div>
+
+{% include "messages_add_member_modal.html" %}
+{% include "messages_upload_image_modal.html" with upload_image_form=upload_image_form %}

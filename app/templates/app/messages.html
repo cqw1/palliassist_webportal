@@ -26,12 +26,9 @@
     </div>
 
     <div class="col-md-9">
-        {% include "messages_panel.html" with channels=channels %}
+        {% include "messages_panel.html" with channels=channels upload_image_form=upload_image_form %}
     </div>
 </div>
-
-{% include "messages_add_member_modal.html" %}
-{% include "messages_upload_image_modal.html" with upload_image_form=upload_image_form %}
 
 {% comment %}
 <div id="saved-messages"></div>
