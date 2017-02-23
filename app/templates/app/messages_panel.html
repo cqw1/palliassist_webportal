@@ -12,12 +12,12 @@
 
         {% for ch in channels %}
         {% if forloop.first %}
-        <div id="{{ ch.sid }}" class="tab-pane fade in active">
+        <div id="{{ ch.unique_name }}" class="tab-pane fade in active">
         {% else %} 
-        <div id="{{ ch.sid }}" class="tab-pane fade in">
+        <div id="{{ ch.unique_name}}" class="tab-pane fade in">
         {% endif %}
             {{ch.friendly_name}}
-            <div id="{{ch.sid}}-chat-messages"></div>
+            <div id="{{ch.unique_name}}-chat-messages"></div>
         </div>
         {% endfor %}
     </div>
@@ -33,12 +33,14 @@
 
             <!-- Buttons -->
             <div class="input-group-btn">
-                <button class="btn btn-default" type="button">
-                    <span class="glyphicon glyphicon-tasks" aria-hidden="true"></span>
+                <button id="upload-image-modal-btn" data-toggle="modal" data-target="#upload-image-modal" class="btn btn-default" type="button">
+                    <span class="glyphicon glyphicon-paperclip" aria-hidden="true"></span>
                 </button>
+                <!--
                 <button class="btn btn-default" type="button">
                     <span class=" glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                 </button>
+                -->
                 <button id="send-message-btn" class="btn btn-primary" type="button">Send</button>
             </div>
 

@@ -15,6 +15,7 @@ from twilio.access_token import AccessToken, IpMessagingGrant
 from twilio.rest.ip_messaging import TwilioIpMessagingClient
 
 import datetime
+import os
 
 # Create your models here.
 MAX_LENGTH = 255
@@ -155,6 +156,9 @@ class Medication(models.Model):
     posology = models.CharField(max_length=MAX_LENGTH, default="")
     rescue = models.TextField(default="")
 
+    class Meta:
+        ordering = ('-created_date',)
+
 class Notification(models.Model):
     """ A notification for a patient or doctor. """
     created_date = models.DateTimeField(default=datetime.datetime.now)
@@ -173,6 +177,23 @@ class Notification(models.Model):
     )
     category = models.CharField(max_length=MAX_LENGTH, choices=CATEGORY_CHOICES, default=OTHER)
 
+    class Meta:
+        ordering = ('-created_date',)
+
+
+def user_directory_path(instance, imagename):
+    """ Should upload to MEDIA/uploads/username/imagename """
+    return os.path.join("uploads", instance.patient.user.username, imagename)
+
+
+class Image(models.Model):
+    """ An uploaded image """
+    created_date = models.DateTimeField(default=datetime.datetime.now)
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to=user_directory_path)
+
+    class Meta:
+        ordering = ('-created_date',)
 
 
 @receiver(post_save, sender=User)

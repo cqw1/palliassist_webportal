@@ -1,0 +1,33 @@
+
+<!-- Modal for uploading image to current chat -->
+<div class="modal fade" id="upload-image-modal" tabindex="-1" role="dialog" aria-labelledby="upload-image-title">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button id="x-upload-image-btn" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="upload-image-title">Upload image</h4>
+            </div>
+
+                <div class="modal-body">
+                    <form method="POST" action="/upload-image/" enctype="multipart/form-data" id="upload-image-form" class="form-group">
+                        {% csrf_token %}
+
+                        {{ upload_image_form }}
+
+                    </form>
+
+                    <span id="upload-image-error"></span>
+                </div>
+                <div class="modal-footer">
+                    <button id="close-upload-image-btn" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <!-- <button id="upload-image-btn" type="submit" class="btn btn-primary" autocomplete="off">Upload</button> -->
+                    <!-- <button id="upload-image-btn" type="button" class="btn btn-primary" data-dismiss="modal" onclick="uploadimage('{{patient.sid}}')" autocomplete="off">Upload</button> -->
+                    <button id="upload-image-btn" type="button" class="btn btn-primary" autocomplete="off">Upload</button>
+                </div>
+
+
+
+
+        </div>
+    </div>
+</div>

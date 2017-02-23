@@ -50,6 +50,15 @@
     color: #ccc;
 }
 
+#upload-file-error {
+    color: red;
+    font-weight: bold;
+}
+
+.img-message {
+    max-width: 50%;
+}
+
 /* Vertical tabs css */
 /*
 .list-group {

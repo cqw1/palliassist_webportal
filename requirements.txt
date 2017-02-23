@@ -4,4 +4,6 @@ twilio==5.7.0
 MySQL-python
 PyCap
 django-phonenumber-field
+azure-storage
+Pillow
 

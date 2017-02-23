@@ -19,11 +19,16 @@ from django.utils import timezone
 import json
 import datetime
 import pytz
+import os
 
 from .forms import *
 from django.forms.utils import ErrorList
 
 from django.contrib.auth.models import User
+
+from azure.storage.blob import BlockBlobService
+from azure.storage.blob import PublicAccess
+from azure.storage.blob import ContentSettings 
 
 
 import logging
@@ -161,6 +166,7 @@ def patient_profile(request):
 
     notes_form = PatientNotesForm()
     create_notification_form = CreateNotificationForm()
+    upload_image_form = UploadImageForm()
 
     ### Notifications tab.
     notifications = Notification.objects.filter(patient=patient_obj)
@@ -235,6 +241,7 @@ def patient_profile(request):
         'patient': patient_obj,
         'notes_form': notes_form,
         'create_notification_form': create_notification_form,
+        'upload_image_form': upload_image_form,
         'notifications': notifications,
         'medications': medications,
         'esas_objects': esas_objects,
@@ -311,7 +318,7 @@ def signup_success(request):
 
 
 def messages(request):
-    """Renders the messages page."""
+    """ Renders the messages page. """
     assert isinstance(request, HttpRequest)
 
     # Check if user is logged in. Otherwise redirect to login page.
@@ -338,13 +345,39 @@ def messages(request):
     new_channel = settings.TWILIO_IPM_SERVICE.channels.create(unique_name=patient0, friendly_name=patient0, type="private")
     new_channel.members.create(identity=request.user.username)
     new_channel.members.create(identity=patient0)
+
     """
 
+    """
+    # Delete all channels that aren't Demo Channel or patient0 channel
+    for c in settings.TWILIO_IPM_SERVICE.channels.list():
+        if c.sid == "CHd4c969e1d91946aeb1ebde3fa5cb85a2":
+            # Don't delete patient0 channel
+            pass
+        elif c.sid == "CHe75c920bb94c449da5fba883aa64db6c":
+            # Don't delete demo channel
+            pass
+        else:
+            c.delete()
+    """
 
+    """
+    # Update friendly name of channel
+    patient0_channel = settings.TWILIO_IPM_SERVICE.channels.get(sid="CHd4c969e1d91946aeb1ebde3fa5cb85a2")
+    patient0_channel.update(friendly_name="Patient 0")
+    """
+        
+
+    # Always allow the user to chat in the demo channel by adding to it if we haven't already been added.
+    demo_channel = settings.TWILIO_IPM_SERVICE.channels.get(sid="CHe75c920bb94c449da5fba883aa64db6c")
+    #demo_channel.update(unique_name="demochannel")
+    member = demo_channel.members.create(identity=request.user.username)
 
     channels = []
+
     # List the channels that the user is a member of
     for c in settings.TWILIO_IPM_SERVICE.channels.list():
+        print "looking at", c.friendly_name
         for m in c.members.list():
             #print m.identity
             # Assuming that all twilio identities are based off of usernames
@@ -370,6 +403,7 @@ def messages(request):
         for m in c.members.list():
             print "\t\t", m.identity
         """
+    upload_image_form = UploadImageForm()
 
     patients = Patient.objects.all()
     
@@ -382,6 +416,7 @@ def messages(request):
     context = {
         'title':'Messages',
         'message':'Send messages.',
+        'upload_image_form': upload_image_form,
         'year':datetime.datetime.now().year,
         'patients': patients,
         'channels': channels,
@@ -394,10 +429,11 @@ def messages(request):
         context
     )
 
-"""
-Saves a message to the REDCap database.
-"""
+
 def save_message(request):
+    """
+    Saves a message to the REDCap database.
+    """
     assert isinstance(request, HttpRequest)
 
     print request
@@ -452,10 +488,10 @@ def save_message(request):
     
     return JsonResponse({})
 
-"""
-Gets an access token for Twilio IP messaging. Called by messages.js.
-"""
 def token(request):
+    """
+    Gets an access token for Twilio IP messaging. Called by messages.js.
+    """
     assert isinstance(request, HttpRequest)
 
     # create a randomly generated username for the client
@@ -503,6 +539,41 @@ def create_notification(request):
     Notification.objects.create(created_date=timezone.now(), category=request.POST["category"], text=request.POST["text"], patient=patient_obj)
 
     return JsonResponse({})
+    #return HttpResponseRedirect(request.META['HTTP_REFERER'] + "#notifications")
+
+def upload_image(request):
+
+    success = False
+    message = ""
+    blob_name = ""
+    container_name = ""
+
+    patient_obj = User.objects.get(username=request.POST["username"]).patient
+    print patient_obj
+
+    if len(request.FILES.items()) > 0:
+        for name, temp_image in request.FILES.items():
+            image_obj = Image.objects.create(created_date=timezone.now(), patient=patient_obj, image=temp_image)
+
+
+        container_name = patient_obj.user.username
+
+        settings.BLOCK_BLOB_SERVICE.create_container(container_name, public_access=PublicAccess.Container)
+        blob_name = patient_obj.user.username + "_" + str(convertDateTimeToMillis(datetime.datetime.now()))
+        settings.BLOCK_BLOB_SERVICE.create_blob_from_path(container_name, blob_name, image_obj.image.path, content_settings=ContentSettings(content_type='image/png'))
+        success = True
+
+    else:
+        message = "Error uploading image. Please try again."
+
+
+    return JsonResponse({
+        "success": success, 
+        "message": message,
+        "blob_name": blob_name,
+        "container_name": container_name
+    })
+    #return HttpResponseRedirect(request.META['HTTP_REFERER'] + "#messages")
 
 def create_channel(request):
     """

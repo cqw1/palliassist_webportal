@@ -46,6 +46,9 @@ class CreateNotificationForm(forms.Form):
     category = forms.ChoiceField(choices=CATEGORY_CHOICES, widget=forms.RadioSelect())
     text = forms.CharField(widget=forms.Textarea({'class': 'form-control'}))
 
+class UploadImageForm(forms.Form):
+    image = forms.ImageField(label="Select a image.")
+
 
 class SignupForm(forms.Form):
     """ Registering new users, both doctors and patients. """

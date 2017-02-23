@@ -19,7 +19,7 @@
             <!-- Chat channels list -->
             <ul class="list-group">
                 {% for ch in channels %}
-                <a data-toggle="tab" class="list-group-item chat-list-item" href="#{{ch.sid}}">{{ch.friendly_name}}<span class="badge">3</span></a>
+                <a data-toggle="tab" class="list-group-item chat-list-item" href="#{{ch.unique_name}}">{{ch.friendly_name}}<span class="badge">3</span></a>
                 {% endfor %}
             </ul>
         </div>
@@ -31,6 +31,7 @@
 </div>
 
 {% include "messages_add_member_modal.html" %}
+{% include "messages_upload_image_modal.html" with upload_image_form=upload_image_form %}
 
 {% comment %}
 <div id="saved-messages"></div>
@@ -47,7 +48,7 @@
     // Passing Django variables along to javascript side by setting variables.
     // Probably not best practice but eh.
     {% autoescape off %}
-    var django_username = "{{user.username}}";
+    var djangoUsername = "{{user.username}}";
     var channels = {{channels}};
     var token = "{{token}}";
     {% endautoescape %}

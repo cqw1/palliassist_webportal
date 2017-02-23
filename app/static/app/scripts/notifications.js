@@ -46,7 +46,8 @@ $(function() {
     $('#create-notification-btn').click(function() {
     })
 
-    $('input:radio').click(function() {
+    //$('input:radio').click(function() {
+    $('input[name=category]').click(function() {
         // id is auto-generated in CreateNotificationForm based on category field.
         $('#id_text').val(radioMap[$(this).val()]);
 

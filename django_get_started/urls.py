@@ -41,6 +41,7 @@ urlpatterns = [
     url(r'^(?i)save-notes', app_views.save_notes, name='save-notes'),
     url(r'^(?i)create-channel', app_views.create_channel, name='create-channel'),
     url(r'^(?i)create-notification', app_views.create_notification, name='create-notification'),
+    url(r'^(?i)upload-image', app_views.upload_image, name='upload-image'),
     url(r'^(?i)fcm', app_views.fcm, name='fcm'),
     url(r'^(?i)token', app_views.token, name='token'),
     url(r'^(?i)login/$',
@@ -67,4 +68,4 @@ urlpatterns = [
 
     # Uncomment the next line to enable the admin:
     # url(r'^admin/', include(admin.site.urls)),
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
