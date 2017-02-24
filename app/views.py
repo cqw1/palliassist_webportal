@@ -10,8 +10,6 @@ from cgi import parse_qs, escape
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import views as auth_views
 from django.core.urlresolvers import reverse
-#from app.models import UnreadMessage
-#from app.models import Patient, Doctor
 from app.models import *
 from django.core import serializers
 from django.utils import timezone
@@ -162,7 +160,6 @@ def patient_profile(request):
     print "patient_id:", patient_id
 
     patient_obj = Patient.objects.get(sid=patient_id)
-    #patient_obj.next_appointment = convertDateTimeToMillis(patient_obj.next_appointment)
 
     notes_form = PatientNotesForm()
     create_notification_form = CreateNotificationForm()
@@ -170,13 +167,6 @@ def patient_profile(request):
 
     ### Notifications tab.
     notifications = Notification.objects.filter(patient=patient_obj)
-
-    for notification in notifications:
-        #notification.created_date = convertDateTimeToMillis(notification.created_date)
-        pass
-    
-    print notifications[0].created_date
-
 
 
     ### Messages tab.
@@ -204,39 +194,16 @@ def patient_profile(request):
     esas_millis = ESASSurvey.objects.filter(patient=patient_obj)
 
     for esas in esas_millis:
-        esas.created_date = convertDateTimeToMillis(esas.created_date)
+        esas.created_date = convert_datetime_to_millis(esas.created_date)
 
     esas_json = serializers.serialize("json", esas_millis)
 
-    """
-    for esas in esas_objects:
-        temp_esas = {}
-        #temp_esas["created_date"] = (esas.created_date.replace(tzinfo=None) - datetime.datetime(1970, 1, 1)).total_seconds() * 1000
-        temp_esas["created_date"] = convertDateTimeToMillis(esas.created_date)
-        temp_questions = []
-        for q in esas.questions.all():
-            temp_questions.append({"question": str(q.question), "answer": q.answer})
-
-        temp_esas["questions"] = temp_questions
-        temp_esas["primary_key"] = esas.pk;
-        esas_surveys.append(temp_esas)
-    """
-
-
-
     ### Pain tab.
     pain_objects = PainSurvey.objects.filter(patient=patient_obj)
-    for pain in pain_objects:
-        #pain.created_date = convertDateTimeToMillis(pain.created_date)
-        pass
 
 
     ### Medication tab.
     medications = Medication.objects.filter(patient=patient_obj)
-    for medication in medications:
-        #medication.created_date = convertDateTimeToMillis(medication.created_date)
-        pass
-
 
     context = {
         'title': 'Patient Profile',
@@ -451,22 +418,6 @@ def save_message(request):
     print "saveMessage:"
     print sender, channel, content, content_type, time_sent
 
-    """
-    db = MySQLdb.connect(host="us-cdbr-azure-southcentral-f.cloudapp.net", user="b811fcf3c52d36", passwd="91e7ba1e", db="palliative")
-    cur = db.cursor()
-
-    sender_id = cur.execute("SELECT id FROM palliative.login WHERE username = '" + sender + "';")
-    print sender_id
-
-    result = cur.execute("INSERT INTO palliative.messages VALUES(" + str(sender_id) + ", '" + channel + "', '" + content + "', '" + content_type + "', " + str(time_sent) + ");")
-    print result
-
-    cur.close()
-
-    db.commit()
-    db.close()
-    """
-
     URL = 'https://hcbredcap.com.br/api/'
     TOKEN = 'F2C5AEE8A2594B0A9E442EE91C56CC7A'
 
@@ -563,7 +514,7 @@ def upload_image(request):
         container_name = patient_obj.user.username
 
         settings.BLOCK_BLOB_SERVICE.create_container(container_name, public_access=PublicAccess.Container)
-        blob_name = patient_obj.user.username + "_" + str(convertDateTimeToMillis(datetime.datetime.now()))
+        blob_name = patient_obj.user.username + "_" + str(convert_datetime_to_millis(datetime.datetime.now()))
         settings.BLOCK_BLOB_SERVICE.create_blob_from_path(container_name, blob_name, image_obj.image.path, content_settings=ContentSettings(content_type='image/png'))
         success = True
 
@@ -600,27 +551,63 @@ def create_channel(request):
 
     return JsonResponse({})
 
-def handleCompletedMedication(post):
+def handle_completed_medication(dt, patient_obj, data):
     # TODO
     pass
 
-def handleCompletedPain(post):
-    print "handleCompletedPain"
-    print post
+def handle_completed_pain(dt, patient_obj, data):
+    print "handle_completed_pain"
+    print data
 
-    pain = PainSurvey.objects.create(created_date=dt_aware, patient=patient_obj, width=int(post["width"]), height=int(post["height"]))
+    pain = PainSurvey.objects.create(created_date=dt, patient=patient_obj, width=int(data["width"]), height=int(data["height"]))
 
     for point in post["front"]["points"]:
-        pain_point = PainPoint.objects.create(x=int(float(post["x"])), y=int(float(post["y"])), intensity=int(post["intensity"]))
+        pain_point = PainPoint.objects.create(x=int(float(data["x"])), y=int(float(data["y"])), intensity=int(data["intensity"]))
         pain.front_points.add(pain_point)
         pain.save()
 
     for point in post["back"]["points"]:
-        pain_point = PainPoint.objects.create(x=int(float(post["x"])), y=int(float(post["y"])), intensity=int(post["intensity"]))
+        pain_point = PainPoint.objects.create(x=int(float(data["x"])), y=int(float(data["y"])), intensity=int(data["intensity"]))
         pain.back_points.add(pain_point)
         pain.save()
 
     print pain
+    return JsonResponse({})
+
+def handle_completed_ESAS(dt, patient_obj, data):
+    print "handle_completed_ESAS"
+    print data 
+
+    esas = ESASSurvey.objects.create(created_date=dt, patient=patient_obj)
+    esas.pain = int(data["pain"])
+    esas.fatigue = int(data["fatigue"])
+    esas.nausea = int(data["nausea"])
+    esas.depression = int(data["depression"])
+    esas.anxiety = int(data["anxiety"])
+    esas.drowsiness = int(data["drowsiness"])
+    esas.appetite = int(data["appetite"])
+    esas.well_being = int(data["well_being"])
+    esas.lack_of_air = int(data["lack_of_air"])
+    esas.insomnia = int(data["insomnia"])
+    esas.pain = int(data["pain"])
+
+    esas.fever = data["fever"]
+    
+    esas.constipated = data["constipated"]
+    if data["constipated"] == "yes":
+        esas.constipated_days = int(data["constipated_days"])
+        esas.constipated_bothered = int(data["constipated_bothered"])
+
+    esas.vomiting = data["vomiting"]
+    if data["vomiting"] == "yes":
+        esas.vomiting_count = int(data["vomiting_count"])
+
+    esas.confused = data["confused"]
+
+    esas.save()
+    print esas
+
+
     return JsonResponse({})
 
 
@@ -634,131 +621,55 @@ def fcm(request):
 
     print request.POST
 
+    patient_username = request.POST["patient"] # TODO hardcoded to patient0 right now 
+    patient_obj = User.objects.get(username=patient_username).patient
+    print "patient_obj", patient_obj 
+
 
     event = request.POST["event"]
 
     if event == "COMPLETED":
+
+        timestamp = request.POST["timestamp"] # milliseconds
+        dt_unaware = datetime.datetime.fromtimestamp(int(timestamp)/1000.0)
+        dt_aware = timezone.make_aware(dt_unaware, timezone.get_current_timezone())
+        print "dt_aware", dt_aware 
+
         if request.POST["category"] == "MEDICATION":
-            return handleCompletedMedication(request.POST)
-            pass
+            return handle_completed_medication(dt_aware, patient_obj, json.loads(request.POST["data"]))
 
         elif request.POST["category"] == "PAIN":
-            return handleCompletedPain(request.POST)
-            pass
+            return handle_completed_pain(dt_aware, patient_obj, json.loads(request.POST["data"]))
 
         elif request.POST["category"] == "ESAS":
-            pass
+            return handle_completed_ESAS(dt_aware, patient_obj, json.loads(request.POST["data"]))
 
     elif event == "LOGIN":
         if request.POST["category"] == "MEDICATION":
-            pass
+            return JsonResponse({
+                'medications': serializers.serialize("json", Medication.objects.filter(patient=patient_obj))
+            })
 
         elif request.POST["category"] == "NOTIFICATION":
-            pass
+            return JsonResponse({
+                'notifications': serializers.serialize("json", Notification.objects.filter(patient=patient_obj))
+            })
 
     # TODO. return an error.
 
-
-
-
-
-    fcm_action = request.POST["action"]
-    print "fcm_action", fcm_action
-
-    fcm_timestamp = request.POST["timestamp"] # milliseconds
-    dt_unaware = datetime.datetime.fromtimestamp(int(fcm_timestamp)/1000.0)
-    dt_aware = timezone.make_aware(dt_unaware, timezone.get_current_timezone())
-    print "dt_aware", dt_aware 
-
-    fcm_type = request.POST["type"]
-    print "fcm_type", fcm_type 
-
-    fcm_patient = request.POST["patient"] # TODO hardcoded to patient0 right now 
-    patient_obj = User.objects.get(username=fcm_patient).patient
-    print "patient_obj", patient_obj 
-
-    #return JsonResponse({"action": fcm_action, "timestamp": fcm_timestamp, "type": fcm_type, "questions": fcm_questions})
-
-
-    if fcm_action == "REQUEST":
-        # TODO
-        pass
-    elif fcm_action == "SAVE":
-        if fcm_type == "ESAS":
-            fcm_questions = request.POST["questions"] # comes in string.
-            questions = json.loads(fcm_questions) # JSON object.
-            print "questions", questions
-
-            esas = ESASSurvey.objects.create(patient=patient_obj, created_date=dt_aware)
-
-            for q in questions:
-                temp_q = ESASQuestion.objects.create(question=q["question"], answer=q["answer"])
-                print temp_q
-                esas.questions.add(temp_q)
-
-            esas.save()
-            print "esas", esas
-
-        elif fcm_type == "PAIN":
-            pain = PainSurvey.objects.create(created_date=dt_aware, patient=patient_obj, width=int(request.POST["width"]), height=int(request.POST["height"]))
-
-            # int(float()) to get around parsing a string with a decimal to an int
-            pain_point = PainPoint.objects.create(x=int(float(request.POST["x"])), y=int(float(request.POST["y"])), intensity=int(request.POST["intensity"]))
-
-            print int(request.POST["width"])
-            print int(request.POST["height"])
-            print int((float(request.POST["x"])))
-            print int((float(request.POST["y"])))
-            print int((float(request.POST["intensity"])))
-
-            print "pain_point", pain_point 
-            pain.points.add(pain_point)
-            print "points", pain.points.all()
-
-            pain.save()
-            print "pain", pain
-
-            """
-            fcm_points = request.POST["points"] # comes in string.
-            points = json.loads(fcm_points) # JSON object.
-
-            for p in points:
-                temp_p = PainPoint.objects.create(x=int(p["x"]), y=int(p["y"]), intensity=int(p["intensity"]))
-                print temp_p
-                pain.points.add(temp_p)
-
-            pain.save()
-            print pain
-            """
-
-        elif fcm_type == "MEDICATION":
-            # TODO
-            pass
-        elif fcm_type == "NOTIFICATION":
-            # TODO
-            fcm_data = request.POST["data"] # comes in string.
-            data_json = json.loads(fcm_data) # JSON object.
-            notification_category = data_json["category"]
-            notification_text = data_json["text"]
-
-            notification_matches = Notification.objects.filter(text=notification_text, patient=patient_obj, category=notification_category)
-            print notification_matches
-
-            for notification in notification_matches:
-                print "deleted", notification
-                notification.delete()
-
-            pass
-        elif fcm_type == "CUSTOM":
-            # TODO
-            pass
-        else:
-            print "Unknown request type", fcm_type 
-    else:
-        print "Unknown request action", fcm_action 
-
     return render(request, 'app/blank.html')
 
-def convertDateTimeToMillis(dt):
+def convert_datetime_to_millis(dt):
     return (dt.replace(tzinfo=None) - datetime.datetime(1970, 1, 1)).total_seconds() * 1000
 
+
+
+
+
+def admin_input(request):
+
+    return render(
+        request,
+        'app/admin_input.html',
+        {}
+    )

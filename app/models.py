@@ -166,17 +166,14 @@ class Notification(models.Model):
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     text = models.TextField(default="")
 
-    ESAS = "ESAS"
-    PAIN = "Pain"
-    MEDICATION = "Medication"
-    OTHER = "Other"
+    # (actual value, human readable form)
     CATEGORY_CHOICES = (
-        (ESAS, ESAS),
-        (PAIN, PAIN),
-        (MEDICATION, MEDICATION),
-        (OTHER, OTHER),
+        ("ESAS", "ESAS"),
+        ("PAIN", "Pain"),
+        ("MEDICATION", "Medication"),
+        ("OTHER", "Other"),
     )
-    category = models.CharField(max_length=MAX_LENGTH, choices=CATEGORY_CHOICES, default=OTHER)
+    category = models.CharField(max_length=MAX_LENGTH, choices=CATEGORY_CHOICES, default="OTHER")
 
     class Meta:
         ordering = ('-created_date',)

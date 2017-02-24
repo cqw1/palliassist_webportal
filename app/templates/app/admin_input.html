@@ -1,0 +1,50 @@
+<html>
+
+    <head>
+        {% load staticfiles %}
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="{% static 'app/scripts/admin.js' %}"></script>
+    </head>
+
+    <body>
+        <br>
+        <strong>Send ESAS</strong>
+        <br>
+        <br>
+        patient: <input type="text" id="patient"><br>
+        timestamp: <input type="text" id="timestamp"><br>
+
+        <br>
+        pain: <input type="text" id="pain"><br>
+        fatigue: <input type="text" id="fatigue"><br>
+        nausea: <input type="text" id="nausea"><br>
+        depression: <input type="text" id="depression"><br>
+        anxiety: <input type="text" id="anxiety"><br>
+        drowsiness: <input type="text" id="drowsiness"><br>
+        appetite: <input type="text" id="appetite"><br>
+        well being: <input type="text" id="well_being"><br>
+        lack of air: <input type="text" id="lack_of_air"><br>
+        insomnia: <input type="text" id="insomnia"><br>
+
+        <br>
+        fever: <input type="text" id="fever"><br>
+
+        <br>
+        constipated: <input type="text" id="constipated"><br>
+        constipated days: <input type="text" id="constipated_days"><br>
+        constipated bothered: <input type="text" id="constipated_bothered"><br>
+
+        <br>
+        vomiting: <input type="text" id="vomiting"><br>
+        vomiting count: <input type="text" id="vomiting_count"><br>
+        
+        <br>
+        confused: <input type="text" id="confused"><br>
+
+        <br>
+        <button type="button" onclick="sendESAS()">Send ESAS</button>
+        
+
+    </body>
+
+</html>
