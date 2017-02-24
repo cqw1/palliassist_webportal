@@ -12,13 +12,22 @@
 <form method="GET" action="/patients/">
     {% csrf_token %}
 
-    <div class="pa-child-display-inline-block">
-        {{ form }}
+    <!-- <div class="pa-child-display-inline-block"> -->
+    <div>
+        <div class="pa-child-display-inline-block">
+            {{ query_patients_form.patient_query.label_tag }}
+            {{ query_patients_form.patient_query}}
 
-        <button type="submit" class="btn btn-primary">Search</button>
+            <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+
+        {{ query_patients_form.mine.label_tag }}
+        {{ query_patients_form.mine }}
     </div>
 
+
 </form>
+
 </section>
 
 <hr />
@@ -34,6 +43,7 @@
             <th>Hospital ID</th>
             <th>Gender</th>
             <th>Age</th>
+            <th><!-- Add/Remove button column --></th>
         </tr>
     </thead>
     <tbody>
@@ -44,6 +54,7 @@
             <td>{{ patient_result.sid }} </td>
             <td>{{ patient_result.gender }} </td>
             <td>{{ patient_result.age }} </td>
+            <td><button type="button" class="btn btn-success btn-sm">Success</button></td>
         </tr>
         {% endfor %}
     </tbody>

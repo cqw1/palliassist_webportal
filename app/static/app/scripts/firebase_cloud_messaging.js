@@ -51,3 +51,26 @@ function fcmRequestESAS(patientUsername, text) {
     console.log(dataJSON);
     //sendNotification(dataJSON);
 }
+
+function fcmRemoveESAS(patientUsername, text) {
+    console.log('fcmRequestESAS ' + text);
+
+    var dataJSON = JSON.stringify({
+        'to' : '/topics/test',
+        'data' : {
+              'action' : 'REQUEST',
+              'type' : 'NOTIFICATION',
+              'timestamp' : Date.now(),
+              'patient': patientUsername,
+              'data': {
+                  'category': 'ESAS',
+                  'text': text,
+                  'done': 'N'
+              }
+        }
+    });
+
+    console.log(dataJSON);
+    //sendNotification(dataJSON);
+}
+

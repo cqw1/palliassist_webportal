@@ -36,7 +36,8 @@
     </tr>
     <tr>
         <td class="patient-field">Next Appointment:</td>
-        <td class="millis-date">{{patient.next_appointment}}</td>
+        <!-- <td class="millis-date">{{patient.next_appointment}}</td> -->
+        <td>{{patient.next_appointment|date:"SHORT_DATE_FORMAT"}} {{patient.next_appointment|time:"H:i"}}</td>
     </tr>
 
 </table>

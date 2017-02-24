@@ -140,7 +140,7 @@ def patients(request):
         'message': 'List of patients.',
         'year': datetime.datetime.now().year,
         'patient_results': patient_results,
-        'form': query_patients_form,
+        'query_patients_form': query_patients_form,
     }
 
     return render(
@@ -162,7 +162,7 @@ def patient_profile(request):
     print "patient_id:", patient_id
 
     patient_obj = Patient.objects.get(sid=patient_id)
-    patient_obj.next_appointment = convertDateTimeToMillis(patient_obj.next_appointment)
+    #patient_obj.next_appointment = convertDateTimeToMillis(patient_obj.next_appointment)
 
     notes_form = PatientNotesForm()
     create_notification_form = CreateNotificationForm()
@@ -172,7 +172,8 @@ def patient_profile(request):
     notifications = Notification.objects.filter(patient=patient_obj)
 
     for notification in notifications:
-        notification.created_date = convertDateTimeToMillis(notification.created_date)
+        #notification.created_date = convertDateTimeToMillis(notification.created_date)
+        pass
     
     print notifications[0].created_date
 
@@ -200,11 +201,12 @@ def patient_profile(request):
 
     ### ESAS tab.
     esas_objects = ESASSurvey.objects.filter(patient=patient_obj)
+    esas_millis = ESASSurvey.objects.filter(patient=patient_obj)
 
-    for esas in esas_objects:
+    for esas in esas_millis:
         esas.created_date = convertDateTimeToMillis(esas.created_date)
 
-    esas_json = serializers.serialize("json", esas_objects)
+    esas_json = serializers.serialize("json", esas_millis)
 
     """
     for esas in esas_objects:
@@ -225,13 +227,15 @@ def patient_profile(request):
     ### Pain tab.
     pain_objects = PainSurvey.objects.filter(patient=patient_obj)
     for pain in pain_objects:
-        pain.created_date = convertDateTimeToMillis(pain.created_date)
+        #pain.created_date = convertDateTimeToMillis(pain.created_date)
+        pass
 
 
     ### Medication tab.
     medications = Medication.objects.filter(patient=patient_obj)
     for medication in medications:
-        medication.created_date = convertDateTimeToMillis(medication.created_date)
+        #medication.created_date = convertDateTimeToMillis(medication.created_date)
+        pass
 
 
     context = {

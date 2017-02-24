@@ -17,7 +17,8 @@
                 <a data-toggle="tab" class="list-group-item" href="#pain-overview">Overview</a>
 
                 {% for pain in pain_objects %}
-                <a data-toggle="tab" class="list-group-item millis-date" href="#{{pain.pk}}">{{pain.created_date}}</a>
+                <!-- <a data-toggle="tab" class="list-group-item millis-date" href="#{{pain.pk}}">{{pain.created_date}}</a> -->
+                <a data-toggle="tab" class="list-group-item" href="#{{pain.pk}}">{{pain.created_date|date:"SHORT_DATE_FORMAT"}} {{pain.created_date|time:"H:i"}}</a>
                 {% endfor %}
             </ul>
         </div>

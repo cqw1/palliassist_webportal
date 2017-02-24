@@ -17,7 +17,8 @@
     <tbody>
         {% for notification in notifications %}
         <tr>
-            <td class="millis-date">{{ notification.created_date }}</td>
+            <!-- <td class="millis-date">{{ notification.created_date }}</td> -->
+            <td>{{ notification.created_date|date:"SHORT_DATE_FORMAT" }} {{notification.created_date|time:"H:i"}}</td>
             <td>{{ notification.text }}</td>
             <td><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></td>
         </tr>
