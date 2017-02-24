@@ -30,13 +30,13 @@ function sendNotification(dataJSON) {
 
 }
 
-function fcmRequestESAS(patientUsername, text) {
-    console.log('fcmRequestESAS ' + text);
+function fcmCreateESASNotification(patientUsername, text) {
+    console.log('fcmCreateESASNotification ' + text);
 
     var dataJSON = JSON.stringify({
         'to' : '/topics/test',
         'data' : {
-              'action' : 'REQUEST',
+              'action' : 'CREATE',
               'type' : 'NOTIFICATION',
               'timestamp' : Date.now(),
               'patient': patientUsername,

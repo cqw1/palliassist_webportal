@@ -16,7 +16,7 @@ function handleRadioClick(radio) {
 }
 
 function createNotification(patient_id) {
-    fcmRequestESAS(patientUsername, $('#create-notification-message').val());
+    fcmCreateESASNotification(patientUsername, $('#create-notification-message').val());
 
     $.post('/create-notification', $("#create-notification-form").serialize() + "&sid=" + patient_id, function() {
         console.log('posted');

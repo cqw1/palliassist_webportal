@@ -1,5 +1,9 @@
 
 .body-svg {
-    display: block;
-    margin: 0 auto;
+    text-align: center;
+}
+
+.svg-wrapper {
+    display: inline-block;
+    margin-top: 20px;
 }

@@ -144,7 +144,8 @@ class PainSurvey(models.Model):
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     width = models.IntegerField()
     height = models.IntegerField()
-    points = models.ManyToManyField(PainPoint)
+    front_points = models.ManyToManyField(PainPoint, related_name="front_points")
+    back_points = models.ManyToManyField(PainPoint, related_name="back_points")
 
 class Medication(models.Model):
     """ Info for one medication prescription. """

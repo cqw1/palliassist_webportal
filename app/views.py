@@ -600,6 +600,30 @@ def create_channel(request):
 
     return JsonResponse({})
 
+def handleCompletedMedication(post):
+    # TODO
+    pass
+
+def handleCompletedPain(post):
+    print "handleCompletedPain"
+    print post
+
+    pain = PainSurvey.objects.create(created_date=dt_aware, patient=patient_obj, width=int(post["width"]), height=int(post["height"]))
+
+    for point in post["front"]["points"]:
+        pain_point = PainPoint.objects.create(x=int(float(post["x"])), y=int(float(post["y"])), intensity=int(post["intensity"]))
+        pain.front_points.add(pain_point)
+        pain.save()
+
+    for point in post["back"]["points"]:
+        pain_point = PainPoint.objects.create(x=int(float(post["x"])), y=int(float(post["y"])), intensity=int(post["intensity"]))
+        pain.back_points.add(pain_point)
+        pain.save()
+
+    print pain
+    return JsonResponse({})
+
+
 @csrf_exempt
 def fcm(request):
     """
@@ -609,6 +633,34 @@ def fcm(request):
     assert isinstance(request, HttpRequest)
 
     print request.POST
+
+
+    event = request.POST["event"]
+
+    if event == "COMPLETED":
+        if request.POST["category"] == "MEDICATION":
+            return handleCompletedMedication(request.POST)
+            pass
+
+        elif request.POST["category"] == "PAIN":
+            return handleCompletedPain(request.POST)
+            pass
+
+        elif request.POST["category"] == "ESAS":
+            pass
+
+    elif event == "LOGIN":
+        if request.POST["category"] == "MEDICATION":
+            pass
+
+        elif request.POST["category"] == "NOTIFICATION":
+            pass
+
+    # TODO. return an error.
+
+
+
+
 
     fcm_action = request.POST["action"]
     print "fcm_action", fcm_action
