@@ -44,8 +44,15 @@ class CreateNotificationForm(forms.Form):
         ("other", "Other"),
     )
 
-    category = forms.ChoiceField(choices=CATEGORY_CHOICES, widget=forms.RadioSelect())
-    text = forms.CharField(widget=forms.Textarea({"class": "form-control"}))
+    category = forms.ChoiceField(label=_("Select Category"), choices=CATEGORY_CHOICES, widget=forms.RadioSelect())
+    text = forms.CharField(label=_("Text"), widget=forms.Textarea({"class": "form-control"}))
+
+class CreateMedicationForm(forms.Form):
+    name = forms.CharField(label=_("Name"), widget=forms.TextInput({ "class": "form-control"}), required=True) 
+    form = forms.CharField(label=_("Form"), widget=forms.TextInput({ "class": "form-control"}), required=True) 
+    dose = forms.CharField(label=_("Dose"), widget=forms.TextInput({ "class": "form-control"}), required=True) 
+    posology = forms.CharField(label=_("Posology"), widget=forms.TextInput({ "class": "form-control"}), required=True) 
+    rescue = forms.CharField(label=_("Rescue"), widget=forms.TextInput({ "class": "form-control"}), required=True) 
 
 class UploadImageForm(forms.Form):
     image = forms.ImageField(label="Select a image.")

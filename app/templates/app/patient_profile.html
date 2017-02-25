@@ -19,22 +19,22 @@
 
         <div class="tab-content">
             <div id="home" class="tab-pane fade in active">
-                {% include "patient_profile_home.html" with patient=patient %}
+                {% include "patient_profile_home.html" %}
             </div>
             <div id="messages" class="tab-pane fade">
-                {% include "patient_profile_messages.html" with channels=channels upload_image_form=upload_image_form %}
+                {% include "patient_profile_messages.html" %}
             </div>
             <div id="notifications" class="tab-pane fade">
-                {% include "patient_profile_notifications.html" with notifications=notifications patient=patient %}
+                {% include "patient_profile_notifications.html" %}
             </div>
             <div id="medication" class="tab-pane fade">
-                {% include "patient_profile_medication.html" with medications=medications %}
+                {% include "patient_profile_medication.html" %}
             </div>
             <div id="esas" class="tab-pane fade">
-                {% include "patient_profile_esas.html" with esas_objects=esas_objects %}
+                {% include "patient_profile_esas.html" %}
             </div>
             <div id="pain" class="tab-pane fade">
-                {% include "patient_profile_pain.html" with pain_surveys=pain_surveys pain_width=pain_width pain_height=pain_height %}
+                {% include "patient_profile_pain.html" %}
             </div>
         </div>
     </div>
@@ -68,6 +68,7 @@
 <script src="{% static 'app/scripts/patient_profile.js' %}"></script>
 <script src="{% static 'app/scripts/notifications.js' %}"></script>
 <script src="{% static 'app/scripts/messages.js' %}"></script>
+<script src="{% static 'app/scripts/medications.js' %}"></script>
 <script src="{% static 'app/scripts/esas.js' %}"></script>
 <script src="{% static 'app/scripts/pain.js' %}"></script>
 

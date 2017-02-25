@@ -1,9 +1,19 @@
 body {
     overflow-x: hidden;
+
+    min-height: 100%;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: column;
+    flex-direction: column;
 }
 
 label {
     padding-right: 10px;
+}
+
+.pa-navbar-header {
+    float: initial;
 }
 
 .pa-form-field ul {
@@ -29,10 +39,17 @@ label {
 
 .pa-body-container {
     display: flex;
+    display: -webkit-flex;
+    flex: 1;
+    -webkit-flex: 1;
 }
 
 .pa-navbar {
     display: inline-block;
+}
+
+.pa-nav-pills {
+    width: 11em;
 }
 
 .pa-body-content{
@@ -41,3 +58,23 @@ label {
     margin-right: initial;
     margin-left: initial;
 }
+
+
+
+html {
+    height: 100%;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

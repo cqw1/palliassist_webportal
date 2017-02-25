@@ -163,6 +163,7 @@ def patient_profile(request):
 
     notes_form = PatientNotesForm()
     create_notification_form = CreateNotificationForm()
+    create_medication_form = CreateMedicationForm()
     upload_image_form = UploadImageForm()
 
     ### Notifications tab.
@@ -212,6 +213,7 @@ def patient_profile(request):
         'patient': patient_obj,
         'notes_form': notes_form,
         'create_notification_form': create_notification_form,
+        'create_medication_form': create_medication_form,
         'upload_image_form': upload_image_form,
         'notifications': notifications,
         'medications': medications,
@@ -250,12 +252,10 @@ def signup(request):
             if role == 'patient':
                 # Create User and Patient object.
                 patients_doctor_username = signup_form.cleaned_data['patients_doctor_username']
-                #patient = Patient.objects.create(user=user, sid=10, full_name=full_name)
                 patient = Patient.objects.create(user=user, full_name=full_name)
                 Doctor.objects.get(user=User.objects.get(username=patients_doctor_username)).patients.add(patient)
             else:
                 # Create User and Doctor object.
-                #doctor = Doctor.objects.create(user=user, sid=10, full_name=full_name)
                 doctor = Doctor.objects.create(user=user, full_name=full_name)
 
             return HttpResponseRedirect("/signup-success/")
@@ -491,13 +491,32 @@ def save_notes(request):
     return JsonResponse({})
 
 def create_notification(request):
-
     #patient_obj = Patient.objects.get(sid=request.POST["sid"])
     patient_obj = Patient.objects.get(pk=request.POST["pk"])
     Notification.objects.create(created_date=timezone.now(), category=request.POST["category"], text=request.POST["text"], patient=patient_obj)
 
     return JsonResponse({})
     #return HttpResponseRedirect(request.META['HTTP_REFERER'] + "#notifications")
+
+def create_medication(request):
+    print "view.create_medication"
+    print request.POST
+    patient_obj = Patient.objects.get(pk=request.POST["pk"])
+
+    medication = Medication.objects.create(
+            created_date=timezone.now(),
+            patient=patient_obj,
+            name=request.POST["name"],
+            form=request.POST["form"],
+            dose=request.POST["dose"],
+            posology=request.POST["posology"],
+            rescue=request.POST["rescue"]
+    )
+
+    print medication
+    #patient_obj = Patient.objects.get(sid=request.POST["sid"])
+
+    return JsonResponse({})
 
 def upload_image(request):
 
@@ -678,18 +697,33 @@ def mobile(request):
     return render(request, 'app/blank.html')
 
 
+@csrf_exempt
 def sync_redcap(request):
     """ 
     Syncs all django models with the REDCap records.
     django primary_key in model == REDCap record_id in record.
     """
-    pass
 
-    Medication.objects.all
+    medications = Medication.objects.all()
+    
+    medication_data = []
+    for medication in medications:
+        medication_data.append({
+            "record_id": medication.pk,
+            "name": medication.name,
+            "form": medication.form,
+            "dose": medication.dose,
+            "posology": medication.posology,
+            "rescue": medication.rescue
+        })
 
-    medication_response = settings.REDCAP_MEDICATION_PROJECT.import_data([medications])
+
+    medication_response = settings.REDCAP_MEDICATION_PROJECT.import_records(medication_data)
+    print "medication models:", len(medications)
+    print "medication_response:", medication_response["count"]
 
 
+    return JsonResponse({})
 
 
 

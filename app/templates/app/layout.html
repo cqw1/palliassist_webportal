@@ -58,6 +58,9 @@
         <!-- Cookie plugin -->
         <script src="{% static 'app/scripts/js-cookie-1.5.1/src/js.cookie.js' %}"></script>
 
+        <!-- PalliAssist javascript for all layouts -->
+        <script src="{% static 'app/scripts/layout.js' %}"></script>
+
         {% block scripts %}{% endblock %}
 
     </head>
@@ -66,41 +69,42 @@
         <div class="pa-body-container">
 
             <!-- <div class="navbar navbar-inverse navbar-fixed-top"> -->
-                <div class="navbar pa-navbar">
-                    <div class="container">
-                        <div class="navbar-header">
-                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                                <span class="icon-bar"></span>
-                                <span class="icon-bar"></span>
-                                <span class="icon-bar"></span>
-                            </button>
-                            <a href="/" class="navbar-brand">PalliAssist</a>
-                        </div>
-                        <div class="navbar-collapse collapse">
-                            <!-- <ul class="nav navbar-nav"> -->
-                                <ul class="nav nav-pills nav-stacked">
-                                    <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
-                                    <li><a href="{% url 'messages' %}">Messages <span class="badge">4</span></a></li>
-                                    <li><a href="{% url 'patients' %}">Patients</a></li>
-                                </ul>
-                                {% include 'app/loginpartial.html' %}
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="container body-content pa-body-content">
-                        {% block content %}{% endblock %}
-                    </div>
-
-
-                </div>
-
+            <div class="navbar pa-navbar">
                 <div class="container">
-                    <hr/>
-                    <footer>
-                    <p>&copy; {{ year }} - PalliAssist</p>
-                    </footer>
-                </div>
+                    <div class="navbar-header pa-navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
 
-            </body>
-        </html>
+                        <a href="/" class="navbar-brand">PalliAssist</a>
+                    </div>
+
+                    <div class="navbar-collapse collapse">
+                        <!-- <ul class="nav navbar-nav"> -->
+                        <ul class="nav nav-pills nav-stacked pa-nav-pills">
+                            <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                            <li><a href="{% url 'messages' %}">Messages <span class="badge">4</span></a></li>
+                            <li><a href="{% url 'patients' %}">Patients</a></li>
+                            <li><a href="#" id="sync-redcap">Sync REDCap</a></li>
+                        </ul>
+                        {% include 'app/loginpartial.html' %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="container body-content pa-body-content">
+                {% block content %}{% endblock %}
+            </div>
+
+
+        </div>
+
+    </body>
+
+    <footer>
+    <hr/>
+    <p>&copy; {{ year }} - PalliAssist</p>
+    </footer>
+</html>

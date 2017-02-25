@@ -12,7 +12,7 @@
                 <form method="POST" action="/create-notification/" id="create-notification-form" class="form-group">
                     {% csrf_token %}
 
-                    <strong>Select Category:</strong>
+                    <label for="{{ create_notification_form.category.id_for_label }}" class="control-label">{{ create_notification_form.category.label }}</label>
 
                     <div id="category-radio-container">
                         {% for choice in create_notification_form.category %}
@@ -25,7 +25,7 @@
 
                     <br>
 
-                    {{ create_notification_form.text.label_tag }}
+                    <label for="{{ create_notification_form.text.id_for_label }}" class="control-label">{{ create_notification_form.text.label }}</label>
                     {{ create_notification_form.text }}
 
                 </form>

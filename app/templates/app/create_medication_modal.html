@@ -1,0 +1,62 @@
+
+<!-- Modal for creating a new medication to send to patient. -->
+<div class="modal fade" id="create-medication-modal" tabindex="-1" role="dialog" aria-labelledby="create-medication-title">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button id="x-create-medication-modal-btn" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="create-medication-title">Create medication</h4>
+            </div>
+
+            <div class="modal-body">
+                {% comment %}
+                <form method="POST" action="/create-medication/" id="create-medication-form" class="form-group">
+                    {% csrf_token %}
+
+                    {{ create_medication_form }}
+
+                </form>
+                {% endcomment %}
+
+
+                <div class="row">
+                    <form action="." id="create-medication-form" method="post" class="form-horizontal">
+                        {% csrf_token %}
+
+                        {{ create_medication_form.non_field_errors }}
+
+                        <!-- Loops through fields in form and renders -->
+                        {% for field in create_medication_form %}
+
+                        {% if field.errors %}
+                        <div class="form-group has-error">
+                        {% else %}
+                        <div class="form-group">
+                        {% endif %}
+
+                            <label for="{{ field.id_for_label }}" class="col-md-3 control-label">{{ field.label }}</label>
+                            <div class="col-md-9 pa-ignore-center-wrapper pa-form-field">
+                                {{ field }}
+
+                                {{ field.errors | safe }}
+                            </div>
+                        </div>
+
+                        {% endfor %}
+
+                    </form>
+                </div>
+
+
+
+
+            </div>
+            <div class="modal-footer">
+                <button id="close-create-medication-btn" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button id="create-medication-btn" type="button" class="btn btn-primary" onclick="createMedication('{{patient.pk}}')" autocomplete="off">Create</button>
+            </div>
+
+
+        </div>
+    </div>
+</div>

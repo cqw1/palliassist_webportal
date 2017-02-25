@@ -18,7 +18,6 @@ function createNotification(patientPrimaryKey) {
 
     fcmCreateNotification(patientUsername, category, text, primary_key);
 
-    //$.post('/create-notification', $("#create-notification-form").serialize() + "&sid=" + patient_id, function() {
     $.post('/create-notification', $("#create-notification-form").serialize() + "&pk=" + patientPrimaryKey, function() {
         console.log('posted');
         location.reload();
@@ -43,9 +42,8 @@ $(function() {
     }
 
     $('#create-notification-modal-btn').click(resetCreateNotificationModal);
-
-    $('#create-notification-btn').click(function() {
-    })
+    $('#close-create-notification-modal-btn').click(resetCreateNotificationModal);
+    $('#x-create-notification-modal-btn').click(resetCreateNotificationModal);
 
     //$('input:radio').click(function() {
     $('input[name=category]').click(function() {
