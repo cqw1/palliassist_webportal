@@ -46,7 +46,7 @@ function fcmCreateNotification(patientUsername, category, text, primary_key) {
               'category': category,
               'patient': patientUsername,
               'text': text,
-              'pk': primary_key,
+              'pk': primary_key, // Check if we can change this to medication_pk
         }
     });
 

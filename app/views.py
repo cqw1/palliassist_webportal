@@ -156,10 +156,10 @@ def patient_profile(request):
     if not request.user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
 
-    patient_id = request.GET['sid']
-    print "patient_id:", patient_id
+    patient_pk = request.GET['pk']
+    print "patient_pk:", patient_pk  
 
-    patient_obj = Patient.objects.get(sid=patient_id)
+    patient_obj = Patient.objects.get(pk=patient_pk)
 
     notes_form = PatientNotesForm()
     create_notification_form = CreateNotificationForm()
@@ -250,11 +250,13 @@ def signup(request):
             if role == 'patient':
                 # Create User and Patient object.
                 patients_doctor_username = signup_form.cleaned_data['patients_doctor_username']
-                patient = Patient.objects.create(user=user, sid=10, full_name=full_name)
+                #patient = Patient.objects.create(user=user, sid=10, full_name=full_name)
+                patient = Patient.objects.create(user=user, full_name=full_name)
                 Doctor.objects.get(user=User.objects.get(username=patients_doctor_username)).patients.add(patient)
             else:
                 # Create User and Doctor object.
-                doctor = Doctor.objects.create(user=user, sid=10, full_name=full_name)
+                #doctor = Doctor.objects.create(user=user, sid=10, full_name=full_name)
+                doctor = Doctor.objects.create(user=user, full_name=full_name)
 
             return HttpResponseRedirect("/signup-success/")
 
@@ -490,7 +492,8 @@ def save_notes(request):
 
 def create_notification(request):
 
-    patient_obj = Patient.objects.get(sid=request.POST["sid"])
+    #patient_obj = Patient.objects.get(sid=request.POST["sid"])
+    patient_obj = Patient.objects.get(pk=request.POST["pk"])
     Notification.objects.create(created_date=timezone.now(), category=request.POST["category"], text=request.POST["text"], patient=patient_obj)
 
     return JsonResponse({})
@@ -673,6 +676,23 @@ def mobile(request):
     # TODO. return an error.
 
     return render(request, 'app/blank.html')
+
+
+def sync_redcap(request):
+    """ 
+    Syncs all django models with the REDCap records.
+    django primary_key in model == REDCap record_id in record.
+    """
+    pass
+
+    Medication.objects.all
+
+    medication_response = settings.REDCAP_MEDICATION_PROJECT.import_data([medications])
+
+
+
+
+
 
 def convert_datetime_to_millis(dt):
     return (dt.replace(tzinfo=None) - datetime.datetime(1970, 1, 1)).total_seconds() * 1000

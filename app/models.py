@@ -42,7 +42,6 @@ class Patient(models.Model):
     Contains info on a patient.
     """
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    sid = models.IntegerField() #hospital_id
     full_name = models.CharField(max_length=MAX_LENGTH)
     telephone = PhoneNumberField(default="")
     age = models.IntegerField(default=0) 
@@ -82,7 +81,6 @@ class Doctor(models.Model):
     Contains info on a doctor.
     """
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    sid = models.IntegerField()
     full_name = models.CharField(max_length=MAX_LENGTH)
     patients = models.ManyToManyField(Patient)
     twilio_token = models.TextField(default="")

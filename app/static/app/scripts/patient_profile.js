@@ -5,9 +5,9 @@ function clearNotes() {
     $("#id_notes").val('');
 };
 
-function saveNotes(patient_id) {
-    console.log($("#notes-form").serialize()) + "&sid=" + patient_id;
-    $.post('/save-notes', $("#notes-form").serialize() + "&sid=" + patient_id, function() {
+function saveNotes(patientPrimaryKey) {
+    console.log($("#notes-form").serialize()) + "&pk=" + patientPrimaryKey;
+    $.post('/save-notes', $("#notes-form").serialize() + "&pk=" + patientPrimaryKey, function() {
         console.log('posted');
 
     })

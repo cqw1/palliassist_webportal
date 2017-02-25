@@ -48,7 +48,7 @@
             </div>
         </form>
         <div>
-            <input id="save-notes-button" class="btn btn-default" type="submit" onclick="saveNotes('{{patient.sid}}')" value="Save">
+            <input id="save-notes-button" class="btn btn-default" type="submit" onclick="saveNotes('{{patient.pk}}')" value="Save">
             <input class="btn btn-default" type="button" onclick="clearNotes()" value="Clear">
         </div>
     </div>
@@ -78,7 +78,7 @@
     //var painSurveys = {{pain_surveys}};
     var patientFullName = "{{patient.full_name}}";
     var patientUsername = "{{patient.user.username}}";
-    var patientSid = "{{patient.sid}}";
+    //var patientSid = "{{patient.sid}}";
     var channels = {{channels}};
     var token = "{{token}}";
     updateNotes('{{patient.doctor_notes}}');

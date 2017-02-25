@@ -1,35 +1,5 @@
 console.log("new_messages.js");
 
-function uploadImage(patient_sid) {
-    $('#upload-image-error').text("");
-
-    var data = new FormData(document.getElementById('upload-image-form'));
-    data.set('sid', patient_sid);
-
-    $.ajax({
-        url: "/upload-image",
-        method: "POST",
-        data: data,
-        enctype: 'multipart/form-data',
-        success: function(data) {
-            if (data["success"]) {
-                console.log(channel);
-                //location.reload();
-
-            } else {
-                $('#upload-image-error').text(data["message"]);
-            }
-
-            console.log(data);
-            console.log('uploadImage success');
-        },
-        error: function(data){},
-        processData: false,
-        contentType: false,
-    });
-    console.log('uploadImage');
-}
-
 $(function() {
     // Manages the state of our access token we got from the server
     var accessManager;

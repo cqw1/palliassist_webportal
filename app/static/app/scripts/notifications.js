@@ -11,14 +11,15 @@ var radioMap = {
 }
 
 
-function createNotification(patient_id) {
+function createNotification(patientPrimaryKey) {
     var category = $('input[name=category]:checked').val().toUpperCase();
     var text = $('#id_text').val();
     var primary_key = '';
 
     fcmCreateNotification(patientUsername, category, text, primary_key);
 
-    $.post('/create-notification', $("#create-notification-form").serialize() + "&sid=" + patient_id, function() {
+    //$.post('/create-notification', $("#create-notification-form").serialize() + "&sid=" + patient_id, function() {
+    $.post('/create-notification', $("#create-notification-form").serialize() + "&pk=" + patientPrimaryKey, function() {
         console.log('posted');
         location.reload();
     })
