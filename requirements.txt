@@ -1,8 +1,8 @@
 --find-links wheelhouse
 django==1.10.4
 twilio==5.7.0
-PyCap
-django-phonenumber-field
-azure-storage
-Pillow
+PyCap==1.0.2
+django-phonenumber-field==1.1.0
+azure-storage==0.34.0
+Pillow==4.0.0
 
