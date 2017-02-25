@@ -60,10 +60,15 @@ label {
 }
 
 
-
 html {
+    /* For sticky footer */
     height: 100%;
 }
+
+.table tbody >tr > td {
+    vertical-align: middle;
+}
+
 
 
 

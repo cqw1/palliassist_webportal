@@ -491,16 +491,24 @@ def save_notes(request):
     return JsonResponse({})
 
 def create_notification(request):
-    #patient_obj = Patient.objects.get(sid=request.POST["sid"])
+    """
+    Creates a Notification model based on uer input.
+    """
     patient_obj = Patient.objects.get(pk=request.POST["pk"])
-    Notification.objects.create(created_date=timezone.now(), category=request.POST["category"], text=request.POST["text"], patient=patient_obj)
+
+    Notification.objects.create(
+            created_date=timezone.now(), 
+            category=request.POST["category"], 
+            text=request.POST["text"], 
+            patient=patient_obj
+    )
 
     return JsonResponse({})
-    #return HttpResponseRedirect(request.META['HTTP_REFERER'] + "#notifications")
 
 def create_medication(request):
-    print "view.create_medication"
-    print request.POST
+    """
+    Creates a Medication model based on uer input.
+    """
     patient_obj = Patient.objects.get(pk=request.POST["pk"])
 
     medication = Medication.objects.create(
@@ -514,7 +522,6 @@ def create_medication(request):
     )
 
     print medication
-    #patient_obj = Patient.objects.get(sid=request.POST["sid"])
 
     return JsonResponse({})
 

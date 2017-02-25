@@ -15,13 +15,13 @@
     <!-- <div class="pa-child-display-inline-block"> -->
     <div>
         <div class="pa-child-display-inline-block">
-            {{ query_patients_form.patient_query.label_tag }}
+            <label>{{ query_patients_form.patient_query.label }}</label>
             {{ query_patients_form.patient_query}}
 
             <button type="submit" class="btn btn-primary">Search</button>
         </div>
 
-        {{ query_patients_form.mine.label_tag }}
+        <label>{{ query_patients_form.mine.label }}</label>
         {{ query_patients_form.mine }}
     </div>
 
@@ -54,7 +54,13 @@
             <td>{{ patient_result.pk}} </td>
             <td>{{ patient_result.gender }} </td>
             <td>{{ patient_result.age }} </td>
-            <td><button type="button" class="btn btn-success btn-sm">Success</button></td>
+
+            {% if user.doctor in patient_result.doctor_set.all %}
+            <td><button type="button" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-minus"></span> Unfollow</button></td>
+            {% else %}
+            <td><button type="button" class="btn btn-success btn-sm"><span class="glyphicon glyphicon-plus"></span> Follow</button></td> 
+            {% endif %}
+
         </tr>
         {% endfor %}
     </tbody>
