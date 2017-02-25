@@ -1,8 +1,7 @@
 
-        //url: "https://d3f63e9d.ngrok.io/fcm",
-function sendESAS() {
+function completeESAS() {
     $.ajax({
-        url: "/fcm",
+        url: "/mobile",
         type: "POST",
         data: { 
             event: 'COMPLETED',
@@ -31,6 +30,31 @@ function sendESAS() {
                 vomiting_count: $('#vomiting_count').val(), 
 
                 confused: $('#confused').val(), 
+            })
+        },
+        dataType: "json",
+        success: function (result) {
+            console.log('result');
+            console.log(result);
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            alert(xhr.status);
+            alert(thrownError);
+        }
+    });
+}
+
+function completeMedication() {
+    $.ajax({
+        url: "/mobile",
+        type: "POST",
+        data: { 
+            event: 'COMPLETED',
+            timestamp: Number($('#timestamp').val()),
+            patient: $('#patient').val(),
+            category: 'MEDICATION',
+            data: JSON.stringify({
+                pk: $('#primary_key').val(), 
             })
         },
         dataType: "json",

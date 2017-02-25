@@ -1,5 +1,8 @@
 console.log("notifications.js");
 
+var selectedCategory = '';
+var selectedText = '';
+
 var radioMap = {
     'esas': 'Complete ESAS survey',
     'pain': 'Complete pain survey',
@@ -7,16 +10,13 @@ var radioMap = {
     'other': '',
 }
 
-function handleRadioClick(radio) {
-    $('#create-notification-message').val(radioMap[radio.value]);
-
-    if (radio.value == "other") {
-        $('#create-notification-message').focus();
-    }
-}
 
 function createNotification(patient_id) {
-    fcmCreateESASNotification(patientUsername, $('#create-notification-message').val());
+    var category = $('input[name=category]:checked').val().toUpperCase();
+    var text = $('#id_text').val();
+    var primary_key = '';
+
+    fcmCreateNotification(patientUsername, category, text, primary_key);
 
     $.post('/create-notification', $("#create-notification-form").serialize() + "&sid=" + patient_id, function() {
         console.log('posted');

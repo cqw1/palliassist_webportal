@@ -552,12 +552,25 @@ def create_channel(request):
     return JsonResponse({})
 
 def handle_completed_medication(dt, patient_obj, data):
-    # TODO
-    pass
+    """
+    Handler for receiving a POST request form mobile, indicating 
+    that a patient has completed a medication.
+    """
+
+    medication = Medication.objects.get(pk=data["pk"])
+
+    # TODO. figure out how to handle this medication completed event
+
+    print medication
+    print medication.patient
+
+    return JsonResponse({})
 
 def handle_completed_pain(dt, patient_obj, data):
-    print "handle_completed_pain"
-    print data
+    """
+    Handler for receiving a POST request form mobile, indicating 
+    that a patient has completed a pain survey.
+    """
 
     pain = PainSurvey.objects.create(created_date=dt, patient=patient_obj, width=int(data["width"]), height=int(data["height"]))
 
@@ -575,8 +588,10 @@ def handle_completed_pain(dt, patient_obj, data):
     return JsonResponse({})
 
 def handle_completed_ESAS(dt, patient_obj, data):
-    print "handle_completed_ESAS"
-    print data 
+    """
+    Handler for receiving a POST request form mobile, indicating 
+    that a patient has completed a ESAS survey.
+    """
 
     esas = ESASSurvey.objects.create(created_date=dt, patient=patient_obj)
     esas.pain = int(data["pain"])
@@ -612,7 +627,7 @@ def handle_completed_ESAS(dt, patient_obj, data):
 
 
 @csrf_exempt
-def fcm(request):
+def mobile(request):
     """
     Handle FCM requests from mobile.
     Format described in Meeting Minutes Feb 2, 2017

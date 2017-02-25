@@ -8,44 +8,6 @@
                 <h4 class="modal-title" id="create-notification-title">Create notification</h4>
             </div>
 
-            {% comment %}
-            <div class="modal-body">
-
-                <!-- Select notification category -->
-                <strong>Select Category:</strong>
-
-                <div id="category-radio-container">
-                    <div class="radio">
-                        <label><input type="radio" id="esas-radio" name="category" value="esas" onclick="handleRadioClick(this)">ESAS Survey</label>
-                    </div>
-                    <div class="radio">
-                        <label><input type="radio" id"pain-radio" name="category" value="pain" onclick="handleRadioClick(this)">Pain Survey</label>
-                    </div>
-                    <div class="radio">
-                        <label><input type="radio" id="medication-radio" name="category" value="medication" onclick="handleRadioClick(this)">Medication</label>
-                    </div>
-                    <div class="radio">
-                        <label><input type="radio" id="other-radio" name="category" value="other" onclick="handleRadioClick(this)">Other</label>
-                    </div>
-                </div>
-
-                <br>
-
-                 <!-- Text area to input message -->
-                <div class="form-group" id="notification-message-div">
-                    <label for="comment">Message:</label>
-                    <textarea class="form-control" rows="5" id="create-notification-message"></textarea>
-                </div>
-
-            </div>
-            <div class="modal-footer">
-                <button id="close-create-notification-btn" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button id="create-notification-btn" type="button" class="btn btn-primary" autocomplete="off">Create</button>
-            </div>
-            {% endcomment %}
-
-
-
             <div class="modal-body">
                 <form method="POST" action="/create-notification/" id="create-notification-form" class="form-group">
                     {% csrf_token %}

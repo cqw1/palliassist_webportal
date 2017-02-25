@@ -43,7 +43,7 @@ urlpatterns = [
     url(r'^(?i)create-notification', app_views.create_notification, name='create-notification'),
     url(r'^(?i)upload-image', app_views.upload_image, name='upload-image'),
     url(r'^(?i)admin-input', app_views.admin_input, name='admin-input'),
-    url(r'^(?i)fcm', app_views.fcm, name='fcm'),
+    url(r'^(?i)mobile', app_views.mobile, name='mobile'),
     url(r'^(?i)token', app_views.token, name='token'),
     url(r'^(?i)login/$',
         auth_views.login,

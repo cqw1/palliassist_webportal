@@ -30,47 +30,27 @@ function sendNotification(dataJSON) {
 
 }
 
-function fcmCreateESASNotification(patientUsername, text) {
-    console.log('fcmCreateESASNotification ' + text);
+function fcmCreateNotification(patientUsername, category, text, primary_key) {
+    console.log('fcmCreateNotification');
+
+    console.log('patientUsername: ' + patientUsername);
+    console.log('category: ' + category);
+    console.log('text: ' + text);
+    console.log('primary_key: ' + primary_key);
+
 
     var dataJSON = JSON.stringify({
         'to' : '/topics/test',
         'data' : {
-              'action' : 'CREATE',
-              'type' : 'NOTIFICATION',
-              'timestamp' : Date.now(),
+              'event' : 'NOTIFICATION',
+              'category': category,
               'patient': patientUsername,
-              'data': {
-                  'category': 'ESAS',
-                  'text': text,
-                  'done': 'N'
-              }
+              'text': text,
+              'pk': primary_key,
         }
     });
 
     console.log(dataJSON);
-    //sendNotification(dataJSON);
-}
-
-function fcmRemoveESAS(patientUsername, text) {
-    console.log('fcmRequestESAS ' + text);
-
-    var dataJSON = JSON.stringify({
-        'to' : '/topics/test',
-        'data' : {
-              'action' : 'REQUEST',
-              'type' : 'NOTIFICATION',
-              'timestamp' : Date.now(),
-              'patient': patientUsername,
-              'data': {
-                  'category': 'ESAS',
-                  'text': text,
-                  'done': 'N'
-              }
-        }
-    });
-
-    console.log(dataJSON);
-    //sendNotification(dataJSON);
+    sendNotification(dataJSON);
 }
 

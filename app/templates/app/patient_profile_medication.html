@@ -1,6 +1,7 @@
 <br>
 
 {% if medications %}
+<button type="button" class="btn btn-danger pull-right" onclick="fcmCreateNotification('{{patient.user.username}}', 'MEDICATION', '', '')">Request</button>
 
 <!-- Table of search results --> 
 <table class="table table-striped table-hover">
