@@ -561,7 +561,6 @@ def upload_image(request):
         "blob_name": blob_name,
         "container_name": container_name
     })
-    #return HttpResponseRedirect(request.META['HTTP_REFERER'] + "#messages")
 
 def create_channel(request):
     """

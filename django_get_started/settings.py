@@ -10,6 +10,7 @@ from twilio.rest.ip_messaging import TwilioIpMessagingClient
 from twilio.rest import TwilioRestClient
 
 from azure.storage.blob import BlockBlobService
+from azure.storage import CloudStorageAccount
 
 PROJECT_ROOT = path.dirname(path.abspath(path.dirname(__file__)))
 
@@ -35,7 +36,8 @@ TWILIO_IPM_SERVICE_SID = 'IS2ec68050ef5e4c79b15b78c3ded7ddc5'
 TWILIO_IPM_CLIENT = TwilioIpMessagingClient(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
 TWILIO_IPM_SERVICE = TWILIO_IPM_CLIENT.services.get(sid=TWILIO_IPM_SERVICE_SID)
 
-BLOCK_BLOB_SERVICE = BlockBlobService(account_name="palliassistblobstorage", account_key="r9tHMEj5VV/PwJyjN3KYySUqsnq9tCrxh6kDKFvVY3vrm+GluHN/a1LQjXKYIUzoHEle7x3EyIQwoOijzRJiOA==")
+AZURE_STORAGE_ACCOUNT = CloudStorageAccount("palliassistblobstorage", "r9tHMEj5VV/PwJyjN3KYySUqsnq9tCrxh6kDKFvVY3vrm+GluHN/a1LQjXKYIUzoHEle7x3EyIQwoOijzRJiOA==")
+BLOCK_BLOB_SERVICE = AZURE_STORAGE_ACCOUNT.create_block_blob_service()
 
 
 DEBUG = True 
