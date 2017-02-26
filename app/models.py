@@ -135,6 +135,7 @@ class PainPoint(models.Model):
     x = models.IntegerField()
     y = models.IntegerField()
     intensity = models.IntegerField()
+    rgb = models.IntegerField() # Set later, when calculating rgb value when passing to view
 
 class PainSurvey(models.Model):
     """ Encapsulates one survey. """

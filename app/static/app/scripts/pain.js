@@ -15,4 +15,5 @@ $(function() {
      * patientFullName: Full name of patient whose page we're on.
      * token: Twilio IPMessaging access token.
      */
+
 });

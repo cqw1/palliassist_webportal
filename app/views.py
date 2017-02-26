@@ -201,6 +201,10 @@ def patient_profile(request):
 
     ### Pain tab.
     pain_objects = PainSurvey.objects.filter(patient=patient_obj)
+    for pain in pain_objects:
+        for point in pain.front_points.all():
+            point.rgb = 255.0 / ((((point.intensity + 1.0) / 11.0) * 2.0) + 1.0)
+            point.save()
 
 
     ### Medication tab.
