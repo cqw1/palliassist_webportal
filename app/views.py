@@ -24,13 +24,14 @@ from django.forms.utils import ErrorList
 
 from django.contrib.auth.models import User
 
+"""
 from azure.storage.blob import BlockBlobService
 from azure.storage.blob import PublicAccess
 from azure.storage.blob import ContentSettings 
+"""
 
 
 import logging
-#import MySQLdb
 from redcap import Project, RedcapError
 #import urllib
 

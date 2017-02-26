@@ -9,8 +9,10 @@ from twilio.access_token import AccessToken, IpMessagingGrant
 from twilio.rest.ip_messaging import TwilioIpMessagingClient
 from twilio.rest import TwilioRestClient
 
+"""
 from azure.storage.blob import BlockBlobService
 from azure.storage import CloudStorageAccount
+"""
 
 PROJECT_ROOT = path.dirname(path.abspath(path.dirname(__file__)))
 
