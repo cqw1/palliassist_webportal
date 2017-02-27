@@ -41,6 +41,7 @@ urlpatterns = [
     url(r'^(?i)save-notes', app_views.save_notes, name='save-notes'),
     url(r'^(?i)create-channel', app_views.create_channel, name='create-channel'),
     url(r'^(?i)create-notification', app_views.create_notification, name='create-notification'),
+    url(r'^(?i)delete-notification', app_views.delete_notification, name='delete-notification'),
     url(r'^(?i)create-medication', app_views.create_medication, name='create-medication'),
     url(r'^(?i)upload-image', app_views.upload_image, name='upload-image'),
     url(r'^(?i)sync-redcap', app_views.sync_redcap, name='sync-redcap'),

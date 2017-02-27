@@ -16,11 +16,11 @@
     </thead>
     <tbody>
         {% for notification in notifications %}
-        <tr>
+        <tr id="notification-row-{{notification.pk}}" class="notification-row">
             <!-- <td class="millis-date">{{ notification.created_date }}</td> -->
             <td>{{ notification.created_date|date:"SHORT_DATE_FORMAT" }} {{notification.created_date|time:"H:i"}}</td>
             <td>{{ notification.text }}</td>
-            <td><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></td>
+            <td><span class="glyphicon glyphicon-remove delete-notification" aria-hidden="true"></span></td>
         </tr>
         {% endfor %}
     </tbody>

@@ -499,10 +499,24 @@ def save_notes(request):
 
     return JsonResponse({})
 
+@csrf_exempt
+def delete_notification(request):
+    """
+    Creates a Notification model based on uer input.
+    """
+    print request.POST
+
+    # Notification's PK
+    Notification.objects.get(pk=request.POST["pk"]).delete()
+
+    return JsonResponse({})
+
 def create_notification(request):
     """
     Creates a Notification model based on uer input.
     """
+
+    # Patient's PK
     patient_obj = Patient.objects.get(pk=request.POST["pk"])
 
     Notification.objects.create(

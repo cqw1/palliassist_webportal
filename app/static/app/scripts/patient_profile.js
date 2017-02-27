@@ -12,16 +12,6 @@ function saveNotes(patientPrimaryKey) {
 
         triggerToast('Notes saved.');
     })
-
-    /*
-    $.getJSON('/save-notes', {
-        content: $saveInput.val(),
-        sender: username,
-        channel: channelName,
-        time_sent: $.now(),
-        type: 'text'
-    }, function(data) {})
-    */
 }
 
 $(function() {
@@ -43,5 +33,18 @@ $(function() {
         $(this).text(parseMillis($(this).text()));
 
     })
+
+    $('.delete-notification').click(function() {
+        var id = $(this).parent().parent().attr('id');
+        // ID is notification-row-{{pk}}
+        var pk = id.split('-')[2];
+
+        $.post('/delete-notification', "pk=" + pk, function() {
+            console.log('posted');
+            triggerToast('Notification removed.');
+        })
+
+        $(this).parent().parent().hide();
+    });
 
 });
