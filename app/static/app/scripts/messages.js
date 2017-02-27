@@ -60,25 +60,45 @@ $(function() {
 
     // Helper function to print chat message to the chat window
     function displayMessage(message, twilioChannel) {
-        var $user = $('<span class="username">').text(message.author+ ' [' + message.timestamp.toString() + ']: ');
-        if (message.author === djangoUsername) {
-            $user.addClass('me');
-        }
+
+        var date = new Date(message.timestamp);
+        var prettyTimestamp = '' + (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear() + ' ' + date.getHours() + ':' + date.getMinutes();
 
         var $message;
+        var $container = $('<div class="message-container">');
+        var $chatWindow = $('#' + twilioChannel.uniqueName + '-chat-messages');
+        var image = false;
+
         if ('blob_name' in message.attributes && 'container_name' in message.attributes) {
             $image = $('<img class="img-message">');
             $image .attr('src', "https://palliassistblobstorage.blob.core.windows.net/" + message.attributes['container_name'] + "/" + message.attributes['blob_name']);
 
             $message = $('<div>');
+            image = true;
             $message.append($image);
 
         } else {
-            $message = $('<span class="message">').text(message.body);
+            $message = $('<div class="message">').text(message.body);
         }
 
-        var $container = $('<div class="message-container">');
-        var $chatWindow = $('#' + twilioChannel.uniqueName + '-chat-messages');
+        var $user = $('<div class="username">').text(message.author+ ' [' + prettyTimestamp + ']: ');
+        if (message.author === djangoUsername) {
+            $user.addClass('me');
+
+            if (!image) {
+                // Only color non images. to avoid a random rectangular color where the div is.
+                $message.addClass('label');
+                $message.addClass('label-default');
+            }
+
+            $container.addClass('pa-right-align');
+        } else {
+            if (!image) {
+                // Only color non images. to avoid a random rectangular color where the div is.
+                $message.addClass('label');
+                $message.addClass('label-inverse');
+            }
+        }
 
         $container.append($user).append($message);
         $chatWindow.append($container);

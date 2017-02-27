@@ -88,6 +88,10 @@ html {
     margin-left: 10px;
 }
 
+.pa-right-align {
+    text-align: right;
+}
+
 footer {
     padding: 5%;
 }

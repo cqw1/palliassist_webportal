@@ -13,9 +13,24 @@
     height: 60%;
 }
 
-#chat-messages {
-    height: 100%;
+.chat-messages {
+    /*height: 100%;*/
+    height: 350px;
     overflow: auto;
+}
+
+.message {
+    padding: 5px;
+}
+
+.message-container {
+    padding: 5px;
+}
+
+.label-inverse {
+    background-color: #fff;
+    border: solid 1px;
+    color: #777;
 }
 
 #chat-input {

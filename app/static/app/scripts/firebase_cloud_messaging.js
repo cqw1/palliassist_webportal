@@ -30,7 +30,7 @@ function sendNotification(dataJSON) {
 
 }
 
-function fcmCreateNotification(patientUsername, category, text, primary_key) {
+function fcmNotification(patientUsername, action, category, text, primary_key) {
     console.log('fcmCreateNotification');
 
     console.log('patientUsername: ' + patientUsername);
@@ -53,6 +53,7 @@ function fcmCreateNotification(patientUsername, category, text, primary_key) {
         'to' : '/topics/test',
         'data' : {
               'event' : 'NOTIFICATION',
+              'action': action,
               'category': category,
               'patient': patientUsername,
               'text': text,

@@ -4,7 +4,7 @@
     <button id="create-medication-modal-btn" type="button" class="btn btn-primary pull-right" autocomplete="off" data-toggle="modal" data-target="#create-medication-modal">
         <span class="glyphicon glyphicon-plus"></span> Create 
     </button>
-    <button type="button" class="btn btn-danger pull-right" onclick="fcmCreateNotification('{{patient.user.username}}', 'MEDICATION', '', '4')">Remind</button>
+    <button type="button" class="btn btn-danger pull-right" onclick="fcmNotification('{{patient.user.username}}', 'CREATE', 'MEDICATION', '', '4')">Remind</button>
 </div>
 
 {% if medications %}
