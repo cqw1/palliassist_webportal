@@ -67,6 +67,7 @@ $(function() {
         var $message;
         var $container = $('<div class="message-container">');
         var $chatWindow = $('#' + twilioChannel.uniqueName + '-chat-messages');
+        var $h = $('<h4>');
         var image = false;
 
         if ('blob_name' in message.attributes && 'container_name' in message.attributes) {
@@ -78,7 +79,7 @@ $(function() {
             $message.append($image);
 
         } else {
-            $message = $('<div class="message">').text(message.body);
+            $message = $('<span class="message">').text(message.body);
         }
 
         var $user = $('<div class="username">').text(message.author+ ' [' + prettyTimestamp + ']: ');
@@ -100,7 +101,8 @@ $(function() {
             }
         }
 
-        $container.append($user).append($message);
+        $h.append($message);
+        $container.append($user).append($h);
         $chatWindow.append($container);
         $chatWindow.scrollTop($chatWindow[0].scrollHeight);
     }
