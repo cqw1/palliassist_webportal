@@ -10,6 +10,7 @@ function saveNotes(patientPrimaryKey) {
     $.post('/save-notes', $("#notes-form").serialize() + "&pk=" + patientPrimaryKey, function() {
         console.log('posted');
 
+        triggerToast('Notes saved.');
     })
 
     /*
@@ -21,11 +22,6 @@ function saveNotes(patientPrimaryKey) {
         type: 'text'
     }, function(data) {})
     */
-}
-
-function updateNotes(notes) {
-    console.log('updateNotes('+ decodeURIComponent(notes) + ')');
-    $("#id_notes").val(decodeURIComponent(notes));
 }
 
 $(function() {
