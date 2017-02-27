@@ -162,7 +162,7 @@ def patient_profile(request):
 
     patient_obj = Patient.objects.get(pk=patient_pk)
 
-    notes_form = PatientNotesForm()
+    notes_form = PatientNotesForm(initial={'notes': patient_obj.doctor_notes})
     create_notification_form = CreateNotificationForm()
     create_medication_form = CreateMedicationForm()
     upload_image_form = UploadImageForm()
@@ -488,16 +488,14 @@ def save_notes(request):
     """
     assert isinstance(request, HttpRequest)
 
-    """
+    print request.POST
     doctor_notes = request.POST['notes']
     print "doctor_notes:", doctor_notes
-    print "doctor_notes:", urllib.quote(doctor_notes)
-    patient_id = request.POST['sid']
+    patient_pk = request.POST['pk']
 
-    patient = Patient.objects.get(sid=patient_id)
-    patient.doctor_notes = urllib.quote(doctor_notes)
+    patient = Patient.objects.get(pk=patient_pk)
+    patient.doctor_notes = doctor_notes
     patient.save()
-    """
 
     return JsonResponse({})
 
