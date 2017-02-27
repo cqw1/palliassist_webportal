@@ -24,3 +24,13 @@ function parseMillis(millis) {
 
     return date.toLocaleDateString() + ' ' + hours + ':' + minutes
 }
+
+function triggerToast(text) {
+    $('#toast-text').text(text);
+
+    $('#pa-toast').addClass('in');
+
+    setTimeout(function() {
+        $('#pa-toast').removeClass('in');
+    }, 4000);
+}

@@ -70,8 +70,19 @@ html {
 }
 
 
+.pa-toast {
+    /*min-width: 200px;*/ /* Set a default minimum width */
+    /*margin-left: -100px;*/ /* Divide value of min-width by 2 */
+    text-align: center; /* Centered text */
+    position: fixed; /* Sit on top of the screen */
+    z-index: 1; /* Add a z-index if needed */
+    right: 40px; /* Center the snackbar */
+    bottom: 20px; /* 30px from the bottom */
+}
 
-
+.pa-toast > .close {
+    margin-left: 20px;
+}
 
 
 

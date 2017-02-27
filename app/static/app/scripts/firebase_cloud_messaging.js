@@ -24,7 +24,7 @@ function sendNotification(dataJSON) {
         success: function (data) {
             console.log('returned data: ');
             console.log(data);
-            alert('Sent message to topic "test"'); 
+            //alert('Sent message to topic "test"'); 
         }
     });
 
@@ -37,6 +37,16 @@ function fcmCreateNotification(patientUsername, category, text, primary_key) {
     console.log('category: ' + category);
     console.log('text: ' + text);
     console.log('primary_key: ' + primary_key);
+
+    var prettyCategory = '';
+    if (category == 'PAIN') {
+       prettyCategory = 'Pain' ;
+    } else if (category == 'MEDICATION') {
+       prettyCategory = 'Medication' ;
+    } else if (category == 'ESAS') {
+       prettyCategory = 'ESAS' ;
+    }
+    triggerToast(prettyCategory + ' notification sent.')
 
 
     var dataJSON = JSON.stringify({
