@@ -348,10 +348,16 @@ def messages(request):
 
     # Always allow the user to chat in the demo channel by adding to it if we haven't already been added.
     demo_channel = settings.TWILIO_IPM_SERVICE.channels.get(sid="CHe75c920bb94c449da5fba883aa64db6c")
+    demo_json = {
+        'sid': str(demo_channel.sid),
+        'unique_name': str(demo_channel.unique_name),
+        'friendly_name': str(demo_channel.friendly_name),
+    }
     #demo_channel.update(unique_name="demochannel")
     member = demo_channel.members.create(identity=request.user.username)
 
     channels = []
+        
 
     # List the channels that the user is a member of
     for c in settings.TWILIO_IPM_SERVICE.channels.list():
