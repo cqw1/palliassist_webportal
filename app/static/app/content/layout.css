@@ -84,6 +84,13 @@ html {
     margin-left: 20px;
 }
 
+.button-row > button {
+    margin-left: 10px;
+}
+
+footer {
+    padding: 5%;
+}
 
 
 
