@@ -24,11 +24,9 @@ from django.forms.utils import ErrorList
 
 from django.contrib.auth.models import User
 
-"""
 from azure.storage.blob import BlockBlobService
 from azure.storage.blob import PublicAccess
 from azure.storage.blob import ContentSettings 
-"""
 
 
 import logging
@@ -565,11 +563,9 @@ def upload_image(request):
 
         container_name = patient_obj.user.username
 
-        """
         settings.BLOCK_BLOB_SERVICE.create_container(container_name, public_access=PublicAccess.Container)
         blob_name = patient_obj.user.username + "_" + str(convert_datetime_to_millis(datetime.datetime.now()))
         settings.BLOCK_BLOB_SERVICE.create_blob_from_path(container_name, blob_name, image_obj.image.path, content_settings=ContentSettings(content_type='image/png'))
-        """
         success = True
 
     else:
