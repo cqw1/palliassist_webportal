@@ -507,7 +507,7 @@ def delete_notification(request):
     print request.POST
 
     # Notification's PK
-    Notification.objects.get(pk=request.POST["pk"]).delete()
+    Notification.objects.get(pk=int(request.POST["pk"])).delete()
 
     return JsonResponse({})
 

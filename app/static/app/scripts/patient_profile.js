@@ -34,6 +34,16 @@ $(function() {
 
     })
 
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+        var target = $(e.target).attr("href") // activated tab
+        console.log(target);
+        if (target == '#messages') {
+            var $chatWindow = $('#' + twilioChannel.uniqueName + '-chat-messages');
+            $chatWindow.scrollTop($chatWindow[0].scrollHeight);
+            console.lg('scrollTop');
+        }
+    });
+
     $('.delete-notification').click(function() {
         var id = $(this).parent().parent().attr('id');
         // ID is notification-row-{{pk}}
