@@ -3,6 +3,6 @@ django==1.10.4
 twilio==5.7.0
 PyCap==1.0.2
 django-phonenumber-field==1.1.0
-azure-storage
+azure-storage==0.32.0
 
 
