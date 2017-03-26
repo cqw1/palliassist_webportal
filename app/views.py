@@ -528,7 +528,7 @@ def create_notification(request):
 
 def create_medication(request):
     """
-    Creates a Medication model based on uer input.
+    Creates a Medication model based on user input.
     """
     patient_obj = Patient.objects.get(pk=request.POST["pk"])
 
@@ -710,6 +710,8 @@ def mobile(request):
 
     elif event == "LOGIN":
         if request.POST["category"] == "MEDICATION":
+            print serializers.serialize("json", Medication.objects.filter(patient=patient_obj))
+                    
             return JsonResponse({
                 'medications': serializers.serialize("json", Medication.objects.filter(patient=patient_obj))
             })

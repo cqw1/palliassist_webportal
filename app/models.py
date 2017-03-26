@@ -103,7 +103,6 @@ class ESASSurvey(models.Model):
     """ Encapsulates one survey. """
     created_date = models.DateTimeField(default=datetime.datetime.now)
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
-    #questions = models.ManyToManyField(ESASQuestion)
     pain = models.IntegerField(null=True)
     fatigue = models.IntegerField(null=True)
     nausea = models.IntegerField(null=True)
