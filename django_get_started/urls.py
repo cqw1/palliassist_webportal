@@ -43,6 +43,7 @@ urlpatterns = [
     url(r'^(?i)create-notification', app_views.create_notification, name='create-notification'),
     url(r'^(?i)delete-notification', app_views.delete_notification, name='delete-notification'),
     url(r'^(?i)create-medication', app_views.create_medication, name='create-medication'),
+    url(r'^(?i)delete-medication', app_views.delete_medication, name='delete-medication'),
     url(r'^(?i)upload-image', app_views.upload_image, name='upload-image'),
     url(r'^(?i)sync-redcap', app_views.sync_redcap, name='sync-redcap'),
     url(r'^(?i)admin-input', app_views.admin_input, name='admin-input'),

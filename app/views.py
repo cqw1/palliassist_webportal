@@ -526,6 +526,18 @@ def create_notification(request):
 
     return JsonResponse({})
 
+@csrf_exempt
+def delete_medication(request):
+    """
+    Creates a Notification model based on uer input.
+    """
+    print request.POST
+
+    # Notification's PK
+    Medication.objects.get(pk=int(request.POST["pk"])).delete()
+
+    return JsonResponse({})
+
 def create_medication(request):
     """
     Creates a Medication model based on user input.

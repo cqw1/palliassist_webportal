@@ -19,4 +19,17 @@ $(function() {
     $('#x-create-medication-modal-btn').click(resetCreateMedicationModal);
 
 
+    $('.delete-medication').click(function() {
+        var id = $(this).parent().parent().attr('id');
+        // ID is notification-row-{{pk}}
+        var pk = id.split('-')[2];
+
+        $.post('/delete-medication', "pk=" + pk, function() {
+            console.log('posted');
+            triggerToast('Medication removed.');
+        })
+
+        $(this).parent().parent().hide();
+    });
+
 })
