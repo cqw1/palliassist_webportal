@@ -21,8 +21,10 @@
             <button type="submit" class="btn btn-primary">Search</button>
         </div>
 
+        {% comment %}
         <label>{{ query_patients_form.following.label }}</label>
         {{ query_patients_form.following}}
+        {% endcomment %}
     </div>
 
 
@@ -43,7 +45,9 @@
             <th>Hospital ID</th>
             <th>Gender</th>
             <th>Age</th>
+            {% comment %}
             <th><!-- Add/Remove button column --></th>
+            {% endcomment %}
         </tr>
     </thead>
     <tbody>
@@ -55,11 +59,13 @@
             <td>{{ patient_result.gender }} </td>
             <td>{{ patient_result.age }} </td>
 
+            {% comment %}
             {% if user.doctor in patient_result.doctor_set.all %}
             <td><button type="button" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-minus"></span> Unfollow</button></td>
             {% else %}
             <td><button type="button" class="btn btn-success btn-sm"><span class="glyphicon glyphicon-plus"></span> Follow</button></td> 
             {% endif %}
+            {% endcomment %}
 
         </tr>
         {% endfor %}

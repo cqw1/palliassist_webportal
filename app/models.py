@@ -8,6 +8,7 @@ from django.dispatch import receiver
 from django.db.models.signals import post_save
 from django.contrib.auth.signals import user_logged_in
 from django.conf import settings
+from django.utils import timezone
 
 from phonenumber_field.modelfields import PhoneNumberField
 
@@ -47,7 +48,7 @@ class Patient(models.Model):
     age = models.IntegerField(default=0) 
     city_of_residence = models.TextField(default="")
     caregiver_name = models.CharField(max_length=MAX_LENGTH, default="")
-    next_appointment = models.DateTimeField(default=datetime.datetime.now)
+    next_appointment = models.DateTimeField(default=timezone.now)
 
     PALLIATIVE = "Palliative Care Only"
     ANTICANCER = "Undergoing Anticancer Therapy"
@@ -101,7 +102,7 @@ class ESASQuestion(models.Model):
 
 class ESASSurvey(models.Model):
     """ Encapsulates one survey. """
-    created_date = models.DateTimeField(default=datetime.datetime.now)
+    created_date = models.DateTimeField(default=timezone.now)
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     pain = models.IntegerField(null=True)
     fatigue = models.IntegerField(null=True)
@@ -138,7 +139,7 @@ class PainPoint(models.Model):
 
 class PainSurvey(models.Model):
     """ Encapsulates one survey. """
-    created_date = models.DateTimeField(default=datetime.datetime.now)
+    created_date = models.DateTimeField(default=timezone.now)
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     width = models.IntegerField()
     height = models.IntegerField()
@@ -147,7 +148,7 @@ class PainSurvey(models.Model):
 
 class Medication(models.Model):
     """ Info for one medication prescription. """
-    created_date = models.DateTimeField(default=datetime.datetime.now)
+    created_date = models.DateTimeField(default=timezone.now)
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     name = models.CharField(max_length=MAX_LENGTH, default="")
     form = models.CharField(max_length=MAX_LENGTH, default="")
@@ -160,7 +161,7 @@ class Medication(models.Model):
 
 class Notification(models.Model):
     """ A notification for a patient or doctor. """
-    created_date = models.DateTimeField(default=datetime.datetime.now)
+    created_date = models.DateTimeField(default=timezone.now)
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     text = models.TextField(default="")
 
@@ -184,7 +185,7 @@ def user_directory_path(instance, imagename):
 
 class Image(models.Model):
     """ An uploaded image """
-    created_date = models.DateTimeField(default=datetime.datetime.now)
+    created_date = models.DateTimeField(default=timezone.now)
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     image = models.ImageField(upload_to=user_directory_path)
 

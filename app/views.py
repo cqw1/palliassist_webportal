@@ -235,14 +235,96 @@ def patient_profile(request):
         context
     )
 
+def patient_signup(request):
+
+    if request.method == 'POST':
+        patient_signup_form = PatientSignupForm(request.POST, error_class=DivErrorList)
+        doctor_signup_form = SignupForm(error_class=DivErrorList)
+
+        if patient_signup_form.is_valid():
+            username = patient_signup_form.cleaned_data['username']
+            password = patient_signup_form.cleaned_data['password_1']
+            #role = signup_form.cleaned_data['doctor_patient_choice']
+
+            user = User.objects.create(username=username, password=password)
+
+            print patient_signup_form.cleaned_data
+
+            # Create User and Patient object.
+            patients_doctor_username = patient_signup_form.cleaned_data['patients_doctor_username']
+            patient = Patient.objects.create(
+                    user=user, 
+                    full_name=patient_signup_form.cleaned_data['full_name'],
+                    telephone=patient_signup_form.cleaned_data['telephone'],
+                    age=patient_signup_form.cleaned_data['age'],
+                    city_of_residence=patient_signup_form.cleaned_data['city_of_residence'],
+                    caregiver_name=patient_signup_form.cleaned_data['caregiver_name'],
+                    treatment_type=patient_signup_form.cleaned_data['treatment_type'],
+                    gender=patient_signup_form.cleaned_data['gender'],
+
+            )
+            Doctor.objects.get(user=User.objects.get(username=patients_doctor_username)).patients.add(patient)
+
+            return HttpResponseRedirect("/signup-success/")
+
+    context = {
+        'title': 'Sign Up',
+        'year': datetime.datetime.now().year,
+        'active_form': 'patient',
+        'patient_signup_form': patient_signup_form,
+        'doctor_signup_form': doctor_signup_form,
+    }
+
+    return render(
+        request,
+        'app/sign_up.html',
+        context
+    )
+
+def doctor_signup(request):
+
+    if request.method == 'POST':
+        patient_signup_form = PatientSignupForm(error_class=DivErrorList)
+        doctor_signup_form = SignupForm(request.POST, error_class=DivErrorList)
+
+        if doctor_signup_form.is_valid():
+            full_name = doctor_signup_form.cleaned_data['full_name']
+            username = doctor_signup_form.cleaned_data['username']
+            password = doctor_signup_form.cleaned_data['password_1']
+            #role = signup_form.cleaned_data['doctor_patient_choice']
+
+            user = User.objects.create(username=username, password=password)
+
+            # Create User and Doctor object.
+            doctor = Doctor.objects.create(user=user, full_name=full_name)
+
+            return HttpResponseRedirect("/signup-success/")
+
+    context = {
+        'title': 'Sign Up',
+        'year': datetime.datetime.now().year,
+        'active_form': 'doctor',
+        'patient_signup_form': patient_signup_form,
+        'doctor_signup_form': doctor_signup_form,
+    }
+
+    return render(
+        request,
+        'app/sign_up.html',
+        context
+    )
+
+
 def signup(request):
     """Renders the patients page."""
     assert isinstance(request, HttpRequest)
 
-    signup_form = SignupForm(error_class=DivErrorList)
+    patient_signup_form = PatientSignupForm(error_class=DivErrorList)
+    doctor_signup_form = SignupForm(error_class=DivErrorList)
 
+    """
     if request.method == 'POST':
-        signup_form = SignupForm(request.POST, error_class=DivErrorList)
+        signup_form = PatientSignupForm(request.POST, error_class=DivErrorList)
 
         if signup_form.is_valid():
             full_name = signup_form.cleaned_data['full_name']
@@ -262,12 +344,15 @@ def signup(request):
                 doctor = Doctor.objects.create(user=user, full_name=full_name)
 
             return HttpResponseRedirect("/signup-success/")
+    """
 
 
     context = {
         'title': 'Sign Up',
         'year': datetime.datetime.now().year,
-        'form': signup_form,
+        'active_form': 'doctor',
+        'patient_signup_form': patient_signup_form,
+        'doctor_signup_form': doctor_signup_form,
     }
 
     return render(
