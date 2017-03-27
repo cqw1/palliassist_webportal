@@ -10,7 +10,10 @@
     <div class="col-md-9">
         <ul class="nav nav-tabs">
             <li class="active"><a data-toggle="tab" href="#home">Home</a></li>
+            {% comment %}
             <li><a data-toggle="tab" href="#notifications">Notifications</a></li>
+            {% endcomment %}
+            <li><a data-toggle="tab" href="#videos">Videos</a></li>
             <li><a data-toggle="tab" href="#messages">Messages</a></li>
             <li><a data-toggle="tab" href="#medications">Medications</a></li>
             <li><a data-toggle="tab" id="esas-tab" href="#esas">ESAS</a></li>
@@ -24,8 +27,13 @@
             <div id="messages" class="tab-pane fade">
                 {% include "patient_profile_messages.html" %}
             </div>
+            {% comment %}
             <div id="notifications" class="tab-pane fade">
                 {% include "patient_profile_notifications.html" %}
+            </div>
+            {% endcomment %}
+            <div id="videos" class="tab-pane fade">
+                {% include "patient_profile_videos.html" %}
             </div>
             <div id="medications" class="tab-pane fade">
                 {% include "patient_profile_medications.html" %}
@@ -61,11 +69,13 @@
 {% load staticfiles %}
 <link rel="stylesheet" type="text/css" href="{% static 'app/content/patient_profile.css' %}" />
 <link rel="stylesheet" type="text/css" href="{% static 'app/content/notifications.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app/content/videos.css' %}" />
 <link rel="stylesheet" type="text/css" href="{% static 'app/content/messages.css' %}" />
 <link rel="stylesheet" type="text/css" href="{% static 'app/content/pain.css' %}" />
 <link rel="stylesheet" type="text/css" href="{% static 'app/content/esas.css' %}" />
 
 <script src="{% static 'app/scripts/patient_profile.js' %}"></script>
+<script src="{% static 'app/scripts/videos.js' %}"></script>
 <script src="{% static 'app/scripts/notifications.js' %}"></script>
 <script src="{% static 'app/scripts/messages.js' %}"></script>
 <script src="{% static 'app/scripts/medications.js' %}"></script>
@@ -76,10 +86,8 @@
     {% autoescape off %}
     var djangoUsername = "{{user.username}}";
     var esasJSON = JSON.parse('{{esas_json}}');
-    //var painSurveys = {{pain_surveys}};
     var patientFullName = "{{patient.full_name}}";
     var patientUsername = "{{patient.user.username}}";
-    //var patientSid = "{{patient.sid}}";
     var channels = {{channels}};
     var token = "{{token}}";
     {% endautoescape %}

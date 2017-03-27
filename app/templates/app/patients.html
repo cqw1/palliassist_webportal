@@ -55,7 +55,7 @@
         {% for patient_result in patient_results %}
         <tr>
             <td><a href="{% url 'patient-profile' %}?pk={{patient_result.pk}}">{{ patient_result.full_name}}</a> </td>
-            <td>{{ patient_result.pk}} </td>
+            <td>{{ patient_result.hospital_id}} </td>
             <td>{{ patient_result.gender }} </td>
             <td>{{ patient_result.age }} </td>
 

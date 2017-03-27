@@ -11,6 +11,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import views as auth_views
 from django.core.urlresolvers import reverse
 from app.models import *
+from app.forms import *
 from django.core import serializers
 from django.utils import timezone
 
@@ -162,12 +163,15 @@ def patient_profile(request):
 
     notes_form = PatientNotesForm(initial={'notes': patient_obj.doctor_notes})
     create_notification_form = CreateNotificationForm()
+    add_video_form = AddVideoForm()
     create_medication_form = CreateMedicationForm()
     upload_image_form = UploadImageForm()
 
     ### Notifications tab.
     notifications = Notification.objects.filter(patient=patient_obj)
 
+    #### Videos tab.
+    videos = Video.objects.filter(patient=patient_obj)
 
     ### Messages tab.
     channels = []
@@ -215,10 +219,12 @@ def patient_profile(request):
         'year': datetime.datetime.now().year,
         'patient': patient_obj,
         'notes_form': notes_form,
+        'add_video_form': add_video_form,
         'create_notification_form': create_notification_form,
         'create_medication_form': create_medication_form,
         'upload_image_form': upload_image_form,
         'notifications': notifications,
+        'videos': videos,
         'medications': medications,
         'esas_objects': esas_objects,
         'esas_json': esas_json,
@@ -611,10 +617,36 @@ def create_notification(request):
 
     return JsonResponse({})
 
+def add_video(request):
+    """
+    Creates a Video model based on url.
+    """
+    patient_obj = Patient.objects.get(pk=request.POST["pk"])
+    video = Video.objects.create(
+            patient=patient_obj,
+            url=request.POST["url"]
+    )
+
+    print request
+    print video
+
+    return JsonResponse({})
+
+@csrf_exempt
+def delete_video(request):
+    """
+    Creates a Video model based on url.
+    """
+
+    Video.objects.get(pk=int(request.POST["pk"])).delete()
+
+    return JsonResponse({})
+
+
 @csrf_exempt
 def delete_medication(request):
     """
-    Creates a Notification model based on uer input.
+    Deletes a medication object for a patient.
     """
     print request.POST
 

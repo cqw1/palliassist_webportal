@@ -49,6 +49,7 @@ class Patient(models.Model):
     city_of_residence = models.TextField(default="")
     caregiver_name = models.CharField(max_length=MAX_LENGTH, default="")
     next_appointment = models.DateTimeField(default=timezone.now)
+    hospital_id = models.IntegerField(default=-1)
 
     PALLIATIVE = "Palliative Care Only"
     ANTICANCER = "Undergoing Anticancer Therapy"
@@ -176,6 +177,11 @@ class Notification(models.Model):
 
     class Meta:
         ordering = ('-created_date',)
+
+class Video(models.Model):
+    """ YouTube video for patients to watch. """
+    url = models.URLField()
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
 
 
 def user_directory_path(instance, imagename):

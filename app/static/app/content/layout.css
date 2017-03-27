@@ -96,6 +96,16 @@ footer {
     padding: 5%;
 }
 
+.glyphicon-remove {
+    opacity: 0.5;
+    filter: alpha(opacity=50); /* For IE8 and earlier */
+}
+
+.glyphicon-remove:hover {
+    opacity: 1.0;
+    filter: alpha(opacity=100); /* For IE8 and earlier */
+    cursor: pointer;
+}
 
 
 

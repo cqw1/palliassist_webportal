@@ -40,21 +40,8 @@ $(function() {
         if (target == '#messages') {
             var $chatWindow = $('#' + twilioChannel.uniqueName + '-chat-messages');
             $chatWindow.scrollTop($chatWindow[0].scrollHeight);
-            console.lg('scrollTop');
+            console.log('scrollTop');
         }
-    });
-
-    $('.delete-notification').click(function() {
-        var id = $(this).parent().parent().attr('id');
-        // ID is notification-row-{{pk}}
-        var pk = id.split('-')[2];
-
-        $.post('/delete-notification', "pk=" + pk, function() {
-            console.log('posted');
-            triggerToast('Notification removed.');
-        })
-
-        $(this).parent().parent().hide();
     });
 
 });

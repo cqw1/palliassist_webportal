@@ -28,8 +28,12 @@ class BootstrapAuthenticationForm(AuthenticationForm):
 
 class QueryPatientsForm(forms.Form):
     """ Queries for patients by name"""
-    patient_query = forms.CharField(label=_("Search"), widget=forms.TextInput({ "class": "form-control", "placeholder":"Search for patient"})) 
+    patient_query = forms.CharField(label=_("Search"), widget=forms.TextInput({"class": "form-control", "placeholder":"Search for patient"})) 
     following = forms.BooleanField(label=_("Following"), widget=forms.CheckboxInput(), required=False)
+
+class AddVideoForm(forms.Form):
+    """ Queries for patients by name"""
+    url = forms.CharField(label=_("URL"), widget=forms.TextInput({"class": "form-control", "placeholder":"Video url"})) 
 
 class PatientNotesForm(forms.Form):
     """ Notes on a patient """
@@ -51,11 +55,11 @@ class CreateNotificationForm(forms.Form):
     text = forms.CharField(label=_("Text"), widget=forms.Textarea({"class": "form-control"}))
 
 class CreateMedicationForm(forms.Form):
-    name = forms.CharField(label=_("Name"), widget=forms.TextInput({ "class": "form-control"}), required=True) 
-    form = forms.CharField(label=_("Form"), widget=forms.TextInput({ "class": "form-control"}), required=True) 
-    dose = forms.CharField(label=_("Dose"), widget=forms.TextInput({ "class": "form-control"}), required=True) 
-    posology = forms.CharField(label=_("Posology"), widget=forms.TextInput({ "class": "form-control"}), required=True) 
-    rescue = forms.CharField(label=_("Rescue"), widget=forms.TextInput({ "class": "form-control"}), required=True) 
+    name = forms.CharField(label=_("Name"), widget=forms.TextInput({"class": "form-control"}), required=True) 
+    form = forms.CharField(label=_("Form"), widget=forms.TextInput({"class": "form-control"}), required=True) 
+    dose = forms.CharField(label=_("Dose"), widget=forms.TextInput({"class": "form-control"}), required=True) 
+    posology = forms.CharField(label=_("Posology"), widget=forms.TextInput({"class": "form-control"}), required=True) 
+    rescue = forms.CharField(label=_("Rescue"), widget=forms.TextInput({"class": "form-control"}), required=True) 
 
 class UploadImageForm(forms.Form):
     image = forms.ImageField(label="Select a image.")
@@ -65,11 +69,11 @@ class SignupForm(forms.Form):
     """ Registering new users, both doctors and patients. """
 
     #doctor_patient_choice = forms.ChoiceField(label=_("Role"), widget=forms.RadioSelect, choices=[("doctor", "Doctor"), ("patient", "Patient")], required=True)
-    full_name = forms.CharField(label=_("Full Name"), widget=forms.TextInput({ "class": "form-control", "placeholder":"Full Name"}), required=True) 
-    username = forms.CharField(label=_("Username"), widget=forms.TextInput({ "class": "form-control", "placeholder":"Username"}), required=True) 
-    password_1 = forms.CharField(label=_("Password"), widget=forms.PasswordInput({ "class": "form-control", "placeholder":"Password"}), required=True) 
-    password_2 = forms.CharField(label=_("Retype Password"), widget=forms.PasswordInput({ "class": "form-control", "placeholder":"Retype Password"}), required=True) 
-    access_key = forms.CharField(label=_("Access Key"), widget=forms.TextInput({ "class": "form-control", "placeholder":"Access Key"}), required=True) 
+    full_name = forms.CharField(label=_("Full Name"), widget=forms.TextInput({"class": "form-control", "placeholder":"Full Name"}), required=True) 
+    username = forms.CharField(label=_("Username"), widget=forms.TextInput({"class": "form-control", "placeholder":"Username"}), required=True) 
+    password_1 = forms.CharField(label=_("Password"), widget=forms.PasswordInput({"class": "form-control", "placeholder":"Password"}), required=True) 
+    password_2 = forms.CharField(label=_("Retype Password"), widget=forms.PasswordInput({"class": "form-control", "placeholder":"Retype Password"}), required=True) 
+    access_key = forms.CharField(label=_("Access Key"), widget=forms.TextInput({"class": "form-control", "placeholder":"Access Key"}), required=True) 
 
     def clean_username(self):
         # Check if the username hasn't been taken already.
@@ -114,9 +118,9 @@ class SignupForm(forms.Form):
 
 
 class PatientSignupForm(SignupForm):
-    hospital_id = forms.CharField(label=_("Hospital ID"), widget=forms.TextInput({ "class": "form-control", "placeholder": "Hospital ID"}), required=True) 
+    hospital_id = forms.CharField(label=_("Hospital ID"), widget=forms.TextInput({"class": "form-control", "placeholder": "Hospital ID"}), required=True) 
     #telephone = forms.CharField(label=_("Telephone"), widget=PhoneNumberInternationalFallbackWidget(None, { "class": "form-control", "placeholder": "Telephone"}), required=True) 
-    telephone = forms.CharField(label=_("Telephone"), widget=PhoneNumberPrefixWidget({ "class": "form-control", "placeholder": "Telephone"}, "BR"), required=True) 
+    telephone = forms.CharField(label=_("Telephone"), widget=PhoneNumberPrefixWidget({"class": "form-control", "placeholder": "Telephone"}, "BR"), required=True) 
     age = forms.IntegerField(label=_("Age"), widget=forms.TextInput({"class": "form-control", "placeholder": "Age"}), required=True)
     gender = forms.ChoiceField(label=_("Gender"), widget=forms.RadioSelect, choices=Patient.GENDER_CHOICES, required=True)
     city_of_residence = forms.CharField(label=_("City of Residence"), widget=forms.TextInput({"class": "form-control", "placeholder": "City of Residence"}), required=True) 

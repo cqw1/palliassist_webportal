@@ -6,6 +6,7 @@
     </button>
 </div>
 
+{% if notifications %}
 <table class="table table-striped table-hover">
     <thead>
         <tr>
@@ -25,5 +26,15 @@
         {% endfor %}
     </tbody>
 </table>
+
+{% else %}
+
+<br>
+<div class="pa-center-wrapper">
+    No notifications found.
+</div>
+
+{% endif %}
+
 
 {% include "create_notification_modal.html" %}
