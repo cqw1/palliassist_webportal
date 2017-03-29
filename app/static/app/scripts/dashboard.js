@@ -10,4 +10,14 @@ $(function() {
         downChevron.removeClass('glyphicon-chevron-down');
         downChevron.addClass('glyphicon-chevron-right');
     })
+
+    $('.dashboard-alert').click(function() {
+        var pk =$(this).attr('id');
+
+        $.post('/delete-dashboard-alert', "pk=" + pk, function() {
+            console.log('posted');
+        })
+
+
+    })
 })

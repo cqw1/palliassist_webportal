@@ -47,8 +47,7 @@
             </div>
 
             <div class="list-group">
-                {% for patient, esases in patient_esases.items %}
-                <!-- <a href="{% url 'patient-profile' %}?pk={{patient.pk}}#esas" class="list-group-item">{{patient.full_name}}</a>-->
+                {% for patient, esas_alert in patient_esas_alert.items %}
 
                 <a class="list-group-item patient-header" href="#{{patient.pk}}-esas-alerts-collapse" role="button" data-toggle="collapse">
                     <span class="glyphicon glyphicon-chevron-right dashboard-chevron-right" aria-hidden="true"></span>
@@ -57,15 +56,12 @@
                 </a>
 
                 <div id="{{patient.pk}}-esas-alerts-collapse" class="collapse">
-                    {% for esas in esases %}
-                    <a href="{% url 'patient-profile' %}?pk={{patient.pk}}#esas/{{esas.pk}}" class="list-group-item nested-list-group-item">
+                    {% for esas, alert in esas_alert.items %}
+                    <a id="{{alert.pk}}" href="{% url 'patient-profile' %}?pk={{patient.pk}}#esas/{{esas.pk}}" class="list-group-item nested-list-group-item dashboard-alert">
                         {{esas.created_date|date:"SHORT_DATE_FORMAT"}} {{esas.created_date|time:"H:i"}}
                     </a>
                     {% endfor %}
                 </div>
-
-
-
 
                 {% endfor %}
             </div>

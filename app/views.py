@@ -57,23 +57,24 @@ def dashboard(request):
     unread_patients = []
     unread_patients = Patient.objects.filter(unread_messages__gt=0)
 
-    # Maps patient object to a list of esas surveys with a symptom over 7
-    patient_esases = {}
+    # Maps patient object to a mapping of esas surveys with a symptom over 7
+    # to the corresponding dashboard alert
+    patient_esas_alert = {}
     esas_alerts = DashboardAlert.objects.filter(category=DashboardAlert.ESAS)
     for alert in esas_alerts:
         esas = ESASSurvey.objects.get(pk=alert.item_pk)
 
-        if alert.patient in patient_esases.keys():
-            patient_esases[alert.patient].append(esas)
+        if alert.patient in patient_esas_alert.keys():
+            patient_esas_alert[alert.patient][esas] = alert
         else:
-            patient_esases[alert.patient] = [esas]
+            patient_esas_alert[alert.patient] = {esas: alert}
     
 
     context = {
         'title':'Dashboard',
         'year':datetime.datetime.now().year,
         'unread_patients': unread_patients,
-        'patient_esases': patient_esases,
+        'patient_esas_alert': patient_esas_alert,
     }
 
     """
@@ -928,6 +929,17 @@ def sync_redcap(request):
     return JsonResponse({})
 
 
+@csrf_exempt
+def delete_dashboard_alert(request):
+    """
+    Deletes a dashboard alert object for a patient.
+    """
+    print request.POST
+
+    # Notification's PK
+    DashboardAlert.objects.get(pk=int(request.POST["pk"])).delete()
+
+    return JsonResponse({})
 
 
 def convert_datetime_to_millis(dt):
