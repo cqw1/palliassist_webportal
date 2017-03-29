@@ -21,23 +21,6 @@ import os
 # Create your models here.
 MAX_LENGTH = 255
 
-class DashboardAlert(models.Model):
-    """
-    Parent class of all possible dashboard alerts.
-    """
-    resolved = models.BooleanField(default=False)
-
-    class Meta:
-        abstract = True
-
-
-"""
-Contains info on dashboard alerts of unread messages.
-class UnreadMessage(DashboardAlert):
-    patient = models.OneToOneField(Patient, on_delete=models.CASCADE, primary_key=True)
-    num_unread = models.IntegerField()
-"""
-
 class Patient(models.Model):
     """
     Contains info on a patient.
@@ -197,6 +180,21 @@ class Image(models.Model):
 
     class Meta:
         ordering = ('-created_date',)
+
+class DashboardAlert(models.Model):
+    """
+    Parent class of all possible dashboard alerts.
+    """
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
+    item_pk = models.IntegerField(default=0) 
+
+    MEDICATION = "MEDICATION"
+    ESAS = "ESAS"
+    CATEGORY_CHOICES = (
+        (MEDICATION, MEDICATION),
+        (ESAS, ESAS),
+    )
+    category = models.CharField(max_length=MAX_LENGTH, choices=CATEGORY_CHOICES, default=MEDICATION)
 
 
 @receiver(post_save, sender=User)

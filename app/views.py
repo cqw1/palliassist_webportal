@@ -54,14 +54,26 @@ def dashboard(request):
     if not request.user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
 
-    unread_messages_patients = []
+    unread_patients = []
+    unread_patients = Patient.objects.filter(unread_messages__gt=0)
 
-    unread_messages_patients = Patient.objects.filter(unread_messages__gt=0)
+    # Maps patient object to a list of esas surveys with a symptom over 7
+    patient_esases = {}
+    esas_alerts = DashboardAlert.objects.filter(category=DashboardAlert.ESAS)
+    for alert in esas_alerts:
+        esas = ESASSurvey.objects.get(pk=alert.item_pk)
+
+        if alert.patient in patient_esases.keys():
+            patient_esases[alert.patient].append(esas)
+        else:
+            patient_esases[alert.patient] = [esas]
+    
 
     context = {
         'title':'Dashboard',
         'year':datetime.datetime.now().year,
-        'unread_messages': unread_messages_patients,
+        'unread_patients': unread_patients,
+        'patient_esases': patient_esases,
     }
 
     """

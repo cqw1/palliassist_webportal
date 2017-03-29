@@ -107,6 +107,9 @@ footer {
     cursor: pointer;
 }
 
+.nested-list-group-item {
+    padding-left: 35px;
+}
 
 
 
