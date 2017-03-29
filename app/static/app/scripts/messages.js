@@ -20,14 +20,16 @@ $(function() {
 
 
     // Clears the input fields in the modal to add a new member.
+    /*
     function clearAddMemberModal() {
         $('#add-username').val('');
     }
     $('#close-add-modal-btn').click(clearAddMemberModal);
     $('#x-add-modal-btn').click(clearAddMemberModal);
+    */
 
      // Clear it initially upon page load.
-    clearAddMemberModal();
+    //clearAddMemberModal();
 
 
 
@@ -62,7 +64,7 @@ $(function() {
     function displayMessage(message, twilioChannel) {
 
         var date = new Date(message.timestamp);
-        var prettyTimestamp = '' + (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear() + ' ' + date.getHours() + ':' + date.getMinutes();
+        var prettyTimestamp = date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
 
         var $message;
         var $container = $('<div class="message-container">');
@@ -77,7 +79,6 @@ $(function() {
             $message = $('<div>');
             image = true;
             $message.append($image);
-
         } else {
             $message = $('<span class="message">').text(message.body);
         }
@@ -107,7 +108,6 @@ $(function() {
         $chatWindow.scrollTop($chatWindow[0].scrollHeight);
     }
 
-
     // Set up channel after it has been found
     function setupChannel(twilioChannel) {
         loadPreviousMessages(twilioChannel);
@@ -134,7 +134,6 @@ $(function() {
 
         // Get all channels
         channels.forEach(function(channel) {
-
             var promise = messagingClient.getChannelByUniqueName(channel['unique_name']);
             promise.then(function(twilioChannel) {
 
@@ -152,7 +151,6 @@ $(function() {
             $(this).click(function() {
                 //var sid = $(this).attr('href').slice(1); // Ignore the # in the href
                 var uniqueName = $(this).attr('href').slice(1); // Ignore the # in the href
-                //var promise = messagingClient.getChannelBySid(sid);
                 var promise = messagingClient.getChannelByUniqueName(uniqueName);
                 promise.then(function(ch) {
                     channel = ch;
@@ -161,23 +159,25 @@ $(function() {
         })
 
         // Send a new message to the current channel on [Enter].
-        var $chatInput = $('#chat-input');
-        $chatInput.on('keydown', function(e) {
+        $('.chat-input').on('keydown', function(e) {
             if (e.keyCode == 13) {
-                channel.sendMessage($chatInput.val())
-                $chatInput.val('');
+                channel.sendMessage($(this).val())
+                $(this).val('');
             }
         });
 
         // Send a message to the current channel when 'Send' button is clicked.
-        $('#send-message-btn').click(function() {
+        $('.send-message-btn').click(function() {
+            var channelUniqueName = $(this).attr('id').split('-')[0];
+            var $chatInput = $('#' + channelUniqueName + '-chat-input');
             channel.sendMessage($chatInput.val())
             $chatInput.val('');
 
         })
 
         $('#upload-image-btn').click(function() {
-            patientUsername = $('#messages-panel-body').children('.active').attr('id');
+            //patientUsername = $('#messages-panel-body').children('.active').attr('id');
+            patientUsername = $('#message-panels').children('.active').attr('id');
 
             $('#upload-image-error').text('');
 
@@ -199,8 +199,6 @@ $(function() {
                     } else {
                         $('#upload-image-error').text(data['message']);
                     }
-
-                    console.log(data);
                     console.log('uploadImage success');
                 },
                 error: function(data){
@@ -214,7 +212,6 @@ $(function() {
                 processData: false,
                 contentType: false,
             });
-            console.log('uploadImage');
         })
 
     })
@@ -222,6 +219,7 @@ $(function() {
     /* 
      * Send a POST request to add members to current channel on the backend.
      */
+    /*
     $('#add-member-btn').click(function() {
         $('#add-member-btn').html('Adding...');
         $('#add-member-btn').prop('disabled', true);
@@ -237,6 +235,7 @@ $(function() {
         });
 
     });
+    */
 
 
 

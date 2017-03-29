@@ -25,22 +25,28 @@
         </div>
     </div>
 
-    {% comment %}
-    {% endcomment %}
     <!-- Content Panel -->
-    <div class="col-md-9">
-        <div class="panel panel-default" id="esas-panel">
+    <div class="col-md-9 tab-content">
+        <div class="panel panel-default tab-pane fade in active" id="esas-panel">
 
             <div class="panel-heading">
-                <strong class="panel-title">Panel Title</strong>
+                <strong class="panel-title">Overview</strong>
             </div>
-            <div class="panel-body tab-content" id="esas-panel-body">
+            <div class="panel-body" id="esas-panel-body">
                 <div id="esas-overview" class="tab-pane fade in active">
                     <div id="esas-chart" style="width: 500px; height: 500px"></div>
                 </div>
+            </div>
+        </div>
 
-                {% for esas in esas_objects%}
-                <div id="{{esas.pk}}" class="tab-pane fade in">
+        {% for esas in esas_objects %}
+        <div class="panel panel-default tab-pane fade" id="{{esas.pk}}">
+
+            <div class="panel-heading">
+                <strong class="panel-title">{{esas.created_date|date:"SHORT_DATE_FORMAT"}} {{esas.created_date|time:"H:i"}}</strong>
+            </div>
+            <div class="panel-body" id="">
+                <div id="" class="">
                     <div id="{{esas.pk}}-esas-responses">
 
                         <!-- Standard questions -->
@@ -165,13 +171,12 @@
 
                     </div>
                 </div>
-                {% endfor %}
-            </div>
 
+            </div>
         </div>
+        {% endfor %}
     </div>
-    {% comment %}
-    {% endcomment %}
+
 </div>
 
 

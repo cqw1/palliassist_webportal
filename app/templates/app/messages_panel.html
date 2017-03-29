@@ -1,25 +1,22 @@
 
 <!-- Messaging Panel -->
-<div class="panel panel-default" id="messages-panel">
+{% for ch in channels %}
+{% if forloop.first %}
+<div id="{{ch.unique_name}}" class="panel panel-default tab-pane fade in active messages-panel">
+{% else %} 
+<div id="{{ch.unique_name}}" class="panel panel-default tab-pane fade messages-panel">
+{% endif %} 
 
     <div class="panel-heading clearfix">
-        <strong class="panel-title">Panel Title</strong>
+        <strong class="panel-title">{{ch.friendly_name}}</strong>
+        {% comment %}
         <button id="add-member-modal-btn" type="button" class="btn btn-primary pull-right" autocomplete="off" data-toggle="modal" data-target="#add-member-modal">
             <span class="glyphicon glyphicon-plus"></span> Add Member
         </button>
+        {% endcomment %}
     </div>
-    <div class="panel-body tab-content" id="messages-panel-body">
-
-        {% for ch in channels %}
-        {% if forloop.first %}
-        <div id="{{ ch.unique_name }}" class="tab-pane fade in active">
-        {% else %} 
-        <div id="{{ ch.unique_name}}" class="tab-pane fade in">
-        {% endif %}
-            {{ch.friendly_name}}
-            <div id="{{ch.unique_name}}-chat-messages" class="chat-messages"></div>
-        </div>
-        {% endfor %}
+    <div class="panel-body messages-panel-body">
+        <div id="{{ch.unique_name}}-chat-messages" class="chat-messages"></div>
     </div>
 
     <!-- Input text box at bottom -->
@@ -27,13 +24,13 @@
         <li class="list-group-item">
 
         <div class="input-group">
-            <span id="chat-input-span">
-                <input id="chat-input" type="text" class="form-control" placeholder="say anything" autofocus aria-label="...">
+            <span class="chat-input-span">
+                <input id="{{ch.unique_name}}-chat-input" type="text" class="form-control chat-input" placeholder="say anything" autofocus aria-label="...">
             </span>
 
             <!-- Buttons -->
             <div class="input-group-btn">
-                <button id="upload-image-modal-btn" data-toggle="modal" data-target="#upload-image-modal" class="btn btn-default" type="button">
+                <button data-toggle="modal" data-target="#upload-image-modal" class="btn btn-default upload-image-modal-btn" type="button">
                     <span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
                 </button>
                 <!--
@@ -41,13 +38,14 @@
                     <span class=" glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                 </button>
                 -->
-                <button id="send-message-btn" class="btn btn-primary" type="button">Send</button>
+                <button id="{{ch.unique_name}}-send-message-btn" class="btn btn-primary send-message-btn" type="button">Send</button>
             </div>
 
         </div>
         </li>
     </ul>
 </div>
+{% endfor %}
 
 {% include "messages_add_member_modal.html" %}
 {% include "messages_upload_image_modal.html" %}

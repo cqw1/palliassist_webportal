@@ -14,7 +14,7 @@
             <!-- Chat channels list -->
             <ul class="list-group">
                 
-                <a data-toggle="tab" class="list-group-item" href="#pain-overview">Overview</a>
+                <!-- <a data-toggle="tab" class="list-group-item" href="#pain-overview">Overview</a> -->
 
                 {% for pain in pain_objects %}
                 <!-- <a data-toggle="tab" class="list-group-item millis-date" href="#{{pain.pk}}">{{pain.created_date}}</a> -->
@@ -24,70 +24,55 @@
         </div>
     </div>
 
-    {% comment %}
-    {% endcomment %}
     <!-- Content Panel -->
-    <div class="col-md-9">
-        <div class="panel panel-default" id="pain-panel">
+    <div class="col-md-9 tab-content">
+        {% for pain in pain_objects %}
+
+        {% if forloop.first %}
+        <div class="panel panel-default tab-pane fade in active" id="{{pain.pk}}">
+        {% else %}
+        <div class="panel panel-default tab-pane fade" id="{{pain.pk}}">
+        {% endif %}
 
             <div class="panel-heading">
-                <strong class="panel-title">Panel Title</strong>
+                <strong class="panel-title">{{pain.created_date|date:"SHORT_DATE_FORMAT"}} {{pain.created_date|time:"H:i"}}</strong>
             </div>
 
-            <div class="tab-content">
-                {% comment %}
-                <div id="pain-overview" class="tab-pane fade in active pain-tab">
-                    <svg width="{{pain_width}}" height="{{pain_height}}" class="body-svg" viewbox="0 0 {{pain_width}} {{pain_height}}">
+            <div class="pain-tab pa-center-wrapper">
+                <div class="pa-center-wrapper svg-wrapper">
+                    <div>
+                        <strong style="margin-right:15px">Front</strong>
+                    </div>
+                    <svg width="{{pain_width}}" height="{{pain_height}}" class="front-body" viewbox="0 0 {{pain_width}} {{pain_height}}">
                         <image xlink:href="{% static 'app/images/body_image.png' %}" x="0" y="0" width="{{pain_width}}" height="{{pain_height}}"/> 
+
+                        {% for point in pain.front_points.all %}
+                        <!-- <circle cx="{% widthratio point.x pain.width pain_width %}" cy="{% widthratio point.y pain.height pain_height %}" r="10" stroke="red" stroke-width="1" fill="red" /> -->
+                        <circle cx="{% widthratio point.x pain.width pain_width %}" cy="{% widthratio point.y pain.height pain_height %}" r="10" stroke="red" stroke-width="1" fill="rgb(255, {{point.rgb}}, {{point.rgb}})" />
+                        <text x="{% widthratio point.x pain.width pain_width %}" dx="-3" y="{% widthratio point.y pain.height pain_height %}" dy="4" font-family="Arial" font-size="10" stroke="none" fill="white">{{point.intensity}}</text>
+                        {% endfor %}
                     </svg>
                 </div>
-                {% endcomment %}
 
-                {% for pain in pain_objects %}
-
-                {% if forloop.first %}
-                <div id="{{pain.pk}}" class="tab-pane fade in active pain-tab pa-center-wrapper"> 
-                {% else %}
-                <div id="{{pain.pk}}" class="tab-pane fade in pain-tab pa-center-wrapper">
-                {% endif %}
-
-                    <div class="pa-center-wrapper svg-wrapper">
-                        <div>
-                            <strong style="margin-right:15px">Front</strong>
-                        </div>
-                        <svg width="{{pain_width}}" height="{{pain_height}}" class="front-body" viewbox="0 0 {{pain_width}} {{pain_height}}">
-                            <image xlink:href="{% static 'app/images/body_image.png' %}" x="0" y="0" width="{{pain_width}}" height="{{pain_height}}"/> 
-
-                            {% for point in pain.front_points.all %}
-                            <!-- <circle cx="{% widthratio point.x pain.width pain_width %}" cy="{% widthratio point.y pain.height pain_height %}" r="10" stroke="red" stroke-width="1" fill="red" /> -->
-                            <circle cx="{% widthratio point.x pain.width pain_width %}" cy="{% widthratio point.y pain.height pain_height %}" r="10" stroke="red" stroke-width="1" fill="rgb(255, {{point.rgb}}, {{point.rgb}})" />
-                            <text x="{% widthratio point.x pain.width pain_width %}" dx="-3" y="{% widthratio point.y pain.height pain_height %}" dy="4" font-family="Arial" font-size="10" stroke="none" fill="white">{{point.intensity}}</text>
-                            {% endfor %}
-                        </svg>
+                <div class="pa-center-wrapper svg-wrapper">
+                    <div>
+                        <strong style="margin-right:14px">Back</strong>
                     </div>
+                    <svg width="{{pain_width}}" height="{{pain_height}}" class="back-body" viewbox="0 0 {{pain_width}} {{pain_height}}">
+                        <image xlink:href="{% static 'app/images/body_image.png' %}" x="0" y="0" width="{{pain_width}}" height="{{pain_height}}"/> 
 
-                    <div class="pa-center-wrapper svg-wrapper">
-                        <div>
-                            <strong style="margin-right:14px">Back</strong>
-                        </div>
-                        <svg width="{{pain_width}}" height="{{pain_height}}" class="back-body" viewbox="0 0 {{pain_width}} {{pain_height}}">
-                            <image xlink:href="{% static 'app/images/body_image.png' %}" x="0" y="0" width="{{pain_width}}" height="{{pain_height}}"/> 
-
-                            {% for point in pain.back_points.all %}
-                            <circle cx="{% widthratio point.x pain.width pain_width %}" cy="{% widthratio point.y pain.height pain_height %}" r="10" stroke="red" stroke-width="1" fill="rgb(255, {{point.rgb}}, {{point.rgb}})" />
-                            <text x="{% widthratio point.x pain.width pain_width %}" dx="-3" y="{% widthratio point.y pain.height pain_height %}" dy="4" font-family="Arial" font-size="10" stroke="none" fill="white">{{point.intensity}}</text>
-                            {% endfor %}
-                        </svg>
-                    </div>
+                        {% for point in pain.back_points.all %}
+                        <circle cx="{% widthratio point.x pain.width pain_width %}" cy="{% widthratio point.y pain.height pain_height %}" r="10" stroke="red" stroke-width="1" fill="rgb(255, {{point.rgb}}, {{point.rgb}})" />
+                        <text x="{% widthratio point.x pain.width pain_width %}" dx="-3" y="{% widthratio point.y pain.height pain_height %}" dy="4" font-family="Arial" font-size="10" stroke="none" fill="white">{{point.intensity}}</text>
+                        {% endfor %}
+                    </svg>
                 </div>
-
-                {% endfor %}
 
             </div>
 
         </div>
+
+        {% endfor %}
     </div>
-    {% comment %}
-    {% endcomment %}
 </div>
 
