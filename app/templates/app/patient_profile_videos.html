@@ -1,0 +1,39 @@
+<br>
+
+<form method="post" action="." class="form-group" id="add-video-form">
+    {% csrf_token %}
+
+    <div class="pa-child-display-inline-block">
+        <label>{{ add_video_form.url.label }}</label>
+        {{ add_video_form.url}}
+
+        <button id="add-video-btn" type="button" class="btn btn-primary" onclick="addVideo('{{patient.pk}}')">Add</button>
+    </div>
+
+
+</form>
+
+<hr>
+
+{% if videos %}
+<div class="row">
+    {% for video in videos %}
+    <div class="col-md-4 pa-center-wrapper">
+        <div class="embed-responsive embed-responsive-4by3">
+            <iframe class="embed-responsive-item video-iframe" src="{{video.url}}" allowfullscreen></iframe>
+        </div>
+        <span class="glyphicon glyphicon-remove" aria-hidden="true" onclick="deleteVideo('{{video.pk}}', this)"></span>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+
+<br>
+<div class="pa-center-wrapper">
+    No videos found.
+</div>
+
+{% endif %}
+
+
+{% include "create_notification_modal.html" %}

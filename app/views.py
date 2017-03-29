@@ -777,7 +777,38 @@ def handle_completed_pain(dt, patient_obj, data):
     print pain
     return JsonResponse({})
 
-def handle_completed_ESAS(dt, patient_obj, data):
+def check_esas_alert(esas):
+    """
+    Checks to see if we need to create a dashboard alert for
+    this esas. If a symptom intesnity has exceeded 7.
+    """
+
+    limit = 7
+
+    if esas.pain >= limit:
+        return True
+    elif esas.fatigue >= limit:
+        return True
+    elif esas.nausea >= limit:
+        return True
+    elif esas.depression >= limit:
+        return True
+    elif esas.anxiety >= limit:
+        return True
+    elif esas.drowsiness >= limit:
+        return True
+    elif esas.appetite >= limit:
+        return True
+    elif esas.well_being >= limit:
+        return True
+    elif esas.lack_of_air >= limit:
+        return True
+    elif esas.insomnia >= limit:
+        return True
+
+    return False
+
+def handle_completed_esas(dt, patient_obj, data):
     """
     Handler for receiving a POST request form mobile, indicating 
     that a patient has completed a ESAS survey.
@@ -794,7 +825,6 @@ def handle_completed_ESAS(dt, patient_obj, data):
     esas.well_being = int(data["well_being"])
     esas.lack_of_air = int(data["lack_of_air"])
     esas.insomnia = int(data["insomnia"])
-    esas.pain = int(data["pain"])
 
     esas.fever = data["fever"]
     
@@ -812,6 +842,8 @@ def handle_completed_ESAS(dt, patient_obj, data):
     esas.save()
     print esas
 
+    if check_esas_alert(esas):
+        DashboardAlert.objects.create(category=DashboardAlert.ESAS, patient=patient_obj, item_pk=esas.pk)
 
     return JsonResponse({})
 
@@ -847,7 +879,7 @@ def mobile(request):
             return handle_completed_pain(dt_aware, patient_obj, json.loads(request.POST["data"]))
 
         elif request.POST["category"] == "ESAS":
-            return handle_completed_ESAS(dt_aware, patient_obj, json.loads(request.POST["data"]))
+            return handle_completed_esas(dt_aware, patient_obj, json.loads(request.POST["data"]))
 
     elif event == "LOGIN":
         if request.POST["category"] == "MEDICATION":

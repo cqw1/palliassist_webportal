@@ -50,23 +50,19 @@
                 {% for patient, esases in patient_esases.items %}
                 <!-- <a href="{% url 'patient-profile' %}?pk={{patient.pk}}#esas" class="list-group-item">{{patient.full_name}}</a>-->
 
-                {% comment %}
-                <div class="panel-group">
-                    <div class="panel panel-default">
-                {% endcomment %}
-                <a class="list-group-item" href="#{{patient.pk}}-esas-alerts-collapse" role="button" data-toggle="collapse">{{patient.full_name}}<span class="badge">{{esases|length}}</span></a>
-                {% comment %}
-                    </div>
-                {% endcomment %}
+                <a class="list-group-item patient-header" href="#{{patient.pk}}-esas-alerts-collapse" role="button" data-toggle="collapse">
+                    <span class="glyphicon glyphicon-chevron-right dashboard-chevron-right" aria-hidden="true"></span>
+                    {{patient.full_name}}
+                    <span class="badge">{{esases|length}}</span>
+                </a>
 
-                    <div id="{{patient.pk}}-esas-alerts-collapse" class="collapse">
-                            {% for esas in esases %}
-                            <a href="{% url 'patient-profile' %}?pk={{patient.pk}}#esas/{{esas.pk}}" class="list-group-item nested-list-group-item">{{esas.created_date|date:"SHORT_DATE_FORMAT"}} {{esas.created_date|time:"H:i"}}</a>
-                            {% endfor %}
-                    </div>
-                {% comment %}
+                <div id="{{patient.pk}}-esas-alerts-collapse" class="collapse">
+                    {% for esas in esases %}
+                    <a href="{% url 'patient-profile' %}?pk={{patient.pk}}#esas/{{esas.pk}}" class="list-group-item nested-list-group-item">
+                        {{esas.created_date|date:"SHORT_DATE_FORMAT"}} {{esas.created_date|time:"H:i"}}
+                    </a>
+                    {% endfor %}
                 </div>
-                {% endcomment %}
 
 
 
@@ -80,5 +76,13 @@
     </div>
 
 </div>
+
+{% endblock %}
+
+{% block scripts %}
+
+{% load staticfiles %}
+
+<script src="{% static 'app/scripts/dashboard.js' %}"></script>
 
 {% endblock %}
