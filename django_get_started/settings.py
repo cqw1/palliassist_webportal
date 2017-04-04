@@ -36,13 +36,15 @@ TWILIO_IPM_SERVICE_SID = 'IS2ec68050ef5e4c79b15b78c3ded7ddc5'
 TWILIO_IPM_CLIENT = TwilioIpMessagingClient(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
 TWILIO_IPM_SERVICE = TWILIO_IPM_CLIENT.services.get(sid=TWILIO_IPM_SERVICE_SID)
 
-"""
-AZURE_STORAGE_ACCOUNT = CloudStorageAccount("palliassistblobstorage", "r9tHMEj5VV/PwJyjN3KYySUqsnq9tCrxh6kDKFvVY3vrm+GluHN/a1LQjXKYIUzoHEle7x3EyIQwoOijzRJiOA==")
+AZURE_STORAGE_ACCOUNT = CloudStorageAccount(
+    "palliassistblobstorage", # account name
+    "r9tHMEj5VV/PwJyjN3KYySUqsnq9tCrxh6kDKFvVY3vrm+GluHN/a1LQjXKYIUzoHEle7x3EyIQwoOijzRJiOA==", # access key
+    "?sv=2016-05-31&ss=b&srt=sco&sp=rwdlac&se=2017-05-25T08:02:01Z&st=2017-04-04T00:02:01Z&spr=https,http&sig=DshFBBFKzV20Ml6sN8D8ZRpbIakU8jlbj8zIBDZP4z8%3D" # sas token
+)
 BLOCK_BLOB_SERVICE = AZURE_STORAGE_ACCOUNT.create_block_blob_service()
 
 print "AZURE_STORAGE_ACCOUNT", AZURE_STORAGE_ACCOUNT
 print "BLOCK_BLOB_SERVICE", BLOCK_BLOB_SERVICE
-"""
 
 
 DEBUG = True 
