@@ -4,7 +4,7 @@
     <button id="create-medication-modal-btn" type="button" class="btn btn-primary pull-right" autocomplete="off" data-toggle="modal" data-target="#create-medication-modal">
         <span class="glyphicon glyphicon-plus"></span> Create 
     </button>
-    <button type="button" class="btn btn-danger pull-right" onclick="fcmNotification('{{patient.user.username}}', 'CREATE', 'MEDICATION', '', '4')">Remind</button>
+    <!-- <button type="button" class="btn btn-danger pull-right" onclick="fcmNotification('{{patient.user.username}}', 'CREATE', 'MEDICATION', '', '4')">Remind</button> -->
 </div>
 
 {% if medications %}
@@ -19,6 +19,7 @@
             <th>Dose</th>
             <th>Posology</th>
             <th>Rescue</th>
+            <th><!-- Remind medication column --></th>
             <th><!-- Clear medication column --></th>
         </tr>
     </thead>
@@ -32,6 +33,11 @@
             <td>{{ medication.dose }}</td>
             <td>{{ medication.posology }}</td>
             <td>{{ medication.rescue }}</td>
+            <td>
+                <button type="button" class="btn btn-danger btn-xs" onclick="fcmNotification('{{patient.user.username}}', 'CREATE', 'MEDICATION', '', '4')">
+                    Remind
+                </button>
+            </td>
             <td><span class="glyphicon glyphicon-remove delete-medication" aria-hidden="true"></span></td>
         </tr>
         {% endfor %}
