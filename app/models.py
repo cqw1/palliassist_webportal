@@ -143,6 +143,25 @@ class Medication(models.Model):
     class Meta:
         ordering = ('-created_date',)
 
+class MedicationStatus(models.Model):
+    """ Status if a medication has been completed at its hour. """
+    hour = models.IntegerField()
+    completed = models.BooleanField()
+
+class MedicationReportEntry(models.Model):
+    """ A entry for one medication in the report """
+    name = models.CharField(max_length=MAX_LENGTH, default="")
+    statuses = models.ManyToManyField(MedicationStatus, related_name="statuses")
+
+class MedicationReport(models.Model):
+    """ Info for one submitted medication report. """
+    created_date = models.DateTimeField(default=timezone.now)
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
+    entries = models.ManyToManyField(MedicationReportEntry, related_name="entries")
+
+    class Meta:
+        ordering = ('-created_date',)
+
 class Notification(models.Model):
     """ A notification for a patient or doctor. """
     created_date = models.DateTimeField(default=timezone.now)

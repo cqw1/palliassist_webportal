@@ -225,6 +225,9 @@ def patient_profile(request):
 
     ### Medication tab.
     medications = Medication.objects.filter(patient=patient_obj)
+    for med in medications:
+        med.posology = "h, ".join(med.posology.split(";")) + "h"
+ 
 
     context = {
         'title': 'Patient Profile',
