@@ -1,9 +1,5 @@
 <br>
 
-<div class="button-row">
-</div>
-
-
 <div class="row">
     <div class="col-md-3">
         <div class="panel panel-default">
@@ -68,7 +64,7 @@
                                         Remind
                                     </button>
                                 </td>
-                                <td><span class="glyphicon glyphicon-remove delete-medication" aria-hidden="true"></span></td>
+                                <td><span class="glyphicon glyphicon-remove delete-medication delete-x" aria-hidden="true"></span></td>
                             </tr>
                             {% endfor %}
                         </tbody>
@@ -94,8 +90,33 @@
                 <strong class="panel-title">{{report.created_date|date:"SHORT_DATE_FORMAT"}} {{report.created_date|time:"H:i"}}</strong>
             </div>
             <div class="panel-body" id="">
-                <div id="" class="">
-                </div>
+                <table id="medication-report-table" class="table-bordered table-striped">
+                    <tr>
+                        <th>Name</th>
+                        {% for hour in hours %}
+                        <th class="hour-cell">{{hour}}h</th>
+                        {% endfor %}
+                    </tr>
+                    {% for entry in report.entries.all %}
+                    <tr>
+                        <td>{{entry.medication.name}}</td>
+                        {% for status in entry.statuses.all %}
+                        {% if status.completed %}
+                            <td class="pa-center-wrapper">
+                                <span class="glyphicon glyphicon-ok green" aria-hidden="true" />
+                            </td>
+                        {% elif status.completed != None %}
+                            <td class="pa-center-wrapper">
+                                <span class="glyphicon glyphicon-remove red" aria-hidden="true" />
+                            </td>
+                        {% else %}
+                        <td></td>
+                        {% endif %}
+                        {% endfor %}
+
+                    </tr>
+                    {% endfor %}
+                </table>
             </div>
         </div>
         {% endfor %}

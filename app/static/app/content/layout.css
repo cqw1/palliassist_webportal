@@ -97,12 +97,12 @@ footer {
     padding: 5%;
 }
 
-.glyphicon-remove {
+.delete-x{
     opacity: 0.5;
     filter: alpha(opacity=50); /* For IE8 and earlier */
 }
 
-.glyphicon-remove:hover {
+.delete-x:hover {
     opacity: 1.0;
     filter: alpha(opacity=100); /* For IE8 and earlier */
     cursor: pointer;
@@ -112,7 +112,13 @@ footer {
     padding-left: 50px;
 }
 
+.green {
+    color: green;
+}
 
+.red{
+    color: red;
+}
 
 
 

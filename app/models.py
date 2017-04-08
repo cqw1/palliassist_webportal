@@ -146,11 +146,14 @@ class Medication(models.Model):
 class MedicationStatus(models.Model):
     """ Status if a medication has been completed at its hour. """
     hour = models.IntegerField()
-    completed = models.BooleanField()
+    completed = models.NullBooleanField()
+
+    class Meta:
+        ordering = ('hour',)
 
 class MedicationReportEntry(models.Model):
     """ A entry for one medication in the report """
-    name = models.CharField(max_length=MAX_LENGTH, default="")
+    medication = models.ForeignKey(Medication, on_delete=models.CASCADE)
     statuses = models.ManyToManyField(MedicationStatus, related_name="statuses")
 
 class MedicationReport(models.Model):

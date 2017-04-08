@@ -10,3 +10,15 @@
     font-weight: bold;
     padding-right: 10px;
 }
+
+#medication-report-table {
+    width: 100%;
+}
+
+#medication-report-table th {
+    text-align: center;
+}
+
+.hour-cell {
+    width: 7%;
+}

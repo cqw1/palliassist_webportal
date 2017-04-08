@@ -227,7 +227,25 @@ def patient_profile(request):
     medications = Medication.objects.filter(patient=patient_obj)
     for med in medications:
         med.posology = "h, ".join(med.posology.split(";")) + "h"
- 
+
+    medication_reports = MedicationReport.objects.filter(patient=patient_obj)
+
+    hours = []
+    for h in range(0, 24, 2):
+        hours.append(h)
+
+    report_entry_statuses = {}
+    for report in medication_reports:
+        entry_statuses = {}
+        for entry in report.entries.all():
+            statuses = {}
+            for status in entry.statuses.all():
+                statuses[status.hour] = status.completed
+            entry_statuses[entry.pk] = statuses
+        report_entry_statuses[report.pk] = entry_statuses
+
+    print "report_entry_statuses", report_entry_statuses
+    test_dict = {1: "hello"}
 
     context = {
         'title': 'Patient Profile',
@@ -242,6 +260,10 @@ def patient_profile(request):
         'notifications': notifications,
         'videos': videos,
         'medications': medications,
+        'medication_reports': medication_reports,
+        'hours': hours,
+        'report_entry_statuses': report_entry_statuses,
+        'test_dict': test_dict,
         'esas_objects': esas_objects,
         'esas_json': esas_json,
         'pain_objects': pain_objects,
