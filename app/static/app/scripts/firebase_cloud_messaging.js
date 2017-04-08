@@ -45,6 +45,8 @@ function fcmNotification(patientUsername, action, category, text, primary_key) {
        prettyCategory = 'Medication' ;
     } else if (category == 'ESAS') {
        prettyCategory = 'ESAS' ;
+    } else if (category == 'MESSAGE') {
+       prettyCategory = 'Message' ;
     }
     triggerToast(prettyCategory + ' notification sent.')
 
@@ -57,7 +59,7 @@ function fcmNotification(patientUsername, action, category, text, primary_key) {
               'category': category,
               'patient': patientUsername,
               'text': text,
-              'pk': primary_key, // Check if we can change this to medication_pk
+              'pk': primary_key, 
         }
     });
 

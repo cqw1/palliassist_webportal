@@ -99,7 +99,7 @@
                     </tr>
                     {% for entry in report.entries.all %}
                     <tr>
-                        <td>{{entry.medication.name}}</td>
+                        <td class="pa-center-wrapper">{{entry.medication.name}}</td>
                         {% for status in entry.statuses.all %}
                         {% if status.completed %}
                             <td class="pa-center-wrapper">

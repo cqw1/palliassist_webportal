@@ -697,8 +697,11 @@ def create_medication(request):
     """
     Creates a Medication model based on user input.
     """
+    print
+    print "create_medication"
     patient_obj = Patient.objects.get(pk=request.POST["pk"])
 
+    """
     medication = Medication.objects.create(
             created_date=timezone.now(),
             patient=patient_obj,
@@ -708,8 +711,11 @@ def create_medication(request):
             posology=request.POST["posology"],
             rescue=request.POST["rescue"]
     )
+    """
 
-    print medication
+    print CreateMedicationForm(request.POST)
+    print request
+    print
 
     return JsonResponse({})
 

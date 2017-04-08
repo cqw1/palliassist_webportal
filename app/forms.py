@@ -55,10 +55,27 @@ class CreateNotificationForm(forms.Form):
     text = forms.CharField(label=_("Text"), widget=forms.Textarea({"class": "form-control"}))
 
 class CreateMedicationForm(forms.Form):
+
+    POSOLOGY_CHOICES = (
+        ('0', '0h'),
+        ('2', '2h'),
+        ('4', '4h'),
+        ('6', '6h'),
+        ('8', '8h'),
+        ('10', '10h'),
+        ('12', '12h'),
+        ('14', '14h'),
+        ('16', '16h'),
+        ('18', '18h'),
+        ('20', '20h'),
+        ('22', '22h'),
+    )
+
     name = forms.CharField(label=_("Name"), widget=forms.TextInput({"class": "form-control"}), required=True) 
     form = forms.CharField(label=_("Form"), widget=forms.TextInput({"class": "form-control"}), required=True) 
     dose = forms.CharField(label=_("Dose"), widget=forms.TextInput({"class": "form-control"}), required=True) 
     posology = forms.CharField(label=_("Posology"), widget=forms.TextInput({"class": "form-control"}), required=True) 
+    #posology = forms.MultipleChoiceField(label=_("Posology"), widget=forms.CheckboxSelectMultiple, choices=POSOLOGY_CHOICES, required=True) 
     rescue = forms.CharField(label=_("Rescue"), widget=forms.TextInput({"class": "form-control"}), required=True) 
 
 class UploadImageForm(forms.Form):
