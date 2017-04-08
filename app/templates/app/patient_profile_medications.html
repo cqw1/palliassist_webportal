@@ -34,7 +34,7 @@
             <td>{{ medication.posology }}</td>
             <td>{{ medication.rescue }}</td>
             <td>
-                <button type="button" class="btn btn-danger btn-xs" onclick="fcmNotification('{{patient.user.username}}', 'CREATE', 'MEDICATION', '', '4')">
+                <button type="button" class="btn btn-danger btn-xs" onclick="fcmNotification('{{patient.user.username}}', 'CREATE', 'MEDICATION', '{{medication.name}}', '4')">
                     Remind
                 </button>
             </td>
