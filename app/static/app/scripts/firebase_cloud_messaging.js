@@ -48,20 +48,35 @@ function fcmNotification(patientUsername, action, category, text, primary_key) {
     } else if (category == 'MESSAGE') {
        prettyCategory = 'Message' ;
     }
-    triggerToast(prettyCategory + ' notification sent.')
+    triggerToast(prettyCategory + ' notification sent.');
 
 
-    var dataJSON = JSON.stringify({
-        'to' : '/topics/test',
-        'data' : {
-              'event' : 'NOTIFICATION',
-              'action': action,
-              'category': category,
-              'patient': patientUsername,
-              'text': text,
-              'pk': primary_key, 
-        }
-    });
+    if (category == 'MESSAGE') {
+        var dataJSON = JSON.stringify({
+            'to' : '/topics/test',
+            'data' : {
+                  'event' : 'NOTIFICATION',
+                  'action': action,
+                  'category': category,
+                  'patient': patientUsername,
+                  'sender': djangoUsername,
+                  'text': text,
+                  'pk': primary_key, 
+            }
+        });
+    } else {
+        var dataJSON = JSON.stringify({
+            'to' : '/topics/test',
+            'data' : {
+                  'event' : 'NOTIFICATION',
+                  'action': action,
+                  'category': category,
+                  'patient': patientUsername,
+                  'text': text,
+                  'pk': primary_key, 
+            }
+        });
+    }
 
     console.log(dataJSON);
     sendNotification(dataJSON);

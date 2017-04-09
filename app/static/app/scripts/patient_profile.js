@@ -66,9 +66,11 @@ $(function() {
         var target = $(e.target).attr("href") // activated tab
         console.log(target);
         if (target == '#messages') {
+            /*
             var $chatWindow = $('#' + twilioChannel.uniqueName + '-chat-messages');
             $chatWindow.scrollTop($chatWindow[0].scrollHeight);
             console.log('scrollTop');
+            */
         }
     });
 

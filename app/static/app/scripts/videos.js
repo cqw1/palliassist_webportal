@@ -1,7 +1,9 @@
 
-function addVideo(patientPrimaryKey) {
+function addVideo(patientPrimaryKey, patientUsername) {
     console.log('addVideo')
     $.post('/add-video', $("#add-video-form").serialize() + "&pk=" + patientPrimaryKey, function() {
+        fcmNotification(patientUsername, 'CREATE', 'VIDEO', $('#id_url').val(), '');
+
         console.log('posted');
         console.log(location);
         location.reload();

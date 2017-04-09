@@ -16,6 +16,7 @@ $(function() {
      * djangoUsername = identity / username logged in
      * token = twilio token
      * channels = list of channels
+     * logged_in_username = username of the doctor or user of the channel
      */
 
 
@@ -163,8 +164,7 @@ $(function() {
             if (e.keyCode == 13) {
                 channel.sendMessage($(this).val());
 
-                patientUsername = $('#message-panels').children('.active').attr('id');
-                fcmNotification(patientUsername, 'SENT', 'MESSAGES', $(this).val(), '');
+                fcmNotification(patientUsername, 'CREATE', 'MESSAGE', $(this).val(), '');
 
                 $(this).val('');
             }
@@ -176,8 +176,7 @@ $(function() {
             var $chatInput = $('#' + channelUniqueName + '-chat-input');
             channel.sendMessage($chatInput.val())
 
-            patientUsername = $('#message-panels').children('.active').attr('id');
-            fcmNotification(patientUsername, 'SENT', 'MESSAGES', $chatInput.val(), '');
+            fcmNotification(patientUsername, 'CREATE', 'MESSAGE', $chatInput.val(), '');
 
             $chatInput.val('');
 
@@ -185,7 +184,7 @@ $(function() {
 
         $('#upload-image-btn').click(function() {
             //patientUsername = $('#messages-panel-body').children('.active').attr('id');
-            patientUsername = $('#message-panels').children('.active').attr('id');
+            //patientUsername = $('#message-panels').children('.active').attr('id');
 
             $('#upload-image-error').text('');
 
@@ -202,7 +201,7 @@ $(function() {
                         channel.sendMessage('Image sent.', {'blob_name': data['blob_name'], 'container_name': data['container_name']});
                         $('#upload-image-modal').modal('hide');
 
-                        fcmNotification(patientUsername, 'SENT', 'MESSAGES', 'Image sent.', '');
+                        fcmNotification(patientUsername, 'CREATE', 'MESSAGE', 'Image sent.', '');
 
                         //location.reload();
 

@@ -263,7 +263,6 @@ def patient_profile(request):
         'medication_reports': medication_reports,
         'hours': hours,
         'report_entry_statuses': report_entry_statuses,
-        'test_dict': test_dict,
         'esas_objects': esas_objects,
         'esas_json': esas_json,
         'pain_objects': pain_objects,
