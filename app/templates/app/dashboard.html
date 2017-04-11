@@ -31,10 +31,23 @@
             </div>
 
             <div class="list-group">
-                <a href="#" class="list-group-item">Billy Bob<span class="badge">78</span></a>
-                <a href="#" class="list-group-item">John Doe<span class="badge">3</span></a>
-                <a href="#" class="list-group-item">Jane Doe<span class="badge">10</span></a>
-                <a href="#" class="list-group-item">John Jingleheimerschmidt<span class="badge">101</span></a>
+                {% for patient, medication_alert in patient_medication_alert.items %}
+
+                <a class="list-group-item patient-header" href="#{{patient.pk}}-medication-alerts-collapse" role="button" data-toggle="collapse">
+                    <span class="glyphicon glyphicon-chevron-right dashboard-chevron-right" aria-hidden="true"></span>
+                    {{patient.full_name}}
+                    <span class="badge">{{medication_alert|length}}</span>
+                </a>
+
+                <div id="{{patient.pk}}-medication-alerts-collapse" class="collapse">
+                    {% for report, alert in medication_alert.items %}
+                    <a id="medication-alert-{{alert.pk}}" href="{% url 'patient-profile' %}?pk={{patient.pk}}#medications/report-{{report.pk}}" class="list-group-item nested-list-group-item dashboard-alert">
+                        {{report.created_date|date:"SHORT_DATE_FORMAT"}} {{report.created_date|time:"H:i"}}
+                    </a>
+                    {% endfor %}
+                </div>
+
+                {% endfor %}
             </div>
         </div>
     </div>
@@ -57,7 +70,7 @@
 
                 <div id="{{patient.pk}}-esas-alerts-collapse" class="collapse">
                     {% for esas, alert in esas_alert.items %}
-                    <a id="{{alert.pk}}" href="{% url 'patient-profile' %}?pk={{patient.pk}}#esas/{{esas.pk}}" class="list-group-item nested-list-group-item dashboard-alert">
+                    <a id="esas-alert-{{alert.pk}}" href="{% url 'patient-profile' %}?pk={{patient.pk}}#esas/esas-{{esas.pk}}" class="list-group-item nested-list-group-item dashboard-alert">
                         {{esas.created_date|date:"SHORT_DATE_FORMAT"}} {{esas.created_date|time:"H:i"}}
                     </a>
                     {% endfor %}

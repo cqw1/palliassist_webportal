@@ -302,6 +302,62 @@ def generateTwilioAccessToken(sender, **kwargs):
     except Doctor.DoesNotExist:
         print "error. not a doctor logging in?"
 
+############### FCM HANDLERS ############################
+
+def handle_completed_medication(dt, patient_obj, data):
+    """
+    Handler for receiving a POST request form mobile, indicating 
+    that a patient has completed a medication.
+    """
+
+    report = MedicationReport.objects.create(created_date=dt, patient=patient_obj)
+    alert = False
+
+    for entry in data["entries"]:
+        medication = Medication.objects.get(pk=completed["pk"])
+        entry = MedicationReportEntry.objects.create(medication=medication)
+
+        for status in entry.statuses:
+            if status["completed"] == "yes":
+                med_status =  MedicationStatus.objects.create(time=int(status["time"]), completed=True)
+            else:
+                # Make dashboard alert
+                alert = True
+                med_status = MedicationStatus.objects.create(time=int(status["time"]), completed=False)
+
+            entry.statuses.add(med_status)
+            
+        report.add(entry) 
+
+    if alert:
+        DashboardAlert.objects.create(category=DashboardAlert.MEDICATION, patient=patient_obj, item_pk=report.pk)
+
+
+    print medication
+    print medication.patient
+
+def handle_completed_pain(dt, patient_obj, data):
+    """
+    Handler for receiving a POST request form mobile, indicating 
+    that a patient has completed a pain survey.
+    """
+
+    pain = PainSurvey.objects.create(created_date=dt, patient=patient_obj, width=int(data["width"]), height=int(data["height"]))
+
+    for point in post["front"]["points"]:
+        pain_point = PainPoint.objects.create(x=int(float(data["x"])), y=int(float(data["y"])), intensity=int(data["intensity"]))
+        pain.front_points.add(pain_point)
+        pain.save()
+
+    for point in post["back"]["points"]:
+        pain_point = PainPoint.objects.create(x=int(float(data["x"])), y=int(float(data["y"])), intensity=int(data["intensity"]))
+        pain.back_points.add(pain_point)
+        pain.save()
+
+    print pain
+    return JsonResponse({})
+
+
 def check_esas_alert(esas):
     """
     Checks to see if we need to create a dashboard alert for
@@ -406,7 +462,8 @@ def message_callback(message):
             print "dt_aware", dt_aware 
 
             if data["category"] == "MEDICATION":
-                handle_completed_medication(dt_aware, patient_obj, data["data"])
+                #handle_completed_medication(dt_aware, patient_obj, data["data"])
+                print data["data"]
 
             elif data["category"] == "PAIN":
                 handle_completed_pain(dt_aware, patient_obj, data["data"])
@@ -431,7 +488,7 @@ def message_callback(message):
                 }
                 print xmpp_data 
                 print client_xmpp
-                client_xmpp.send_raw(createXMPP(xmpp_data))
+                sendXMPP(xmpp_data)
 
             elif data["category"] == "VIDEO":
                 print serializers.serialize("json", Video.objects.filter(patient=patient_obj))
@@ -445,15 +502,18 @@ def message_callback(message):
                     'notifications': serializers.serialize("json", Notification.objects.filter(patient=patient_obj))
                 })
 
-def createXMPP(data):
+def sendXMPP(data):
     body = {
         "to": TOPIC, 
         "message_id": uuid.uuid4().hex,
         "data": data
     }
     xmpp = "<message><gcm xmlns='google:mobile:data'>" + json.dumps(body) + "</gcm></message>"
+
+    print "xmpp"
     print xmpp
-    return xmpp
+
+    client_xmpp.send_raw(xmpp)
 
 
 ################### Connect to FCM XMPP server

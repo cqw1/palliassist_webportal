@@ -68,6 +68,18 @@ def dashboard(request):
             patient_esas_alert[alert.patient][esas] = alert
         else:
             patient_esas_alert[alert.patient] = {esas: alert}
+
+    # Maps patient object to a mapping of incomplete medication reports
+    # to the corresponding dashboard alert
+    patient_medication_alert = {}
+    medication_alerts = DashboardAlert.objects.filter(category=DashboardAlert.MEDICATION)
+    for alert in medication_alerts:
+        report = MedicationReport.objects.get(pk=alert.item_pk)
+
+        if alert.patient in patient_medication_alert.keys():
+            patient_medication_alert[alert.patient][report] = alert
+        else:
+            patient_medication_alert[alert.patient] = {report: alert}
     
 
     context = {
@@ -75,6 +87,7 @@ def dashboard(request):
         'year':datetime.datetime.now().year,
         'unread_patients': unread_patients,
         'patient_esas_alert': patient_esas_alert,
+        'patient_medication_alert': patient_medication_alert,
     }
 
     """
@@ -672,6 +685,14 @@ def delete_medication(request):
     # Notification's PK
     Medication.objects.get(pk=int(request.POST["pk"])).delete()
 
+    xmpp_data = {
+        "event": "NOTIFICATION",
+        "action": "DELETE",
+        "category": "MEDICATION",
+        "pk": request.POST["pk"]
+    }
+    sendXMPP(xmpp_data)
+
     return JsonResponse({})
 
 def create_medication(request):
@@ -682,7 +703,6 @@ def create_medication(request):
     print "create_medication"
     patient_obj = Patient.objects.get(pk=request.POST["pk"])
 
-    """
     medication = Medication.objects.create(
             created_date=timezone.now(),
             patient=patient_obj,
@@ -692,7 +712,19 @@ def create_medication(request):
             posology=request.POST["posology"],
             rescue=request.POST["rescue"]
     )
-    """
+
+    print Medication.objects.get(pk=medication.pk)
+    print serializers.serialize("json", Medication.objects.filter(pk=medication.pk))
+
+    xmpp_data = {
+        "event": "NOTIFICATION",
+        "action": "CREATE",
+        "category": "MEDICATION",
+        "data": {
+            "medications": serializers.serialize("json", Medication.objects.filter(pk=medication.pk))
+        }
+    }
+    sendXMPP(xmpp_data)
 
     print CreateMedicationForm(request.POST)
     print request
@@ -751,132 +783,6 @@ def create_channel(request):
     print new_channel.type
     print new_channel.friendly_name
     print new_channel.unique_name
-
-    return JsonResponse({})
-
-def handle_completed_medication(dt, patient_obj, data):
-    """
-    Handler for receiving a POST request form mobile, indicating 
-    that a patient has completed a medication.
-    """
-
-    report = MedicationReport.objects.create(created_date=dt, patient=patient_obj)
-
-    for entry in data["entries"]:
-        medication = Medication.objects.get(pk=completed["pk"])
-        entry = MedicationReportEntry.objects.create(medication=medication)
-
-        for status in entry.statuses:
-            if status["completed"] == "yes":
-                med_status =  MedicationStatus.objects.create(hour=int(status["hour"]), completed=True)
-            else:
-                med_status = MedicationStatus.objects.create(hour=int(status["hour"]), completed=False)
-
-            entry.statuses.add(med_status)
-            
-        report.add(entry) 
-
-    # TODO handle non hours.
-
-
-
-
-
-    # TODO. figure out how to handle this medication completed event
-
-    print medication
-    print medication.patient
-
-    return JsonResponse({})
-
-def handle_completed_pain(dt, patient_obj, data):
-    """
-    Handler for receiving a POST request form mobile, indicating 
-    that a patient has completed a pain survey.
-    """
-
-    pain = PainSurvey.objects.create(created_date=dt, patient=patient_obj, width=int(data["width"]), height=int(data["height"]))
-
-    for point in post["front"]["points"]:
-        pain_point = PainPoint.objects.create(x=int(float(data["x"])), y=int(float(data["y"])), intensity=int(data["intensity"]))
-        pain.front_points.add(pain_point)
-        pain.save()
-
-    for point in post["back"]["points"]:
-        pain_point = PainPoint.objects.create(x=int(float(data["x"])), y=int(float(data["y"])), intensity=int(data["intensity"]))
-        pain.back_points.add(pain_point)
-        pain.save()
-
-    print pain
-    return JsonResponse({})
-
-def check_esas_alert(esas):
-    """
-    Checks to see if we need to create a dashboard alert for
-    this esas. If a symptom intesnity has exceeded 7.
-    """
-
-    limit = 7
-
-    if esas.pain >= limit:
-        return True
-    elif esas.fatigue >= limit:
-        return True
-    elif esas.nausea >= limit:
-        return True
-    elif esas.depression >= limit:
-        return True
-    elif esas.anxiety >= limit:
-        return True
-    elif esas.drowsiness >= limit:
-        return True
-    elif esas.appetite >= limit:
-        return True
-    elif esas.well_being >= limit:
-        return True
-    elif esas.lack_of_air >= limit:
-        return True
-    elif esas.insomnia >= limit:
-        return True
-
-    return False
-
-def handle_completed_esas(dt, patient_obj, data):
-    """
-    Handler for receiving a POST request form mobile, indicating 
-    that a patient has completed a ESAS survey.
-    """
-
-    esas = ESASSurvey.objects.create(created_date=dt, patient=patient_obj)
-    esas.pain = int(data["pain"])
-    esas.fatigue = int(data["fatigue"])
-    esas.nausea = int(data["nausea"])
-    esas.depression = int(data["depression"])
-    esas.anxiety = int(data["anxiety"])
-    esas.drowsiness = int(data["drowsiness"])
-    esas.appetite = int(data["appetite"])
-    esas.well_being = int(data["well_being"])
-    esas.lack_of_air = int(data["lack_of_air"])
-    esas.insomnia = int(data["insomnia"])
-
-    esas.fever = data["fever"]
-    
-    esas.constipated = data["constipated"]
-    if data["constipated"] == "yes":
-        esas.constipated_days = int(data["constipated_days"])
-        esas.constipated_bothered = int(data["constipated_bothered"])
-
-    esas.vomiting = data["vomiting"]
-    if data["vomiting"] == "yes":
-        esas.vomiting_count = int(data["vomiting_count"])
-
-    esas.confused = data["confused"]
-
-    esas.save()
-    print esas
-
-    if check_esas_alert(esas):
-        DashboardAlert.objects.create(category=DashboardAlert.ESAS, patient=patient_obj, item_pk=esas.pk)
 
     return JsonResponse({})
 

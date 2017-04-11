@@ -17,7 +17,7 @@
 
                 {% for esas in esas_objects %}
                 <!-- <a data-toggle="tab" class="list-group-item millis-date" href="#{{esas.pk}}">{{esas.created_date}}</a> -->
-                <a data-toggle="tab" class="list-group-item" href="#{{esas.pk}}">{{esas.created_date|date:"SHORT_DATE_FORMAT"}} {{esas.created_date|time:"H:i"}}</a>
+                <a data-toggle="tab" class="list-group-item" href="#esas-{{esas.pk}}">{{esas.created_date|date:"SHORT_DATE_FORMAT"}} {{esas.created_date|time:"H:i"}}</a>
                 {% endfor %}
             </ul>
         </div>
@@ -38,7 +38,7 @@
         </div>
 
         {% for esas in esas_objects %}
-        <div class="panel panel-default tab-pane fade" id="{{esas.pk}}">
+        <div class="panel panel-default tab-pane fade" id="esas-{{esas.pk}}">
 
             <div class="panel-heading">
                 <strong class="panel-title">{{esas.created_date|date:"SHORT_DATE_FORMAT"}} {{esas.created_date|time:"H:i"}}</strong>

@@ -12,7 +12,10 @@ $(function() {
     })
 
     $('.dashboard-alert').click(function() {
-        var pk =$(this).attr('id');
+        // ID is esas-alert-{{pk}}
+        var pk = $(this).attr('id').split('-')[2];
+        console.log('pk');
+        console.log(pk);
 
         $.post('/delete-dashboard-alert', "pk=" + pk, function() {
             console.log('posted');

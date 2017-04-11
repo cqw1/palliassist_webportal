@@ -50,7 +50,7 @@ if sys.version_info < (3, 0):
     reload(sys)
     sys.setdefaultencoding('utf8')
 
-ENABLE_XMPP = False
+ENABLE_XMPP = True 
 
 
 DEBUG = True 
