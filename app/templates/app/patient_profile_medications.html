@@ -15,7 +15,7 @@
                 <a data-toggle="tab" class="list-group-item" href="#medication-overview">Overview</a>
 
                 {% for report in medication_reports %}
-                <a data-toggle="tab" class="list-group-item" href="#{{report.pk}}">{{report.created_date|date:"SHORT_DATE_FORMAT"}} {{report.created_date|time:"H:i"}}</a>
+                <a data-toggle="tab" class="list-group-item" href="#report-{{report.pk}}">{{report.created_date|date:"SHORT_DATE_FORMAT"}} {{report.created_date|time:"H:i"}}</a>
                 {% endfor %}
             </ul>
         </div>
@@ -84,39 +84,41 @@
         </div>
 
         {% for report in medication_reports %}
-        <div class="panel panel-default tab-pane fade" id="{{report.pk}}">
+        <div class="panel panel-default tab-pane fade" id="report-{{report.pk}}">
 
             <div class="panel-heading">
                 <strong class="panel-title">{{report.created_date|date:"SHORT_DATE_FORMAT"}} {{report.created_date|time:"H:i"}}</strong>
             </div>
-            <div class="panel-body" id="">
-                <table id="medication-report-table" class="table-bordered table-striped">
-                    <tr>
-                        <th>Name</th>
-                        {% for hour in hours %}
-                        <th class="hour-cell">{{hour}}h</th>
-                        {% endfor %}
-                    </tr>
+            <div class="panel-group medication-report" id="report-{{report.pk}}-accordion" role="tablist" aria-multiselectable="true">
+                <div class="panel panel-default">
                     {% for entry in report.entries.all %}
-                    <tr>
-                        <td class="pa-center-wrapper">{{entry.medication.name}}</td>
-                        {% for status in entry.statuses.all %}
-                        {% if status.completed %}
-                            <td class="pa-center-wrapper">
-                                <span class="glyphicon glyphicon-ok green" aria-hidden="true" />
-                            </td>
-                        {% elif status.completed != None %}
-                            <td class="pa-center-wrapper">
-                                <span class="glyphicon glyphicon-remove red" aria-hidden="true" />
-                            </td>
-                        {% else %}
-                        <td></td>
-                        {% endif %}
-                        {% endfor %}
-
-                    </tr>
+                    <div class="panel-heading" role="tab">
+                        <h4 class="panel-title">
+                            <a role="button" data-toggle="collapse" data-parent="#report-{{report.pk}}-accordion" href="#entry-{{entry.pk}}" aria-expanded="true" aria-controls="entry-{{entry.pk}}">
+                                {{entry.medication.name}}
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="entry-{{entry.pk}}" class="panel-collapse collapse in" role="tabpanel">
+                        <ul class="list-group">
+                            {% for status in entry.statuses.all %}
+                                {% if status.completed %}
+                                <li class="list-group-item green">
+                                    <span class="glyphicon glyphicon-ok green"></span>
+                                    <span class="medication-status-time">{{status.time}}</span>
+                                </li>
+                                {% else %}
+                                <li class="list-group-item red">
+                                    <span class="glyphicon glyphicon-remove red"></span>
+                                    <span class="medication-status-time">{{status.time}}</span>
+                                </li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </div>
                     {% endfor %}
-                </table>
+
+                </div>
             </div>
         </div>
         {% endfor %}

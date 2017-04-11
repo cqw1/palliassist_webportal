@@ -88,6 +88,7 @@ class SignupForm(forms.Form):
     #doctor_patient_choice = forms.ChoiceField(label=_("Role"), widget=forms.RadioSelect, choices=[("doctor", "Doctor"), ("patient", "Patient")], required=True)
     full_name = forms.CharField(label=_("Full Name"), widget=forms.TextInput({"class": "form-control", "placeholder":"Full Name"}), required=True) 
     username = forms.CharField(label=_("Username"), widget=forms.TextInput({"class": "form-control", "placeholder":"Username"}), required=True) 
+    telephone = forms.CharField(label=_("Telephone"), widget=PhoneNumberPrefixWidget({"class": "form-control", "placeholder": "Telephone"}, "BR"), required=True) 
     password_1 = forms.CharField(label=_("Password"), widget=forms.PasswordInput({"class": "form-control", "placeholder":"Password"}), required=True) 
     password_2 = forms.CharField(label=_("Retype Password"), widget=forms.PasswordInput({"class": "form-control", "placeholder":"Retype Password"}), required=True) 
     access_key = forms.CharField(label=_("Access Key"), widget=forms.TextInput({"class": "form-control", "placeholder":"Access Key"}), required=True) 
@@ -136,8 +137,6 @@ class SignupForm(forms.Form):
 
 class PatientSignupForm(SignupForm):
     hospital_id = forms.CharField(label=_("Hospital ID"), widget=forms.TextInput({"class": "form-control", "placeholder": "Hospital ID"}), required=True) 
-    #telephone = forms.CharField(label=_("Telephone"), widget=PhoneNumberInternationalFallbackWidget(None, { "class": "form-control", "placeholder": "Telephone"}), required=True) 
-    telephone = forms.CharField(label=_("Telephone"), widget=PhoneNumberPrefixWidget({"class": "form-control", "placeholder": "Telephone"}, "BR"), required=True) 
     age = forms.IntegerField(label=_("Age"), widget=forms.TextInput({"class": "form-control", "placeholder": "Age"}), required=True)
     gender = forms.ChoiceField(label=_("Gender"), widget=forms.RadioSelect, choices=Patient.GENDER_CHOICES, required=True)
     city_of_residence = forms.CharField(label=_("City of Residence"), widget=forms.TextInput({"class": "form-control", "placeholder": "City of Residence"}), required=True) 

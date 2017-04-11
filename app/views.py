@@ -230,23 +230,6 @@ def patient_profile(request):
 
     medication_reports = MedicationReport.objects.filter(patient=patient_obj)
 
-    hours = []
-    for h in range(0, 24, 2):
-        hours.append(h)
-
-    report_entry_statuses = {}
-    for report in medication_reports:
-        entry_statuses = {}
-        for entry in report.entries.all():
-            statuses = {}
-            for status in entry.statuses.all():
-                statuses[status.hour] = status.completed
-            entry_statuses[entry.pk] = statuses
-        report_entry_statuses[report.pk] = entry_statuses
-
-    print "report_entry_statuses", report_entry_statuses
-    test_dict = {1: "hello"}
-
     context = {
         'title': 'Patient Profile',
         'message': 'Patient profile.',
@@ -261,8 +244,6 @@ def patient_profile(request):
         'videos': videos,
         'medications': medications,
         'medication_reports': medication_reports,
-        'hours': hours,
-        'report_entry_statuses': report_entry_statuses,
         'esas_objects': esas_objects,
         'esas_json': esas_json,
         'pain_objects': pain_objects,
@@ -333,13 +314,14 @@ def doctor_signup(request):
         if doctor_signup_form.is_valid():
             full_name = doctor_signup_form.cleaned_data['full_name']
             username = doctor_signup_form.cleaned_data['username']
+            telephone = doctor_signup_form.cleaned_data['telephone']
             password = doctor_signup_form.cleaned_data['password_1']
             #role = signup_form.cleaned_data['doctor_patient_choice']
 
             user = User.objects.create(username=username, password=password)
 
             # Create User and Doctor object.
-            doctor = Doctor.objects.create(user=user, full_name=full_name)
+            doctor = Doctor.objects.create(user=user, full_name=full_name, telephone=telephone)
 
             return HttpResponseRedirect("/signup-success/")
 
@@ -778,7 +760,27 @@ def handle_completed_medication(dt, patient_obj, data):
     that a patient has completed a medication.
     """
 
-    medication = Medication.objects.get(pk=data["pk"])
+    report = MedicationReport.objects.create(created_date=dt, patient=patient_obj)
+
+    for entry in data["entries"]:
+        medication = Medication.objects.get(pk=completed["pk"])
+        entry = MedicationReportEntry.objects.create(medication=medication)
+
+        for status in entry.statuses:
+            if status["completed"] == "yes":
+                med_status =  MedicationStatus.objects.create(hour=int(status["hour"]), completed=True)
+            else:
+                med_status = MedicationStatus.objects.create(hour=int(status["hour"]), completed=False)
+
+            entry.statuses.add(med_status)
+            
+        report.add(entry) 
+
+    # TODO handle non hours.
+
+
+
+
 
     # TODO. figure out how to handle this medication completed event
 
@@ -920,6 +922,13 @@ def mobile(request):
                 'medications': serializers.serialize("json", Medication.objects.filter(patient=patient_obj))
             })
 
+        elif request.POST["category"] == "VIDEO":
+            print serializers.serialize("json", Video.objects.filter(patient=patient_obj))
+                    
+            return JsonResponse({
+                'videos': serializers.serialize("json", Video.objects.filter(patient=patient_obj))
+            })
+
         elif request.POST["category"] == "NOTIFICATION":
             return JsonResponse({
                 'notifications': serializers.serialize("json", Notification.objects.filter(patient=patient_obj))
@@ -974,10 +983,6 @@ def delete_dashboard_alert(request):
 
 def convert_datetime_to_millis(dt):
     return (dt.replace(tzinfo=None) - datetime.datetime(1970, 1, 1)).total_seconds() * 1000
-
-
-
-
 
 def admin_input(request):
 

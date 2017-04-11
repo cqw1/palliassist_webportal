@@ -1,7 +1,7 @@
 """
 Django settings for django_get_started project.
 """
-
+import sys
 from os import path
 from redcap import Project, RedcapError
 
@@ -45,6 +45,12 @@ BLOCK_BLOB_SERVICE = AZURE_STORAGE_ACCOUNT.create_block_blob_service()
 
 #print "AZURE_STORAGE_ACCOUNT", AZURE_STORAGE_ACCOUNT
 #print "BLOCK_BLOB_SERVICE", BLOCK_BLOB_SERVICE
+
+if sys.version_info < (3, 0):
+    reload(sys)
+    sys.setdefaultencoding('utf8')
+
+ENABLE_XMPP = False
 
 
 DEBUG = True 
@@ -234,4 +240,7 @@ LOGGING = {
 
 # Specify the default test runner.
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
+
+
+
 
