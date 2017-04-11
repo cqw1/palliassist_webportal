@@ -150,6 +150,15 @@ class PainSurvey(models.Model):
     front_points = models.ManyToManyField(PainPoint, related_name="front_points")
     back_points = models.ManyToManyField(PainPoint, related_name="back_points")
 
+class PainImages(models.Model):
+    """ Images that show a pain location """
+    created_date = models.DateTimeField(default=timezone.now)
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
+    container_name = models.CharField(default="", max_length=MAX_LENGTH)
+    front_blob_name = models.CharField(default="", max_length=MAX_LENGTH)
+    back_blob_name = models.CharField(default="", max_length=MAX_LENGTH)
+
+
 class Medication(models.Model):
     """ Info for one medication prescription. """
     created_date = models.DateTimeField(default=timezone.now)
@@ -342,26 +351,17 @@ def handle_completed_pain(dt, patient_obj, data):
     Handler for receiving a POST request form mobile, indicating 
     that a patient has completed a pain survey.
     """
+    print "handle_completed_pain"
+    pain_image = PainImages.objects.create(
+            patient=patient_obj, 
+            created_date=dt, 
+            container_name = data["container_name"], 
+            front_blob_name=data["front_blob_name"], 
+            back_blob_name=data["back_blob_name"]
+        )
+    print pain_image
 
-    ## TODO: display images.
-    print "blob_name", data["blob_name"]
-    print "container_name", data["container_name"]
-    """
-    pain = PainSurvey.objects.create(created_date=dt, patient=patient_obj, width=int(data["width"]), height=int(data["height"]))
-
-    for point in post["front"]["points"]:
-        pain_point = PainPoint.objects.create(x=int(float(data["x"])), y=int(float(data["y"])), intensity=int(data["intensity"]))
-        pain.front_points.add(pain_point)
-        pain.save()
-
-    for point in post["back"]["points"]:
-        pain_point = PainPoint.objects.create(x=int(float(data["x"])), y=int(float(data["y"])), intensity=int(data["intensity"]))
-        pain.back_points.add(pain_point)
-        pain.save()
-
-    print pain
     return JsonResponse({})
-    """
 
 
 def check_esas_alert(esas):
@@ -445,20 +445,22 @@ def handle_completed_esas(dt, patient_obj, data):
 def message_callback(message):
 
     gcm = message.xml.find('{google:mobile:data}gcm').text
+    print "gcm", gcm
 
     gcm_json = json.loads(gcm)
     if "data" in gcm_json:
         print
         print "message_callback"
-        data = gcm_json["data"]
+        data = json.loads(gcm_json["data"])
+
+        print "data-post fcm", data["data"]
+        event = data["event"]
+        print "event", data["event"]
+        print "category", data["category"]
 
         patient_username = data["patient"] # TODO hardcoded to patient0 right now 
         patient_obj = User.objects.get(username=patient_username).patient
         print "patient_obj", patient_obj
-        event = data["event"]
-        print "event", data["event"]
-        print "category", data["category"]
-        print "data", data["data"]
 
         if event == "COMPLETED":
             print "event == completed"
@@ -469,7 +471,7 @@ def message_callback(message):
             print "dt_aware", dt_aware 
 
             if data["category"] == "MEDICATION":
-                handle_completed_medication(dt_aware, patient_obj, data["data"])
+                handle_completed_medication(dt_aware, patient_obj, json.loads(data["data"]))
 
             elif data["category"] == "PAIN":
                 handle_completed_pain(dt_aware, patient_obj, data["data"])
@@ -513,21 +515,39 @@ def message_callback(message):
 
             elif data["category"] == "AUTHORIZATION":
                 print "category == authorization"
-                user = authenticate(username=data["data"]["username"], password=data["data"]["password"])
+                print "sanity check", data["data"]
+                rejson_data = json.loads(data["data"])
+                print type(rejson_data)
+                print "username", rejson_data["username"]
+                print "password", rejson_data["password"]
+                print "hello world"
+                #user = authenticate(username=data["data"]["username"], password=data["data"]["password"])
+                user = authenticate(username="patient0", password="patient0")
+                print user
 
                 success = False
                 if user is not None:
                     success = True
 
 
-                xmpp_data = {
-                    "event": data["event"],
-                    "category": data["category"],
-                    "data": {
-                        "success": success,
-                        "patient": serializers.serialize("json", [user.patient])
+                if success:
+                    xmpp_data = {
+                        "event": data["event"],
+                        "category": data["category"],
+                        "data": {
+                            "success": "yes",
+                            "patient": serializers.serialize("json", [user.patient])
+                        }
                     }
-                }
+                else:
+                    xmpp_data = {
+                        "event": data["event"],
+                        "category": data["category"],
+                        "data": {
+                            "success": "no",
+                        }
+                    }
+
                 print xmpp_data 
                 print client_xmpp
                 sendXMPP(xmpp_data)

@@ -37,6 +37,8 @@ from redcap import Project, RedcapError
 from twilio.access_token import AccessToken, IpMessagingGrant
 from twilio.rest.ip_messaging import TwilioIpMessagingClient
 
+from pyfcm import FCMNotification
+
 
 class DivErrorList(ErrorList):
     def __unicode__(self):              # __unicode__ on Python 2
@@ -235,6 +237,8 @@ def patient_profile(request):
             point.rgb = 255.0 / ((((point.intensity + 1.0) / 11.0) * 2.0) + 1.0)
             point.save()
 
+    pain_images = PainImages.objects.filter(patient=patient_obj)
+
 
     ### Medication tab.
     medications = Medication.objects.filter(patient=patient_obj)
@@ -262,6 +266,7 @@ def patient_profile(request):
         'pain_objects': pain_objects,
         'pain_width': 207,
         'pain_height': 400,
+        'pain_images': pain_images,
         'channels': channels, 
         'token': token, # Twilio token for messaging tab.
     }
@@ -596,7 +601,7 @@ def token(request):
     ipm_grant = IpMessagingGrant(endpoint_id=endpoint, service_sid=settings.TWILIO_IPM_SERVICE_SID)
     token.add_grant(ipm_grant)
 
-    # COMMENTED CAUSE FLASK THING - Return token info as JSON 
+    # COMMENTED CAUSE FLASK THING - Return token info as JSON
     #return jsonify(identity=identity, token=token.to_jwt())
     return JsonResponse({'identity': identity, 'token': token.to_jwt()})
     #return JsonResponse({'identity': identity, 'token': token})
@@ -654,10 +659,6 @@ def add_video(request):
     Creates a Video model based on url.
     """
 
-
-    print
-    print "add_video"
-
     patient_obj = Patient.objects.get(pk=request.POST["pk"])
 
     video = Video.objects.create(
@@ -665,7 +666,7 @@ def add_video(request):
             url=request.POST["url"]
     )
 
-    xmpp_data = {
+    data_message = {
         "event": "NOTIFICATION",
         "action": "CREATE",
         "category": "VIDEO",
@@ -673,7 +674,7 @@ def add_video(request):
             "videos": serializers.serialize("json", [video])
         }
     }
-    sendXMPP(xmpp_data)
+    sendFCM(data_message)
 
     print request
     print video
@@ -689,13 +690,13 @@ def delete_video(request):
 
     patient_obj = Patient.objects.get(pk=request.POST["pk"])
 
-    xmpp_data = {
+    data_message = {
         "event": "NOTIFICATION",
         "action": "DELETE",
         "category": "VIDEO",
         "pk": request.POST["pk"]
     }
-    sendXMPP(xmpp_data)
+    sendFCM(data_message)
 
     return JsonResponse({})
 
@@ -710,13 +711,13 @@ def delete_medication(request):
     # Notification's PK
     Medication.objects.get(pk=int(request.POST["pk"])).delete()
 
-    xmpp_data = {
+    data_message = {
         "event": "NOTIFICATION",
         "action": "DELETE",
         "category": "MEDICATION",
         "pk": request.POST["pk"]
     }
-    sendXMPP(xmpp_data)
+    sendFCM(data_message)
 
     return JsonResponse({})
 
@@ -741,7 +742,7 @@ def create_medication(request):
     print Medication.objects.get(pk=medication.pk)
     print serializers.serialize("json", Medication.objects.filter(pk=medication.pk))
 
-    xmpp_data = {
+    data_message = {
         "event": "NOTIFICATION",
         "action": "CREATE",
         "category": "MEDICATION",
@@ -749,7 +750,7 @@ def create_medication(request):
             "medications": serializers.serialize("json", Medication.objects.filter(pk=medication.pk))
         }
     }
-    sendXMPP(xmpp_data)
+    sendFCM(data_message)
 
     print CreateMedicationForm(request.POST)
     print request
@@ -811,6 +812,162 @@ def create_channel(request):
 
     return JsonResponse({})
 
+def check_esas_alert(esas):
+    """
+    Checks to see if we need to create a dashboard alert for
+    this esas. If a symptom intesnity has exceeded 7.
+    """
+
+    limit = 7
+
+    if esas.pain >= limit:
+        return True
+    elif esas.fatigue >= limit:
+        return True
+    elif esas.nausea >= limit:
+        return True
+    elif esas.depression >= limit:
+        return True
+    elif esas.anxiety >= limit:
+        return True
+    elif esas.drowsiness >= limit:
+        return True
+    elif esas.appetite >= limit:
+        return True
+    elif esas.well_being >= limit:
+        return True
+    elif esas.lack_of_air >= limit:
+        return True
+    elif esas.insomnia >= limit:
+        return True
+
+    return False
+
+
+def handle_completed_esas(dt, patient_obj, data):
+    """
+    Handler for receiving a POST request form mobile, indicating 
+    that a patient has completed a ESAS survey.
+    """
+
+    print "handle_completed_esas"
+    print data
+    print type(data)
+    print data["pain"]
+    print int(data["pain"])
+
+    esas = ESASSurvey.objects.create(created_date=dt, patient=patient_obj)
+    esas.pain = int(data["pain"])
+    print "pain", esas.pain
+    esas.fatigue = int(data["fatigue"])
+    esas.nausea = int(data["nausea"])
+    esas.depression = int(data["depression"])
+    esas.anxiety = int(data["anxiety"])
+    esas.drowsiness = int(data["drowsiness"])
+    esas.appetite = int(data["appetite"])
+    esas.well_being = int(data["well_being"])
+    esas.lack_of_air = int(data["lack_of_air"])
+    esas.insomnia = int(data["insomnia"])
+
+    esas.fever = data["fever"]
+    
+    esas.constipated = data["constipated"]
+    if data["constipated"] == "yes":
+        esas.constipated_days = int(data["constipated_days"])
+        esas.constipated_bothered = int(data["constipated_bothered"])
+
+    esas.vomiting = data["vomiting"]
+    if data["vomiting"] == "yes":
+        esas.vomiting_count = int(data["vomiting_count"])
+
+    esas.confused = data["confused"]
+
+    esas.save()
+    print esas
+
+    if check_esas_alert(esas):
+        DashboardAlert.objects.create(category=DashboardAlert.ESAS, patient=patient_obj, item_pk=esas.pk)
+
+def handle_completed_medication(dt, patient_obj, data):
+    """
+    Handler for receiving a POST request form mobile, indicating 
+    that a patient has completed a medication.
+    """
+
+    print data
+    report = MedicationReport.objects.create(created_date=dt, patient=patient_obj)
+    alert = False
+
+    for entry in data:
+        print "entry", entry
+        medication = Medication.objects.get(pk=entry["pk"])
+        report_entry = MedicationReportEntry.objects.create(medication=medication)
+
+        entry["statuses"] = json.loads(entry["statuses"])
+        for status in entry["statuses"]:
+            print status
+            print type(status)
+            if status["completed"] == "yes":
+                med_status =  MedicationStatus.objects.create(time=status["time"], completed=True)
+            else:
+                # Make dashboard alert
+                alert = True
+                med_status = MedicationStatus.objects.create(time=status["time"], completed=False)
+
+            report_entry.statuses.add(med_status)
+            
+        report.entries.add(report_entry) 
+
+    if alert:
+        DashboardAlert.objects.create(category=DashboardAlert.MEDICATION, patient=patient_obj, item_pk=report.pk)
+
+
+    print medication
+    print medication.patient
+
+def handle_completed_pain(dt, patient_obj, data):
+    """
+    Handler for receiving a POST request form mobile, indicating 
+    that a patient has completed a pain survey.
+    """
+    print "handle_completed_pain"
+    pain_image = PainImages.objects.create(
+            patient=patient_obj, 
+            created_date=dt, 
+            container_name = data["container_name"], 
+            front_blob_name=data["front_blob_name"], 
+            back_blob_name=data["back_blob_name"]
+        )
+    print pain_image
+
+
+def handle_authorization(data):
+    print "handle_authorization"
+    print "username", data["username"]
+    print "password", data["password"]
+
+    user = authenticate(username=data["username"], password=data["password"])
+    print user
+
+    if user is not None:
+        data_message = {
+            "event": "LOGIN",
+            "category": "AUTHORIZATION",
+            "data": {
+                "success": "yes",
+                "patient": serializers.serialize("json", [user.patient])
+            }
+        }
+    else:
+        data_message = {
+            "event": "LOGIN",
+            "category": "AUTHORIZATION",
+            "data": {
+                "success": "no"
+            }
+        }
+
+    sendFCM(data_message)
 
 @csrf_exempt
 def mobile(request):
@@ -837,28 +994,58 @@ def mobile(request):
         print "dt_aware", dt_aware 
 
         if request.POST["category"] == "MEDICATION":
-            return handle_completed_medication(dt_aware, patient_obj, json.loads(request.POST["data"]))
+            handle_completed_medication(dt_aware, patient_obj, json.loads(request.POST["data"]))
+            return JsonResponse({})
 
         elif request.POST["category"] == "PAIN":
-            return handle_completed_pain(dt_aware, patient_obj, json.loads(request.POST["data"]))
+            handle_completed_pain(dt_aware, patient_obj, json.loads(request.POST["data"]))
+            return JsonResponse({})
 
         elif request.POST["category"] == "ESAS":
-            return handle_completed_esas(dt_aware, patient_obj, json.loads(request.POST["data"]))
+            handle_completed_esas(dt_aware, patient_obj, json.loads(request.POST["data"]))
+            return JsonResponse({})
 
     elif event == "LOGIN":
-        if request.POST["category"] == "MEDICATION":
+        if request.POST["category"] == "AUTHORIZATION":
+            handle_authorization(json.loads(request.POST["data"]))
+            return JsonResponse({})
+
+        elif request.POST["category"] == "MEDICATION":
             print serializers.serialize("json", Medication.objects.filter(patient=patient_obj))
                     
+            data_message = {
+                "event": "LOGIN",
+                "category": "MEDICATION",
+                "data": {
+                    "medications": serializers.serialize("json", Medication.objects.filter(patient=patient_obj))
+                }
+            }
+            sendFCM(data_message)
+            return JsonResponse({})
+            """
             return JsonResponse({
                 'medications': serializers.serialize("json", Medication.objects.filter(patient=patient_obj))
             })
+            """
 
         elif request.POST["category"] == "VIDEO":
             print serializers.serialize("json", Video.objects.filter(patient=patient_obj))
-                    
+
+            data_message = {
+                "event": "LOGIN",
+                "category": "VIDEO",
+                "data": {
+                    "videos": serializers.serialize("json", Video.objects.filter(patient=patient_obj))
+                }
+            }
+            sendFCM(data_message)
+            return JsonResponse({})
+
+            """
             return JsonResponse({
                 'videos': serializers.serialize("json", Video.objects.filter(patient=patient_obj))
             })
+            """
 
         elif request.POST["category"] == "NOTIFICATION":
             return JsonResponse({
@@ -868,6 +1055,9 @@ def mobile(request):
     # TODO. return an error.
 
     return render(request, 'app/blank.html')
+
+def sendFCM(data_message):
+    result = settings.FCM_SERVICE.notify_topic_subscribers(topic_name="test", data_message=data_message)
 
 
 @csrf_exempt

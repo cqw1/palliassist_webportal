@@ -16,7 +16,7 @@
                 
                 <!-- <a data-toggle="tab" class="list-group-item" href="#pain-overview">Overview</a> -->
 
-                {% for pain in pain_objects %}
+                {% for pain in pain_images %}
                 <!-- <a data-toggle="tab" class="list-group-item millis-date" href="#{{pain.pk}}">{{pain.created_date}}</a> -->
                 <a data-toggle="tab" class="list-group-item" href="#{{pain.pk}}">{{pain.created_date|date:"SHORT_DATE_FORMAT"}} {{pain.created_date|time:"H:i"}}</a>
                 {% endfor %}
@@ -26,7 +26,7 @@
 
     <!-- Content Panel -->
     <div class="col-md-9 tab-content">
-        {% for pain in pain_objects %}
+        {% for pain in pain_images %}
 
         {% if forloop.first %}
         <div class="panel panel-default tab-pane fade in active" id="{{pain.pk}}">
@@ -38,7 +38,8 @@
                 <strong class="panel-title">{{pain.created_date|date:"SHORT_DATE_FORMAT"}} {{pain.created_date|time:"H:i"}}</strong>
             </div>
 
-            <div class="pain-tab pa-center-wrapper">
+            <div class="pain-tab">
+                {% comment %}
                 <div class="pa-center-wrapper svg-wrapper">
                     <div>
                         <strong style="margin-right:15px">Front</strong>
@@ -67,6 +68,17 @@
                         {% endfor %}
                     </svg>
                 </div>
+                {% endcomment %}
+                <div class="pain-img-wrapper">
+                    <div class="pa-center-wrapper pain-img-label"><strong>Front</strong></div>
+                    <img class="pain-img pain-img-left" src="https://palliassistblobstorage.blob.core.windows.net/{{pain.container_name}}/{{pain.front_blob_name}}">
+                </div>
+                <div class="pain-img-wrapper">
+                    <div class="pa-center-wrapper pain-img-label"><strong>Back</strong></div>
+                    <img class="pain-img" src="https://palliassistblobstorage.blob.core.windows.net/{{pain.container_name}}/{{pain.back_blob_name}}">
+                </div>
+
+
 
             </div>
 

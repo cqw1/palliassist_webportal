@@ -12,7 +12,13 @@ from twilio.rest import TwilioRestClient
 from azure.storage.blob import BlockBlobService
 from azure.storage import CloudStorageAccount
 
+from pyfcm import FCMNotification
+
 PROJECT_ROOT = path.dirname(path.abspath(path.dirname(__file__)))
+
+# API KEY is actually our cloud messaging SERVER KEY... they misnamed it?
+FCM_API_KEY = "AAAAZ4czPsc:APA91bGapJWFGh7h97L7_TO9TV6UB9vqjeA1rMxATMwDTvleJr9hvn5cB9Dppz7y_Sa4mmYD6UfePK0FOriwphvyJmEM-_MJLwkkas21uFRZgflqbk_f367uqwcWyAQ6AThRDSe_275_" 
+FCM_SERVICE = FCMNotification(api_key=FCM_API_KEY)
 
 URL = "https://hcbredcap.com.br/api/"
 USER_TOKEN = "F2C5AEE8A2594B0A9E442EE91C56CC7A"
@@ -50,7 +56,7 @@ if sys.version_info < (3, 0):
     reload(sys)
     sys.setdefaultencoding('utf8')
 
-ENABLE_XMPP = True 
+ENABLE_XMPP = False
 
 
 DEBUG = True 

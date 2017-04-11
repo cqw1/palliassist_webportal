@@ -3,7 +3,22 @@
     text-align: center;
 }
 
-.svg-wrapper {
+.pain-tab {
+    overflow: hidden;
+    padding-left: 5%;
+}
+
+.pain-img-label {
+    padding-right: 6%;
+}
+
+.pain-img-wrapper {
     display: inline-block;
     margin-top: 20px;
+    width: 45%;
+}
+
+.pain-img {
+    float: left;
+    width: 100%;
 }
