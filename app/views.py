@@ -653,15 +653,30 @@ def add_video(request):
     """
     Creates a Video model based on url.
     """
+
+
+    print
+    print "add_video"
+
     patient_obj = Patient.objects.get(pk=request.POST["pk"])
+
     video = Video.objects.create(
             patient=patient_obj,
             url=request.POST["url"]
     )
 
+    xmpp_data = {
+        "event": "NOTIFICATION",
+        "action": "CREATE",
+        "category": "VIDEO",
+        "data": {
+            "videos": serializers.serialize("json", [video])
+        }
+    }
+    sendXMPP(xmpp_data)
+
     print request
     print video
-
     return JsonResponse({})
 
 @csrf_exempt
@@ -671,6 +686,16 @@ def delete_video(request):
     """
 
     Video.objects.get(pk=int(request.POST["pk"])).delete()
+
+    patient_obj = Patient.objects.get(pk=request.POST["pk"])
+
+    xmpp_data = {
+        "event": "NOTIFICATION",
+        "action": "DELETE",
+        "category": "VIDEO",
+        "pk": request.POST["pk"]
+    }
+    sendXMPP(xmpp_data)
 
     return JsonResponse({})
 

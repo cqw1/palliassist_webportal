@@ -19,6 +19,7 @@ from django.contrib.auth.signals import user_logged_in
 from django.conf import settings
 from django.utils import timezone
 from django.core import serializers
+from django.contrib.auth import authenticate
 
 from phonenumber_field.modelfields import PhoneNumberField
 
@@ -313,7 +314,7 @@ def handle_completed_medication(dt, patient_obj, data):
     report = MedicationReport.objects.create(created_date=dt, patient=patient_obj)
     alert = False
 
-    for entry in data["entries"]:
+    for entry in data:
         medication = Medication.objects.get(pk=completed["pk"])
         entry = MedicationReportEntry.objects.create(medication=medication)
 
@@ -342,6 +343,10 @@ def handle_completed_pain(dt, patient_obj, data):
     that a patient has completed a pain survey.
     """
 
+    ## TODO: display images.
+    print "blob_name", data["blob_name"]
+    print "container_name", data["container_name"]
+    """
     pain = PainSurvey.objects.create(created_date=dt, patient=patient_obj, width=int(data["width"]), height=int(data["height"]))
 
     for point in post["front"]["points"]:
@@ -356,6 +361,7 @@ def handle_completed_pain(dt, patient_obj, data):
 
     print pain
     return JsonResponse({})
+    """
 
 
 def check_esas_alert(esas):
@@ -452,6 +458,7 @@ def message_callback(message):
         event = data["event"]
         print "event", data["event"]
         print "category", data["category"]
+        print "data", data["data"]
 
         if event == "COMPLETED":
             print "event == completed"
@@ -462,8 +469,7 @@ def message_callback(message):
             print "dt_aware", dt_aware 
 
             if data["category"] == "MEDICATION":
-                #handle_completed_medication(dt_aware, patient_obj, data["data"])
-                print data["data"]
+                handle_completed_medication(dt_aware, patient_obj, data["data"])
 
             elif data["category"] == "PAIN":
                 handle_completed_pain(dt_aware, patient_obj, data["data"])
@@ -489,13 +495,43 @@ def message_callback(message):
                 print xmpp_data 
                 print client_xmpp
                 sendXMPP(xmpp_data)
-
             elif data["category"] == "VIDEO":
-                print serializers.serialize("json", Video.objects.filter(patient=patient_obj))
+                print "category == video"
+                serialized = serializers.serialize("json", Video.objects.filter(patient=patient_obj))
+                print "serialized", serialized
                         
-                return JsonResponse({
-                    'videos': serializers.serialize("json", Video.objects.filter(patient=patient_obj))
-                })
+                xmpp_data = {
+                    "event": data["event"],
+                    "category": data["category"],
+                    "data": {
+                        "videos": serializers.serialize("json", Video.objects.filter(patient=patient_obj))
+                    }
+                }
+                print xmpp_data 
+                print client_xmpp
+                sendXMPP(xmpp_data)
+
+            elif data["category"] == "AUTHORIZATION":
+                print "category == authorization"
+                user = authenticate(username=data["data"]["username"], password=data["data"]["password"])
+
+                success = False
+                if user is not None:
+                    success = True
+
+
+                xmpp_data = {
+                    "event": data["event"],
+                    "category": data["category"],
+                    "data": {
+                        "success": success,
+                        "patient": serializers.serialize("json", [user.patient])
+                    }
+                }
+                print xmpp_data 
+                print client_xmpp
+                sendXMPP(xmpp_data)
+
 
             elif data["category"] == "NOTIFICATION":
                 return JsonResponse({
