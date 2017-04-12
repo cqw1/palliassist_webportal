@@ -12,15 +12,6 @@ class REDCapBackend:
         print
         print "[REDCapBackend.authenticate]"
         print
-        """
-        db = MySQLdb.connect(host="us-cdbr-azure-southcentral-f.cloudapp.net", user="b811fcf3c52d36", passwd="91e7ba1e", db="palliative")
-        cur = db.cursor()
-
-        found = cur.execute('SELECT * FROM palliative.login WHERE username = "' + username + '" AND password = "' + password + '"')
-
-        cur.close()
-        db.close()
-        """
 
         """
         # Clear all users from the db
