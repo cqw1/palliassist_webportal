@@ -162,7 +162,7 @@ $(function() {
         // Send a new message to the current channel on [Enter].
         $('.chat-input').on('keydown', function(e) {
             if (e.keyCode == 13) {
-                if (($this).val() != '') {
+                if ($(this).val() != '') {
                     channel.sendMessage($(this).val());
 
                     fcmNotification(patientUsername, 'CREATE', 'MESSAGE', $(this).val(), '');
