@@ -38,6 +38,7 @@ function fcmNotification(patientUsername, action, category, text, primary_key) {
     console.log('text: ' + text);
     console.log('primary_key: ' + primary_key);
 
+    let toast = true;
     var prettyCategory = '';
     if (category == 'PAIN') {
        prettyCategory = 'Pain' ;
@@ -47,8 +48,12 @@ function fcmNotification(patientUsername, action, category, text, primary_key) {
        prettyCategory = 'ESAS' ;
     } else if (category == 'MESSAGE') {
        prettyCategory = 'Message' ;
+       toast = false;
     }
-    triggerToast(prettyCategory + ' notification sent.');
+
+    if (toast) {
+        triggerToast(prettyCategory + ' notification sent.');
+    }
 
 
     if (category == 'MESSAGE') {

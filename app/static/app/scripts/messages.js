@@ -18,6 +18,7 @@ $(function() {
      * channels = list of channels
      * logged_in_username = username of the doctor or user of the channel
      */
+    let patientUsername = $('#message-panels').children('.active').attr('id');
 
 
     // Clears the input fields in the modal to add a new member.
@@ -165,8 +166,11 @@ $(function() {
                 if ($(this).val() != '') {
                     channel.sendMessage($(this).val());
 
+                    console.log('patientUsername = ' + patientUsername);
                     fcmNotification(patientUsername, 'CREATE', 'MESSAGE', $(this).val(), '');
 
+                    console.log('input element?');
+                    console.log($(this));
                     $(this).val('');
                 }
             }
@@ -179,17 +183,20 @@ $(function() {
             if ($chatInput.val() != '') {
                 channel.sendMessage($chatInput.val())
 
+                console.log('patientUsername = ' + patientUsername);
                 fcmNotification(patientUsername, 'CREATE', 'MESSAGE', $chatInput.val(), '');
 
+                console.log('input element?');
+                console.log($chatInput);
                 $chatInput.val('');
             }
         })
 
         $('#upload-image-btn').click(function() {
             //patientUsername = $('#messages-panel-body').children('.active').attr('id');
-            //patientUsername = $('#message-panels').children('.active').attr('id');
 
             $('#upload-image-error').text('');
+            console.log('patientUsername = ' + patientUsername);
 
             var data = new FormData(document.getElementById('upload-image-form'));
             data.set('username', patientUsername);
