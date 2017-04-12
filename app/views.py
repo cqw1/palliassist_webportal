@@ -1057,6 +1057,10 @@ def mobile(request):
     return render(request, 'app/blank.html')
 
 def sendFCM(data_message):
+    print 
+    print "sending fcm:"
+    print data_message
+    print
     result = settings.FCM_SERVICE.notify_topic_subscribers(topic_name="test", data_message=data_message)
 
 

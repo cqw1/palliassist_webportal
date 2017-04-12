@@ -162,11 +162,13 @@ $(function() {
         // Send a new message to the current channel on [Enter].
         $('.chat-input').on('keydown', function(e) {
             if (e.keyCode == 13) {
-                channel.sendMessage($(this).val());
+                if (($this).val() != '') {
+                    channel.sendMessage($(this).val());
 
-                fcmNotification(patientUsername, 'CREATE', 'MESSAGE', $(this).val(), '');
+                    fcmNotification(patientUsername, 'CREATE', 'MESSAGE', $(this).val(), '');
 
-                $(this).val('');
+                    $(this).val('');
+                }
             }
         });
 
@@ -174,12 +176,13 @@ $(function() {
         $('.send-message-btn').click(function() {
             var channelUniqueName = $(this).attr('id').split('-')[0];
             var $chatInput = $('#' + channelUniqueName + '-chat-input');
-            channel.sendMessage($chatInput.val())
+            if ($chatInput.val() != '') {
+                channel.sendMessage($chatInput.val())
 
-            fcmNotification(patientUsername, 'CREATE', 'MESSAGE', $chatInput.val(), '');
+                fcmNotification(patientUsername, 'CREATE', 'MESSAGE', $chatInput.val(), '');
 
-            $chatInput.val('');
-
+                $chatInput.val('');
+            }
         })
 
         $('#upload-image-btn').click(function() {

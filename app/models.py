@@ -158,6 +158,8 @@ class PainImages(models.Model):
     front_blob_name = models.CharField(default="", max_length=MAX_LENGTH)
     back_blob_name = models.CharField(default="", max_length=MAX_LENGTH)
 
+    class Meta:
+        ordering = ('-created_date',)
 
 class Medication(models.Model):
     """ Info for one medication prescription. """
