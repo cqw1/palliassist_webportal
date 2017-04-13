@@ -979,12 +979,16 @@ def mobile(request):
 
     print request.POST
 
+    event = request.POST["event"]
+
+    if event == "TESTING":
+        return JsonResponse({"hello": "world"})
+
     patient_username = request.POST["patient"] # TODO hardcoded to patient0 right now 
     patient_obj = User.objects.get(username=patient_username).patient
     print "patient_obj", patient_obj 
 
 
-    event = request.POST["event"]
 
     if event == "COMPLETED":
 
