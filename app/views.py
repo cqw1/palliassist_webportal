@@ -950,12 +950,16 @@ def handle_authorization(data):
     print user
 
     if user is not None:
+        patient_obj = user.patient
+
         data_message = {
             "event": "LOGIN",
             "category": "AUTHORIZATION",
             "data": {
                 "success": "yes",
-                "patient": serializers.serialize("json", [user.patient])
+                "patient": serializers.serialize("json", [patient_obj]),
+                "videos": serializers.serialize("json", Video.objects.filter(patient=patient_obj)),
+                "medications": serializers.serialize("json", Medication.objects.filter(patient=patient_obj)),
             }
         }
     else:

@@ -104,12 +104,12 @@
                                 {% if status.completed %}
                                 <li class="list-group-item green">
                                     <span class="glyphicon glyphicon-ok green"></span>
-                                    <span class="medication-status-time">{{status.time}}</span>
+                                    <span class="medication-status-time">{{status.time|time:"H:i"}}</span>
                                 </li>
                                 {% else %}
                                 <li class="list-group-item red">
                                     <span class="glyphicon glyphicon-remove red"></span>
-                                    <span class="medication-status-time">{{status.time}}</span>
+                                    <span class="medication-status-time">{{status.time|time:"H:i"}}</span>
                                 </li>
                                 {% endif %}
                             {% endfor %}

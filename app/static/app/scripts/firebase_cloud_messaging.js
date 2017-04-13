@@ -49,6 +49,8 @@ function fcmNotification(patientUsername, action, category, text, primary_key) {
     } else if (category == 'MESSAGE') {
        prettyCategory = 'Message' ;
        toast = false;
+    } else if (category == 'VIDEO') {
+       prettyCategory = 'Video' ;
     }
 
     if (toast) {
