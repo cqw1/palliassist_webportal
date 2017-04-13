@@ -167,6 +167,7 @@ $(function() {
                     channel.sendMessage($(this).val());
 
                     console.log('patientUsername = ' + patientUsername);
+                    patientUsername = $('#message-panels').children('.active').attr('id');
                     fcmNotification(patientUsername, 'CREATE', 'MESSAGE', $(this).val(), '');
 
                     console.log('input element?');
@@ -184,6 +185,7 @@ $(function() {
                 channel.sendMessage($chatInput.val())
 
                 console.log('patientUsername = ' + patientUsername);
+                patientUsername = $('#message-panels').children('.active').attr('id');
                 fcmNotification(patientUsername, 'CREATE', 'MESSAGE', $chatInput.val(), '');
 
                 console.log('input element?');
@@ -199,6 +201,7 @@ $(function() {
             console.log('patientUsername = ' + patientUsername);
 
             var data = new FormData(document.getElementById('upload-image-form'));
+            patientUsername = $('#message-panels').children('.active').attr('id');
             data.set('username', patientUsername);
 
             $.ajax({
@@ -211,6 +214,7 @@ $(function() {
                         channel.sendMessage('Image sent.', {'blob_name': data['blob_name'], 'container_name': data['container_name']});
                         $('#upload-image-modal').modal('hide');
 
+                        patientUsername = $('#message-panels').children('.active').attr('id');
                         fcmNotification(patientUsername, 'CREATE', 'MESSAGE', 'Image sent.', '');
 
                         //location.reload();
