@@ -674,7 +674,7 @@ def add_video(request):
             "videos": serializers.serialize("json", [video])
         }
     }
-    sendFCM(data_message)
+    sendFCM(data_message, "test")
 
     print request
     print video
@@ -696,7 +696,7 @@ def delete_video(request):
         "category": "VIDEO",
         "pk": request.POST["pk"]
     }
-    sendFCM(data_message)
+    sendFCM(data_message, "test")
 
     return JsonResponse({})
 
@@ -717,7 +717,7 @@ def delete_medication(request):
         "category": "MEDICATION",
         "pk": request.POST["pk"]
     }
-    sendFCM(data_message)
+    sendFCM(data_message, "test")
 
     return JsonResponse({})
 
@@ -750,7 +750,7 @@ def create_medication(request):
             "medications": serializers.serialize("json", Medication.objects.filter(pk=medication.pk))
         }
     }
-    sendFCM(data_message)
+    sendFCM(data_message, "test")
 
     print CreateMedicationForm(request.POST)
     print request
@@ -952,6 +952,11 @@ def handle_authorization(data):
     if user is not None:
         patient_obj = user.patient
 
+        # TODO. make this the same format as handle_patient_registration
+        # event: LOGIN
+        # action: SUCCESS/ERROR
+        # category: etc.
+
         data_message = {
             "event": "LOGIN",
             "category": "AUTHORIZATION",
@@ -971,7 +976,116 @@ def handle_authorization(data):
             }
         }
 
-    sendFCM(data_message)
+    sendFCM(data_message, "test")
+
+def check_access_key(data):
+    # Check if valid access key. Reading from access_keys.txt from project root.
+    access_keys_file = open(os.path.join(settings.PROJECT_ROOT, "access_keys.txt"))
+    access_keys_list = access_keys_file.read().splitlines()
+
+    if data["access_key"] not in access_keys_list:
+        return False
+    return True
+
+def handle_patient_registration(data):
+    """ Register a patient from the mobile side """
+
+    print "handle_patient_registration"
+
+    
+    try:
+        patient_user = User.objects.get(username=data["patient_username"])
+
+        # TODO: send fcm of error: patient username already exists
+        print "send fcm of error: patient username already exists"
+        data_message = {
+            "event": "REGISTRATION",
+            "action": "ERROR",
+            "category": "PATIENT",
+            "data": {
+                "error": "Username already taken. Please try a different one."
+            }
+        }
+        sendFCM(data_message, data["hospital_id"])
+    except User.DoesNotExist:
+        # patient username does not exist. this is to be expected
+
+        try:
+            doctor_user = User.objects.get(username=data["doctor_username"])
+
+            doctor = Doctor.objects.get(user=doctor_user)
+
+            # Checking for valid access key
+            valid_access_key = check_access_key(data)
+
+            if not valid_access_key:
+                # TODO: send fcm of error; invalid access key
+                print "send fcm of error: invalid access key"
+                data_message = {
+                    "event": "REGISTRATION",
+                    "action": "ERROR",
+                    "category": "PATIENT",
+                    "data": {
+                        "error": "Invalid access key."
+                    }
+                }
+                sendFCM(data_message, data["hospital_id"])
+
+            # Creating patient User object.
+            patient_user = User(username=data["patient_username"])
+            patient_user.password = data["password"]
+            patient_user.save()
+
+            # Create Patient object
+            patient = Patient.objects.create(
+                    user=patient_user,
+                    full_name=data["full_name"],
+                    telephone=data["telephone"],
+                    age=data["age"],
+                    city_of_residence=data["city_of_residence"],
+                    caregiver_name=data["caregiver_name"],
+                    treatment_type=data["treatment_type"],
+                    gender=data["gender"])
+
+            # Add patient to that doctor's list of patients
+            doctor.patients.add(patient)
+
+            print "new patient:", patient
+            print "new patient_user:", patient_user
+            print "referenced doctor:", doctor 
+
+            data_message = {
+                "event": "REGISTRATION",
+                "action": "SUCCESS",
+                "category": "PATIENT",
+                "data": {
+                    "patient": serializers.serialize("json", [patient]),
+                    "videos": serializers.serialize("json", Video.objects.filter(patient=patient)),
+                    "medications": serializers.serialize("json", Medication.objects.filter(patient=patient)),
+                }
+            }
+            sendFCM(data_message, data["hospital_id"])
+
+
+
+        except User.DoesNotExist:
+            # Doctor user does not exist
+
+            # TODO: send fcm of error: doctor username does not exist
+            print "send fcm of error: doctor username does not exist"
+            data_message = {
+                "event": "REGISTRATION",
+                "action": "ERROR",
+                "category": "PATIENT",
+                "data": {
+                    "error": "Doctor username not found."
+                }
+            }
+            sendFCM(data_message, data["hospital_id"])
+
+
+
+
 
 @csrf_exempt
 def mobile(request):
@@ -988,9 +1102,10 @@ def mobile(request):
     if event == "TESTING":
         return JsonResponse({"hello": "world"})
 
-    patient_username = request.POST["patient"] # TODO hardcoded to patient0 right now 
-    patient_obj = User.objects.get(username=patient_username).patient
-    print "patient_obj", patient_obj 
+    if event != "REGISTRATION":
+        patient_username = request.POST["patient"] # TODO hardcoded to patient0 right now 
+        patient_obj = User.objects.get(username=patient_username).patient
+        print "patient_obj", patient_obj 
 
 
 
@@ -1028,7 +1143,7 @@ def mobile(request):
                     "medications": serializers.serialize("json", Medication.objects.filter(patient=patient_obj))
                 }
             }
-            sendFCM(data_message)
+            sendFCM(data_message, "test")
             return JsonResponse({})
             """
             return JsonResponse({
@@ -1046,7 +1161,7 @@ def mobile(request):
                     "videos": serializers.serialize("json", Video.objects.filter(patient=patient_obj))
                 }
             }
-            sendFCM(data_message)
+            sendFCM(data_message, "test")
             return JsonResponse({})
 
             """
@@ -1060,16 +1175,23 @@ def mobile(request):
                 'notifications': serializers.serialize("json", Notification.objects.filter(patient=patient_obj))
             })
 
+    elif event == "REGISTRATION":
+        if request.POST["category"] == "PATIENT":
+            print "post: REGISTRATION, PATIENT"
+            handle_patient_registration(json.loads(request.POST["data"]))
+            return JsonResponse({})
+        
+
     # TODO. return an error.
 
     return render(request, 'app/blank.html')
 
-def sendFCM(data_message):
+def sendFCM(data_message, topic):
     print 
     print "sending fcm:"
     print data_message
     print
-    result = settings.FCM_SERVICE.notify_topic_subscribers(topic_name="test", data_message=data_message)
+    result = settings.FCM_SERVICE.notify_topic_subscribers(topic_name=topic, data_message=data_message)
 
 
 @csrf_exempt
@@ -1079,12 +1201,14 @@ def sync_redcap(request):
     django primary_key in model == REDCap record_id in record.
     """
 
+    # Medications 
     medications = Medication.objects.all()
     
     medication_data = []
     for medication in medications:
         medication_data.append({
             "record_id": medication.pk,
+            "created_date": formatRedcapDate(medication.created_date),
             "name": medication.name,
             "form": medication.form,
             "dose": medication.dose,
@@ -1093,12 +1217,95 @@ def sync_redcap(request):
         })
 
 
-    medication_response = settings.REDCAP_MEDICATION_PROJECT.import_records(medication_data)
+    medication_response = settings.REDCAP_MEDICATION_PROJECT.import_records(medication_data, overwrite="overwrite")
     print "medication models:", len(medications)
     print "medication_response:", medication_response["count"]
 
+    # ESAS 
+    esas_surveys = ESASSurvey.objects.all()
+    esas_data = []
+    for esas_survey in esas_surveys:
+        esas_data.append({
+            "record_id": esas_survey.pk,
+            "created_date": formatRedcapDate(esas_survey.created_date),
+            "patient": esas_survey.patient.pk,
+            "pain": esas_survey.pain,
+            "fatigue": esas_survey.fatigue,
+            "nausea": esas_survey.nausea,
+            "depression": esas_survey.depression,
+            "anxiety": esas_survey.anxiety,
+            "drowsiness": esas_survey.drowsiness,
+            "appetite": esas_survey.appetite,
+            "well_being": esas_survey.well_being,
+            "lack_of_air": esas_survey.lack_of_air,
+            "insomnia": esas_survey.insomnia,
+            "fever": esas_survey.fever,
+            "constipated": esas_survey.constipated,
+            "constipated_days": esas_survey.constipated_days,
+            "constipated_bothered": esas_survey.constipated_bothered,
+            "vomiting": esas_survey.vomiting,
+            "vomiting_count": esas_survey.vomiting_count,
+            "confused": esas_survey.confused
+        })
+    esas_response = settings.REDCAP_ESAS_PROJECT.import_records(esas_data, overwrite="overwrite")
+
+    print "esas models:", len(esas_surveys)
+    print "esas_response:", esas_response["count"]
+
+    # PAIN
+    pain_images = PainImages.objects.all()
+    pain_data = []
+    for pain_image in pain_images:
+        pain_data.append({
+            "record_id": pain_image.pk,
+            "created_date": formatRedcapDate(pain_image.created_date),
+            "patient": pain_image.patient.pk,
+            "container_name": pain_image.container_name,
+            "front_blob_name": pain_image.front_blob_name,
+            "back_blob_name": pain_image.back_blob_name,
+        })
+    pain_response = settings.REDCAP_PAIN_PROJECT.import_records(pain_data, overwrite="overwrite")
+
+    print "pain models:", len(pain_images)
+    print "pain_response:", pain_response["count"]
+
+    # Patient 
+    """
+    patients = Patient.objects.all()
+    patient_data = []
+    for patient in patients:
+        patient_data.append({
+            "record_id": pain_image.pk,
+            "created_date": formatRedcapDate(pain_image.created_date),
+            "patient": pain_image.patient.pk,
+            "container_name": pain_image.container_name,
+            "front_blob_name": pain_image.front_blob_name,
+            "back_blob_name": pain_image.back_blob_name,
+        })
+    pain_response = settings.REDCAP_PAIN_PROJECT.import_records(pain_data, overwrite="overwrite")
+
+    print "pain models:", len(pain_images)
+    print "pain_response:", pain_response["count"]
+    """
+
 
     return JsonResponse({})
+
+def twoDigit(num):
+    """ Will return a string representation of the num with 2 digits. e.g. 6 => 06 """
+    if num < 10:
+        return "0" + str(num)
+    return str(num)
+
+def formatRedcapDate(dt):
+    """ Formats datetime into D-M-Y H:M """
+
+    month = twoDigit(dt.month)
+    day = twoDigit(dt.day)
+    hour = twoDigit(dt.hour)
+    minute = twoDigit(dt.minute)
+
+    return str(dt.year) + "-" + month + "-" + day + " " + hour + ":" + minute
 
 
 @csrf_exempt
