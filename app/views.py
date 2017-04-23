@@ -1222,24 +1222,41 @@ def sync_redcap(request):
     print "pain models:", len(pain_images)
     print "pain_response:", pain_response["count"]
 
+    # Doctor 
+    doctors = Doctor.objects.all()
+    doctor_data = []
+    for doctor in doctors:
+        doctor_data.append({
+            "record_id": doctor.pk,
+            "username": doctor.user.username,
+            "full_name": doctor.full_name,
+            "telephone": doctor.telephone.country_code + doctor.telephone.national_number if doctor.telephone else doctor.telephone
+        })
+    doctor_response = settings.REDCAP_DOCTOR_PROJECT.import_records(doctor_data, overwrite="overwrite")
+
+    print "doctor models:", len(doctors)
+    print "doctor_response:", doctor_response["count"]
+
     # Patient 
-    """
     patients = Patient.objects.all()
     patient_data = []
     for patient in patients:
         patient_data.append({
-            "record_id": pain_image.pk,
-            "created_date": formatRedcapDate(pain_image.created_date),
-            "patient": pain_image.patient.pk,
-            "container_name": pain_image.container_name,
-            "front_blob_name": pain_image.front_blob_name,
-            "back_blob_name": pain_image.back_blob_name,
+            "record_id": patient.pk,
+            "hospital_id": patient.hospital_id,
+            "username": patient.user.username,
+            "full_name": patient.full_name,
+            "telephone": patient.telephone.country_code + patient.telephone.national_number if patient.telephone else patient.telephone,
+            "age": patient.age,
+            "gender": patient.gender,
+            "city_of_residence": patient.city_of_residence,
+            "caregiver_name": patient.caregiver_name,
+            "treatment_type": patient.gender,
         })
-    pain_response = settings.REDCAP_PAIN_PROJECT.import_records(pain_data, overwrite="overwrite")
+    patient_response = settings.REDCAP_PATIENT_PROJECT.import_records(patient_data, overwrite="overwrite")
 
-    print "pain models:", len(pain_images)
-    print "pain_response:", pain_response["count"]
-    """
+    print "patient models:", len(patients)
+    print "patient_response:", patient_response["count"]
 
 
     return JsonResponse({})
