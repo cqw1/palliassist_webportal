@@ -288,7 +288,7 @@ def patient_signup(request):
             password = patient_signup_form.cleaned_data['password_1']
             #role = signup_form.cleaned_data['doctor_patient_choice']
 
-            user = User.objects.create(username=username, password=password)
+            user = User.objects.create_user(username=username, password=password)
 
             print patient_signup_form.cleaned_data
 
@@ -336,7 +336,7 @@ def doctor_signup(request):
             password = doctor_signup_form.cleaned_data['password_1']
             #role = signup_form.cleaned_data['doctor_patient_choice']
 
-            user = User.objects.create(username=username, password=password)
+            user = User.objects.create_user(username=username, password=password)
 
             # Create User and Doctor object.
             doctor = Doctor.objects.create(user=user, full_name=full_name, telephone=telephone)
@@ -941,8 +941,8 @@ def handle_completed_pain(dt, patient_obj, data):
     print pain_image
 
 
-def handle_authorization(data):
-    print "handle_authorization"
+def handle_mobile_login(data, topic):
+    print "handle_mobile_login"
     print "username", data["username"]
     print "password", data["password"]
 
@@ -976,7 +976,7 @@ def handle_authorization(data):
             }
         }
 
-    sendFCM(data_message, "test")
+    sendFCM(data_message, topic)
 
 def check_access_key(data):
     # Check if valid access key. Reading from access_keys.txt from project root.
@@ -987,7 +987,7 @@ def check_access_key(data):
         return False
     return True
 
-def handle_patient_registration(data):
+def handle_patient_registration(data, topic):
     """ Register a patient from the mobile side """
 
     print "handle_patient_registration"
@@ -1006,7 +1006,7 @@ def handle_patient_registration(data):
                 "error": "Username already taken. Please try a different one."
             }
         }
-        sendFCM(data_message, data["hospital_id"])
+        sendFCM(data_message, topic)
     except User.DoesNotExist:
         # patient username does not exist. this is to be expected
 
@@ -1029,12 +1029,10 @@ def handle_patient_registration(data):
                         "error": "Invalid access key."
                     }
                 }
-                sendFCM(data_message, data["hospital_id"])
+                sendFCM(data_message, topic)
 
             # Creating patient User object.
-            patient_user = User(username=data["patient_username"])
-            patient_user.password = data["password"]
-            patient_user.save()
+            patient_user = User.objects.create_user(username=data["patient_username"], password=data["password"])
 
             # Create Patient object
             patient = Patient.objects.create(
@@ -1064,7 +1062,7 @@ def handle_patient_registration(data):
                     "medications": serializers.serialize("json", Medication.objects.filter(patient=patient)),
                 }
             }
-            sendFCM(data_message, data["hospital_id"])
+            sendFCM(data_message, topic)
 
 
 
@@ -1081,7 +1079,7 @@ def handle_patient_registration(data):
                     "error": "Doctor username not found."
                 }
             }
-            sendFCM(data_message, data["hospital_id"])
+            sendFCM(data_message, topic)
 
 
 
@@ -1102,14 +1100,10 @@ def mobile(request):
     if event == "TESTING":
         return JsonResponse({"hello": "world"})
 
-    if event != "REGISTRATION":
+    if event == "COMPLETED":
         patient_username = request.POST["patient"] # TODO hardcoded to patient0 right now 
         patient_obj = User.objects.get(username=patient_username).patient
         print "patient_obj", patient_obj 
-
-
-
-    if event == "COMPLETED":
 
         timestamp = request.POST["timestamp"] # milliseconds
         dt_unaware = datetime.datetime.fromtimestamp(int(timestamp)/1000.0)
@@ -1130,55 +1124,14 @@ def mobile(request):
 
     elif event == "LOGIN":
         if request.POST["category"] == "AUTHORIZATION":
-            handle_authorization(json.loads(request.POST["data"]))
+            handle_mobile_login(json.loads(request.POST["data"]), request.POST["topic"])
             return JsonResponse({})
 
-        elif request.POST["category"] == "MEDICATION":
-            print serializers.serialize("json", Medication.objects.filter(patient=patient_obj))
-                    
-            data_message = {
-                "event": "LOGIN",
-                "category": "MEDICATION",
-                "data": {
-                    "medications": serializers.serialize("json", Medication.objects.filter(patient=patient_obj))
-                }
-            }
-            sendFCM(data_message, "test")
-            return JsonResponse({})
-            """
-            return JsonResponse({
-                'medications': serializers.serialize("json", Medication.objects.filter(patient=patient_obj))
-            })
-            """
-
-        elif request.POST["category"] == "VIDEO":
-            print serializers.serialize("json", Video.objects.filter(patient=patient_obj))
-
-            data_message = {
-                "event": "LOGIN",
-                "category": "VIDEO",
-                "data": {
-                    "videos": serializers.serialize("json", Video.objects.filter(patient=patient_obj))
-                }
-            }
-            sendFCM(data_message, "test")
-            return JsonResponse({})
-
-            """
-            return JsonResponse({
-                'videos': serializers.serialize("json", Video.objects.filter(patient=patient_obj))
-            })
-            """
-
-        elif request.POST["category"] == "NOTIFICATION":
-            return JsonResponse({
-                'notifications': serializers.serialize("json", Notification.objects.filter(patient=patient_obj))
-            })
 
     elif event == "REGISTRATION":
         if request.POST["category"] == "PATIENT":
             print "post: REGISTRATION, PATIENT"
-            handle_patient_registration(json.loads(request.POST["data"]))
+            handle_patient_registration(json.loads(request.POST["data"]), request.POST["hospital_id"])
             return JsonResponse({})
         
 
