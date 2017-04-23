@@ -29,12 +29,13 @@ class Patient(models.Model):
     """
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     full_name = models.CharField(max_length=MAX_LENGTH)
-    telephone = PhoneNumberField(default="")
+    telephone = models.TextField(default="")
     age = models.IntegerField(default=0) 
     city_of_residence = models.TextField(default="")
     caregiver_name = models.CharField(max_length=MAX_LENGTH, default="")
     next_appointment = models.DateTimeField(default=timezone.now)
     hospital_id = models.IntegerField(default=-1)
+    esas_alert = models.IntegerField(default=7)
 
     PALLIATIVE = "Palliative Care Only"
     ANTICANCER = "Undergoing Anticancer Therapy"
@@ -69,7 +70,7 @@ class Doctor(models.Model):
     """
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     full_name = models.CharField(max_length=MAX_LENGTH)
-    telephone = PhoneNumberField(default="")
+    telephone = models.TextField(default="")
     patients = models.ManyToManyField(Patient)
     twilio_token = models.TextField(default="")
 
@@ -233,6 +234,7 @@ class DashboardAlert(models.Model):
     category = models.CharField(max_length=MAX_LENGTH, choices=CATEGORY_CHOICES, default=MEDICATION)
 
 
+"""
 @receiver(post_save, sender=User)
 def update_redcap_user(sender, **kwargs):
 
@@ -258,12 +260,13 @@ def update_redcap_user(sender, **kwargs):
         settings.REDCAP_USER_PROJECT.import_records([new_r])
 
     #########
-    """
+"""
 
+"""
     if kwargs.get('created', False):
         # New user was created.
         print "[receiver - update_redcap_user]"
-    """
+"""
 
 @receiver(user_logged_in)
 def generateTwilioAccessToken(sender, **kwargs):

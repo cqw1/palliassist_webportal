@@ -20,6 +20,7 @@ class REDCapBackend:
         print "after:", User.objects.all()
         """
 
+        """
         URL = 'https://hcbredcap.com.br/api/'
         TOKEN = 'F2C5AEE8A2594B0A9E442EE91C56CC7A'
 
@@ -52,6 +53,7 @@ class REDCapBackend:
             user.save()
             return user
         return None
+        """
 
 
         """

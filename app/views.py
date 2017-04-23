@@ -19,6 +19,7 @@ import json
 import datetime
 import pytz
 import os
+import phonenumbers
 
 from .forms import *
 from django.forms.utils import ErrorList
@@ -184,6 +185,8 @@ def patient_profile(request):
     if not request.user.is_authenticated():
         return HttpResponseRedirect(reverse('login'))
 
+    print request.GET
+
     patient_pk = request.GET['pk']
     print "patient_pk:", patient_pk  
 
@@ -194,12 +197,33 @@ def patient_profile(request):
     add_video_form = AddVideoForm()
     create_medication_form = CreateMedicationForm()
     upload_image_form = UploadImageForm()
+    edit_patient_form = EditPatientForm()
+
+    edit_patient_form.fields["pk"].initial = patient_obj.pk
+    ### Home tab.
+    editing_patient = False
+    if "edit" in request.GET:
+        print "edit:", request.GET["edit"]
+        editing_patient = True
+
+        edit_patient_form.fields["full_name"].initial = patient_obj.full_name
+        edit_patient_form.fields["hospital_id"].initial = patient_obj.hospital_id
+        edit_patient_form.fields["esas_alert"].initial = patient_obj.esas_alert
+        edit_patient_form.fields["age"].initial = patient_obj.age
+        edit_patient_form.fields["gender"].initial = patient_obj.gender
+        edit_patient_form.fields["treatment_type"].initial = patient_obj.treatment_type
+        edit_patient_form.fields["caregiver_name"].initial = patient_obj.caregiver_name
+        edit_patient_form.fields["city_of_residence"].initial = patient_obj.city_of_residence
+        edit_patient_form.fields["telephone"].initial = patient_obj.telephone
+        edit_patient_form.fields["next_appointment"].initial = patient_obj.next_appointment
 
     ### Notifications tab.
     notifications = Notification.objects.filter(patient=patient_obj)
 
     #### Videos tab.
     videos = Video.objects.filter(patient=patient_obj)
+    print "videos:", videos
+    print "video url: " + videos[0].url
 
     ### Messages tab.
     channels = []
@@ -252,6 +276,8 @@ def patient_profile(request):
         'message': 'Patient profile.',
         'year': datetime.datetime.now().year,
         'patient': patient_obj,
+        'editing_patient': editing_patient,
+        'edit_patient_form': edit_patient_form,
         'notes_form': notes_form,
         'add_video_form': add_video_form,
         'create_notification_form': create_notification_form,
@@ -276,6 +302,43 @@ def patient_profile(request):
         'app/patient_profile.html',
         context
     )
+
+def save_patient_info(request):
+    """ """
+    print "save_patient_info request:", request.POST
+    edit_patient_form = EditPatientForm(request.POST)
+
+    if edit_patient_form.is_valid():
+        form_data = edit_patient_form.cleaned_data
+        patient = Patient.objects.get(pk=form_data["pk"])
+
+        if form_data["hospital_id"]:
+            patient.hospital_id = form_data["hospital_id"]
+        if form_data["full_name"]:
+            patient.full_name = form_data["full_name"]
+        if form_data["age"]:
+            patient.age = form_data["age"]
+        if form_data["gender"]:
+            patient.gender = form_data["gender"]
+        if form_data["telephone"]:
+            patient.telephone = form_data["telephone"]
+        if form_data["esas_alert"]:
+            patient.esas_alert = form_data["esas_alert"]
+        if form_data["city_of_residence"]:
+            patient.city_of_residence = form_data["city_of_residence"]
+        if form_data["caregiver_name"]:
+            patient.caregiver_name = form_data["caregiver_name"]
+        if form_data["treatment_type"]:
+            patient.treatment_type = form_data["treatment_type"]
+        if form_data["next_appointment"]:
+            patient.next_appointment = form_data["next_appointment"]
+
+        patient.save()
+
+        return HttpResponseRedirect("/patient-profile?pk=" + str(patient.pk))
+
+    return HttpResponseRedirect("/patient-profile?pk=" + str(edit_patient_form.data["pk"]) + "&edit=true")
+
 
 def patient_signup(request):
 
@@ -661,6 +724,10 @@ def add_video(request):
 
     patient_obj = Patient.objects.get(pk=request.POST["pk"])
 
+    # Delete all current videos associated with this patient. 
+    # So there's only one video per patient.
+    Video.objects.filter(patient=patient_obj).delete()
+
     video = Video.objects.create(
             patient=patient_obj,
             url=request.POST["url"]
@@ -812,13 +879,14 @@ def create_channel(request):
 
     return JsonResponse({})
 
-def check_esas_alert(esas):
+def check_esas_alert(patient, esas):
     """
     Checks to see if we need to create a dashboard alert for
-    this esas. If a symptom intesnity has exceeded 7.
+    this esas. If a symptom intensity has exceeded the custom 
+    esas alert for the patient.
     """
 
-    limit = 7
+    limit = patient.esas_alert
 
     if esas.pain >= limit:
         return True
@@ -885,7 +953,7 @@ def handle_completed_esas(dt, patient_obj, data):
     esas.save()
     print esas
 
-    if check_esas_alert(esas):
+    if check_esas_alert(patient_obj, esas):
         DashboardAlert.objects.create(category=DashboardAlert.ESAS, patient=patient_obj, item_pk=esas.pk)
 
 def handle_completed_medication(dt, patient_obj, data):
@@ -1230,7 +1298,7 @@ def sync_redcap(request):
             "record_id": doctor.pk,
             "username": doctor.user.username,
             "full_name": doctor.full_name,
-            "telephone": doctor.telephone.country_code + doctor.telephone.national_number if doctor.telephone else doctor.telephone
+            "telephone": doctor.telephone
         })
     doctor_response = settings.REDCAP_DOCTOR_PROJECT.import_records(doctor_data, overwrite="overwrite")
 
@@ -1246,12 +1314,13 @@ def sync_redcap(request):
             "hospital_id": patient.hospital_id,
             "username": patient.user.username,
             "full_name": patient.full_name,
-            "telephone": patient.telephone.country_code + patient.telephone.national_number if patient.telephone else patient.telephone,
+            "telephone": patient.telephone,
             "age": patient.age,
             "gender": patient.gender,
             "city_of_residence": patient.city_of_residence,
             "caregiver_name": patient.caregiver_name,
-            "treatment_type": patient.gender,
+            "treatment_type": patient.treatment_type,
+            "esas_alert": patient.esas_alert,
         })
     patient_response = settings.REDCAP_PATIENT_PROJECT.import_records(patient_data, overwrite="overwrite")
 

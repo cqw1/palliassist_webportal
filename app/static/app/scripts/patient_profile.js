@@ -1,5 +1,17 @@
 console.log("patient_profile.js");
 
+function editPatientInfo(patientPrimaryKey) {
+    console.log('editPatientInfo');
+
+    location.href = '/patient-profile?pk=' + patientPrimaryKey + '&edit=true';
+    /*
+    $.get('/patient-profile', {pk: patientPrimaryKey, edit: "true"}, function() {
+        console.log('send edit get request');
+    })
+    */
+
+}
+
 function clearNotes() {
     console.log("called clearNotes");
     $("#id_notes").val('');

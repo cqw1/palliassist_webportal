@@ -51,6 +51,7 @@ urlpatterns = [
     url(r'^(?i)upload-image', app_views.upload_image, name='upload-image'),
     url(r'^(?i)sync-redcap', app_views.sync_redcap, name='sync-redcap'),
     url(r'^(?i)delete-dashboard-alert', app_views.delete_dashboard_alert, name='delete-dashboard-alert'),
+    url(r'^(?i)save-patient-info', app_views.save_patient_info, name='save-patient-info'),
     url(r'^(?i)admin-input', app_views.admin_input, name='admin-input'),
     url(r'^(?i)mobile', app_views.mobile, name='mobile'),
     url(r'^(?i)token', app_views.token, name='token'),
