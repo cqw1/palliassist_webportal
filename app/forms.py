@@ -208,3 +208,7 @@ class EditPatientForm(forms.Form):
             required=False)
     pk = forms.IntegerField(widget=forms.HiddenInput(), required=True)
 
+
+
+
+

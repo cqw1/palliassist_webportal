@@ -10,7 +10,7 @@
             </div>
 
             <div class="modal-body">
-                <form method="POST" action="/create-notification/" id="create-notification-form" class="form-group">
+                <form method="POST" action="{% url 'create-notification' %}" id="create-notification-form" class="form-group">
                     {% csrf_token %}
 
                     <label for="{{ create_notification_form.category.id_for_label }}" class="control-label">{{ create_notification_form.category.label }}</label>

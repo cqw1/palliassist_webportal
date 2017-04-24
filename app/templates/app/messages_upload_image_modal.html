@@ -10,7 +10,7 @@
             </div>
 
                 <div class="modal-body">
-                    <form method="POST" action="/upload-image/" enctype="multipart/form-data" id="upload-image-form" class="form-group">
+                    <form method="POST" action="{% url 'upload-image' %}" enctype="multipart/form-data" id="upload-image-form" class="form-group">
                         {% csrf_token %}
 
                         {{ upload_image_form }}

@@ -54,7 +54,7 @@
     <div class="col-md-3">
         <h3>Notes</h3>
 
-        <form method="POST" action="/save-notes/" id="notes-form" class="form-group">
+        <form method="POST" action="{% url 'save-notes' %}" id="notes-form" class="form-group">
             {% csrf_token %}
             <div>
                 {{ notes_form }}

@@ -10,7 +10,7 @@
 
 <!-- Search form -->
 <section id="queryPatients">
-<form method="GET" action="/patients/">
+    <form method="GET" action="{% url 'patients' %}">
     {% csrf_token %}
 
     <!-- <div class="pa-child-display-inline-block"> -->
@@ -60,7 +60,7 @@
 
             {% if user.doctor in patient_result.doctor_set.all %}
             <td>
-                <form action="/unfollow-patient" method="post">
+                <form method="post" action="{% url 'unfollow-patient' %}">
                     {% csrf_token %}
                     <input type="hidden" name="patient_pk" value="{{patient_result.pk}}">
                     <input type="hidden" name="doctor_pk" value="{{user.doctor.pk}}">
@@ -69,7 +69,7 @@
             </td>
             {% else %}
             <td>
-                <form action="/follow-patient" method="post">
+                <form method="post" action="{% url 'follow-patient' %}">
                     {% csrf_token %}
                     <input type="hidden" name="patient_pk" value="{{patient_result.pk}}">
                     <input type="hidden" name="doctor_pk" value="{{user.doctor.pk}}">
