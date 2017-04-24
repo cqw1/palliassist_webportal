@@ -988,7 +988,7 @@ def handle_completed_esas(dt, patient_obj, data):
     print esas
 
     if check_esas_alert(patient_obj, esas):
-        DashboardAlert.objects.create(category=DashboardAlert.ESAS, patient=patient_obj, item_pk=esas.pk)
+        DashboardAlert.objects.create(created_date=timezone.now(), category=DashboardAlert.ESAS, patient=patient_obj, item_pk=esas.pk)
 
 def handle_completed_medication(dt, patient_obj, data):
     """
@@ -1021,7 +1021,7 @@ def handle_completed_medication(dt, patient_obj, data):
         report.entries.add(report_entry) 
 
     if alert:
-        DashboardAlert.objects.create(category=DashboardAlert.MEDICATION, patient=patient_obj, item_pk=report.pk)
+        DashboardAlert.objects.create(created_date=timezone.now(), category=DashboardAlert.MEDICATION, patient=patient_obj, item_pk=report.pk)
 
 
     print medication

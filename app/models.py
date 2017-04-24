@@ -222,6 +222,7 @@ class DashboardAlert(models.Model):
     """
     Parent class of all possible dashboard alerts.
     """
+    created_date = models.DateTimeField(default=timezone.now)
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     item_pk = models.IntegerField(default=0) 
 
@@ -232,6 +233,9 @@ class DashboardAlert(models.Model):
         (ESAS, ESAS),
     )
     category = models.CharField(max_length=MAX_LENGTH, choices=CATEGORY_CHOICES, default=MEDICATION)
+
+    class Meta:
+        ordering = ('-created_date',)
 
 
 """
