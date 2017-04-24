@@ -1,3 +1,5 @@
+{% load i18n %}
+
 {% if user.is_authenticated %}
 <form id="logoutForm" action="/logout" method="post" class="navbar-right">
     {% csrf_token %}
