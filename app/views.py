@@ -62,31 +62,72 @@ def dashboard(request):
 
     # Maps patient object to a mapping of esas surveys with a symptom over 7
     # to the corresponding dashboard alert
-    patient_esas_alert = {}
+    unordered_patient_esas_alert = {}
+    ordered_patient_esas_alert = []
     esas_alerts = DashboardAlert.objects.filter(category=DashboardAlert.ESAS)
-    for alert in esas_alerts:
-        esas = ESASSurvey.objects.get(pk=alert.item_pk)
 
-        if alert.patient in patient_esas_alert.keys():
-            patient_esas_alert[alert.patient][esas] = alert
-        else:
-            patient_esas_alert[alert.patient] = {esas: alert}
+    sorted_esas = []
+    for alert in esas_alerts:
+        sorted_esas.append(ESASSurvey.objects.get(pk=alert.item_pk))
+
+    # Sort esas by created_date
+    sorted_esas.sort(key=lambda x: x.created_date, reverse=True)
+
+    # Get all the patients, and related alerts and esas
+    for esas in sorted_esas:
+        alert = DashboardAlert.objects.get(category=DashboardAlert.ESAS, item_pk=esas.pk)
+
+        if alert.patient not in unordered_patient_esas_alert.keys():
+            unordered_patient_esas_alert[alert.patient] = ()
+
+        # Do some conversions between tuples and lists cause lists cant be stored in dictionaries
+        # and need to maintain order
+        tup = unordered_patient_esas_alert[alert.patient]
+        lst = list(tup)
+        lst.append((esas, alert))
+        unordered_patient_esas_alert[alert.patient] = tuple(lst)
+
+    # Sort patients by full_name
+    esas_patients = unordered_patient_esas_alert.keys()
+    esas_patients.sort(key=lambda x: x.full_name)
+
+    for patient in esas_patients:
+        ordered_patient_esas_alert.append((patient, unordered_patient_esas_alert[patient]))
 
     # Maps patient object to a mapping of incomplete medication reports
     # to the corresponding dashboard alert
-    patient_medication_alert = {}
+    unordered_patient_medication_alert = {}
+    ordered_patient_medication_alert = []
     medication_alerts = DashboardAlert.objects.filter(category=DashboardAlert.MEDICATION)
-    for alert in medication_alerts:
-        report = MedicationReport.objects.get(pk=alert.item_pk)
 
-        if alert.patient in patient_medication_alert.keys():
-            patient_medication_alert[alert.patient][report] = alert
-        else:
-            patient_medication_alert[alert.patient] = {report: alert}
+    sorted_medication = []
+    for alert in medication_alerts:
+        sorted_medicationa.append(MedicationReport.objects.get(pk=alert.item_pk))
+
+    # Sort medication by created date
+    sorted_medication.sort(key=lambda x: x.created_date, reverse=True)
+
+    # Get all the patients and related alerts and medication
+    for medication in sorted_medication:
+        alert = DashboardAlert.objects.get(category=DashboardAlert.MEDICATION, item_pk=medication.pk)
+
+        if alert.patient not in unordered_patient_medication_alert.keys():
+            unordered_patient_medication_alert[alert.patient] = ()
+
+        # Do some conversions between tuples and lists cause lists cant be stored in dictionaries
+        # and need to maintain order
+        tup = unordered_patient_medication_alert[alert.patient]
+        lst = list(tup)
+        lst.append((mdeication, alert))
+        unordered_patient_medication_alert[alert.patient] = tuple(lst)
+
+    # Sort patients by full_name
+    medication_patients = unordered_patient_medication_alert.keys()
+    medication_patients.sort(key=lambda x: x.full_name)
+
+    for patient in medication_patients:
+        ordered_patient_medication_alert.append((patient, unordered_patient_medication_alert[patient]))
     
-    print "request.user:", request.user
-    print "request.user.doctor", request.user.doctor
-    print "request.user.doctor.patients.all", request.user.doctor.patients.all()
 
     following_patients = request.user.doctor.patients.all()
 
@@ -94,8 +135,8 @@ def dashboard(request):
         'title':'Dashboard',
         'year':datetime.datetime.now().year,
         'unread_patients': unread_patients,
-        'patient_esas_alert': patient_esas_alert,
-        'patient_medication_alert': patient_medication_alert,
+        'patient_esas_alert': ordered_patient_esas_alert,
+        'patient_medication_alert': ordered_patient_medication_alert,
         'following_patients': following_patients,
     }
 
@@ -988,7 +1029,7 @@ def handle_completed_esas(dt, patient_obj, data):
     print esas
 
     if check_esas_alert(patient_obj, esas):
-        DashboardAlert.objects.create(created_date=timezone.now(), category=DashboardAlert.ESAS, patient=patient_obj, item_pk=esas.pk)
+        DashboardAlert.objects.create(category=DashboardAlert.ESAS, patient=patient_obj, item_pk=esas.pk)
 
 def handle_completed_medication(dt, patient_obj, data):
     """
@@ -1021,7 +1062,7 @@ def handle_completed_medication(dt, patient_obj, data):
         report.entries.add(report_entry) 
 
     if alert:
-        DashboardAlert.objects.create(created_date=timezone.now(), category=DashboardAlert.MEDICATION, patient=patient_obj, item_pk=report.pk)
+        DashboardAlert.objects.create(category=DashboardAlert.MEDICATION, patient=patient_obj, item_pk=report.pk)
 
 
     print medication
