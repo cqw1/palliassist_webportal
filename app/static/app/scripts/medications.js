@@ -26,7 +26,7 @@ $(function() {
 
         $.post('/delete-medication', "pk=" + pk, function() {
             console.log('posted');
-            triggerToast('Medication removed.');
+            triggerToast('Medication removed.', 'success');
         })
 
         $(this).parent().parent().hide();

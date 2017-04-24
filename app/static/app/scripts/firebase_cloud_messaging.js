@@ -54,7 +54,7 @@ function fcmNotification(patientUsername, action, category, text, primary_key) {
     }
 
     if (toast) {
-        triggerToast(prettyCategory + ' notification sent.');
+        triggerToast(prettyCategory + ' notification sent.', 'success');
     }
 
 

@@ -1297,6 +1297,21 @@ def sync_redcap(request):
     django primary_key in model == REDCap record_id in record.
     """
 
+    URL = "https://hcbredcap.com.br/api/"
+    #USER_TOKEN = "F2C5AEE8A2594B0A9E442EE91C56CC7A"
+    MEDICATION_TOKEN = "2D58F93CB3B9C8C2FD00E64BD12080A3"
+    ESAS_TOKEN = "7048C161E7BE6A8B86F5100D5FDA7C20"
+    PAIN_TOKEN = "B91EDA097393C04D5F2C1526E1F7CD37"
+    PATIENT_TOKEN = "A1E9884F5A90E5270385D131B66659CE"
+    DOCTOR_TOKEN = "8400B14C28F7E6C644E0ADB5AE5F4628"
+
+    #REDCAP_USER_PROJECT = Project(URL, USER_TOKEN)
+    REDCAP_MEDICATION_PROJECT = Project(URL, MEDICATION_TOKEN)
+    REDCAP_ESAS_PROJECT = Project(URL, ESAS_TOKEN)
+    REDCAP_PAIN_PROJECT = Project(URL, PAIN_TOKEN)
+    REDCAP_PATIENT_PROJECT = Project(URL, PATIENT_TOKEN)
+    REDCAP_DOCTOR_PROJECT = Project(URL, DOCTOR_TOKEN)
+
     # Medications 
     medications = Medication.objects.all()
     
@@ -1313,7 +1328,7 @@ def sync_redcap(request):
         })
 
 
-    medication_response = settings.REDCAP_MEDICATION_PROJECT.import_records(medication_data, overwrite="overwrite")
+    medication_response = REDCAP_MEDICATION_PROJECT.import_records(medication_data, overwrite="overwrite")
     print "medication models:", len(medications)
     print "medication_response:", medication_response["count"]
 
@@ -1343,7 +1358,7 @@ def sync_redcap(request):
             "vomiting_count": esas_survey.vomiting_count,
             "confused": esas_survey.confused
         })
-    esas_response = settings.REDCAP_ESAS_PROJECT.import_records(esas_data, overwrite="overwrite")
+    esas_response = REDCAP_ESAS_PROJECT.import_records(esas_data, overwrite="overwrite")
 
     print "esas models:", len(esas_surveys)
     print "esas_response:", esas_response["count"]
@@ -1360,7 +1375,7 @@ def sync_redcap(request):
             "front_blob_name": pain_image.front_blob_name,
             "back_blob_name": pain_image.back_blob_name,
         })
-    pain_response = settings.REDCAP_PAIN_PROJECT.import_records(pain_data, overwrite="overwrite")
+    pain_response = REDCAP_PAIN_PROJECT.import_records(pain_data, overwrite="overwrite")
 
     print "pain models:", len(pain_images)
     print "pain_response:", pain_response["count"]
@@ -1375,7 +1390,7 @@ def sync_redcap(request):
             "full_name": doctor.full_name,
             "telephone": doctor.telephone
         })
-    doctor_response = settings.REDCAP_DOCTOR_PROJECT.import_records(doctor_data, overwrite="overwrite")
+    doctor_response = REDCAP_DOCTOR_PROJECT.import_records(doctor_data, overwrite="overwrite")
 
     print "doctor models:", len(doctors)
     print "doctor_response:", doctor_response["count"]
@@ -1397,7 +1412,7 @@ def sync_redcap(request):
             "treatment_type": patient.treatment_type,
             "esas_alert": patient.esas_alert,
         })
-    patient_response = settings.REDCAP_PATIENT_PROJECT.import_records(patient_data, overwrite="overwrite")
+    patient_response = REDCAP_PATIENT_PROJECT.import_records(patient_data, overwrite="overwrite")
 
     print "patient models:", len(patients)
     print "patient_response:", patient_response["count"]

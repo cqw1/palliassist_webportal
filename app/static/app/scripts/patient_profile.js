@@ -22,7 +22,7 @@ function saveNotes(patientPrimaryKey) {
     $.post('/save-notes', $("#notes-form").serialize() + "&pk=" + patientPrimaryKey, function() {
         console.log('posted');
 
-        triggerToast('Notes saved.');
+        triggerToast('Notes saved.', 'success');
     })
 }
 

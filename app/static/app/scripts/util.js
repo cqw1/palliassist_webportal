@@ -25,12 +25,30 @@ function parseMillis(millis) {
     return date.toLocaleDateString() + ' ' + hours + ':' + minutes
 }
 
-function triggerToast(text) {
-    $('#toast-text').text(text);
+function triggerToast(text, type) {
+    let $toastText;
+    let $toast;
 
-    $('#pa-toast').addClass('in');
+    if (type == 'success') {
+        $toastText = $('#success-toast-text');
+        $toast = $('#pa-success-toast');
+    } else if (type == 'warning') {
+        $toastText = $('#warning-toast-text');
+        $toast = $('#pa-warning-toast');
+    } else {
+        console.log('unknown toast type: ' + type);
+    }
 
-    setTimeout(function() {
-        $('#pa-toast').removeClass('in');
-    }, 4000);
+    //$('#toast-text').text(text);
+    //$('#pa-toast').addClass('in');
+    $toastText.text(text);
+    $toast.addClass('in');
+
+
+    if (type == 'success') {
+        setTimeout(function() {
+            //$('#pa-toast').removeClass('in');
+            $toast.removeClass('in');
+        }, 4000);
+    }
 }

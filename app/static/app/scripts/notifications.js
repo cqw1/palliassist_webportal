@@ -62,7 +62,7 @@ $(function() {
 
         $.post('/delete-notification', "pk=" + pk, function() {
             console.log('posted');
-            triggerToast('Notification removed.');
+            triggerToast('Notification removed.', 'success');
         })
 
         $(this).parent().parent().hide();

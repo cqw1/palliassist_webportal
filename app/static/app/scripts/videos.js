@@ -15,7 +15,7 @@ function deleteVideo(pk, el) {
 
     $.post('/delete-video', "pk=" + pk, function() {
         console.log('posted');
-        triggerToast('Video removed.');
+        triggerToast('Video removed.', 'success');
     })
 
     $(el).parent().hide();
