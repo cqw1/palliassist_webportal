@@ -51,7 +51,7 @@
             </div>
 
             <div class="list-group">
-                {% for patient, medication_alert in patient_medication_alert.items %}
+                {% for patient, medication_alert in patient_medication_alert %}
 
                 <a class="list-group-item patient-header" href="#{{patient.pk}}-medication-alerts-collapse" role="button" data-toggle="collapse">
                     <span class="glyphicon glyphicon-chevron-right dashboard-chevron-right" aria-hidden="true"></span>
@@ -60,7 +60,7 @@
                 </a>
 
                 <div id="{{patient.pk}}-medication-alerts-collapse" class="collapse">
-                    {% for report, alert in medication_alert.items %}
+                    {% for report, alert in medication_alert %}
                     <a id="medication-alert-{{alert.pk}}" href="{% url 'patient-profile' %}?pk={{patient.pk}}#medications/report-{{report.pk}}" class="list-group-item nested-list-group-item dashboard-alert">
                         {{report.created_date|date:"SHORT_DATE_FORMAT"}} {{report.created_date|time:"H:i"}}
                     </a>
