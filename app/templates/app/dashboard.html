@@ -8,7 +8,23 @@
 
 <div class="row">
 
-    <div class="col-xs-12 col-md-4">
+    <div class="col-xs-12 col-md-5">
+        <!-- Following Patient Panel -->
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h3 class="panel-title">Following Patients</h3>
+            </div>
+
+            <div class="list-group">
+                {% for patient in following_patients %}
+                <a href="{% url 'patient-profile' %}?pk={{patient.pk}}" class="list-group-item">{{patient.full_name}}</a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-xs-12 col-md-5">
         <!-- Unread Messages Panel -->
         <div class="panel panel-info">
             <div class="panel-heading">
@@ -23,7 +39,11 @@
         </div>
     </div>
 
-    <div class="col-xs-12 col-md-4">
+
+</div>
+
+<div class="row">
+    <div class="col-xs-12 col-md-5">
         <!-- Missed Medication Panel -->
         <div class="panel panel-danger">
             <div class="panel-heading">
@@ -52,8 +72,8 @@
         </div>
     </div>
 
-    <div class="col-xs-12 col-md-4">
-    <!-- ESAS Symptom >= 7 Panel -->
+    <div class="col-xs-12 col-md-5">
+    <!-- ESAS survey alert panel -->
         <div class="panel panel-warning">
             <div class="panel-heading">
                 <h3 class="panel-title">ESAS Surveys</h3>
@@ -79,9 +99,6 @@
                 {% endfor %}
             </div>
         </div>
-    </div>
-
-    <div class="col-xs-12 col-md-4">
     </div>
 
 </div>

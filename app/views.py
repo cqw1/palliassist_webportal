@@ -84,6 +84,11 @@ def dashboard(request):
         else:
             patient_medication_alert[alert.patient] = {report: alert}
     
+    print "request.user:", request.user
+    print "request.user.doctor", request.user.doctor
+    print "request.user.doctor.patients.all", request.user.doctor.patients.all()
+
+    following_patients = request.user.doctor.patients.all()
 
     context = {
         'title':'Dashboard',
@@ -91,6 +96,7 @@ def dashboard(request):
         'unread_patients': unread_patients,
         'patient_esas_alert': patient_esas_alert,
         'patient_medication_alert': patient_medication_alert,
+        'following_patients': following_patients,
     }
 
     """
@@ -146,7 +152,8 @@ def patients(request):
 
         if patient_query == '':
             # No specific patient query. Show all patients
-            patient_results = doctor.patients.all()
+            #patient_results = doctor.patients.all()
+            patient_results = Patient.objects.all()
 
         else:
             # Actual query. Fetch close matches.
@@ -175,6 +182,26 @@ def patients(request):
         'app/patients.html',
         context
     )
+
+def follow_patient(request):
+    """ Handle a doctor following a patient """
+
+    doctor = Doctor.objects.get(pk=request.POST["doctor_pk"])
+    patient = Patient.objects.get(pk=request.POST["patient_pk"])
+
+    doctor.patients.add(patient)
+
+    return HttpResponseRedirect("/patients")
+
+def unfollow_patient(request):
+    """ Handle a doctor unfollowing a patient """
+
+    doctor = Doctor.objects.get(pk=request.POST["doctor_pk"])
+    patient = Patient.objects.get(pk=request.POST["patient_pk"])
+
+    doctor.patients.remove(patient)
+
+    return HttpResponseRedirect("/patients")
 
 
 def patient_profile(request):
@@ -302,6 +329,13 @@ def patient_profile(request):
         'app/patient_profile.html',
         context
     )
+
+def edit_patient_info(request):
+    print "edit_patient_info request:", request.POST
+
+    edit_patient_form = EditPatientForm(request.POST)
+    return HttpResponseRedirect("/patient-profile?pk=" + str(edit_patient_form.data["pk"]) + "&edit=true")
+
 
 def save_patient_info(request):
     """ """

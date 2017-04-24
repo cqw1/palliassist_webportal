@@ -48,6 +48,7 @@
 
     </table>
 
+    <!-- hidden input field in the form -->
     {{edit_patient_form.pk}}
 
     <div class="row pull-right">
@@ -57,57 +58,62 @@
 
 
 {% else %}
-<table class="table table-bordered table-hover">
+<form action="/edit-patient-info" method="post">
+    {% csrf_token %}
 
-    <tr>
-        <td class="patient-field">Name:</td>
-        <td>{{patient.full_name}}</td>
-    </tr>
-    <tr>
-        <td class="patient-field">Hospital ID:</td>
-        <td>{{patient.hospital_id}}</td>
-    </tr>
-    <tr>
-        <td class="patient-field">ESAS Alert Level:</td>
-        <td>{{patient.esas_alert}}</td>
-    </tr>
-    <tr>
-        <td class="patient-field">Telephone:</td>
-        <td>{{patient.telephone}}</td>
-    </tr>
-    <tr>
-        <td class="patient-field">Age:</td>
-        <td>{{patient.age}}</td>
-    </tr>
-    <tr>
-        <td class="patient-field">Gender:</td>
-        <td>{{patient.gender}}</td>
-    </tr>
-    <tr>
-        <td class="patient-field">City of Residence:</td>
-        <td>{{patient.city_of_residence}}</td>
-    </tr>
-    <tr>
-        <td class="patient-field">Caregiver:</td>
-        <td>{{patient.caregiver_name}}</td>
-    </tr>
-    <tr>
-        <td class="patient-field">Treatment Type:</td>
-        <td>{{patient.treatment_type}}</td>
-    </tr>
-    <tr>
-        <td class="patient-field">Next Appointment:</td>
-        <!-- <td class="millis-date">{{patient.next_appointment}}</td> -->
-        <td>{{patient.next_appointment|date:"SHORT_DATE_FORMAT"}} {{patient.next_appointment|time:"H:i"}}</td>
-    </tr>
+    <table class="table table-bordered table-hover">
+        <tr>
+            <td class="patient-field">Name:</td>
+            <td>{{patient.full_name}}</td>
+        </tr>
+        <tr>
+            <td class="patient-field">Hospital ID:</td>
+            <td>{{patient.hospital_id}}</td>
+        </tr>
+        <tr>
+            <td class="patient-field">ESAS Alert Level:</td>
+            <td>{{patient.esas_alert}}</td>
+        </tr>
+        <tr>
+            <td class="patient-field">Telephone:</td>
+            <td>{{patient.telephone}}</td>
+        </tr>
+        <tr>
+            <td class="patient-field">Age:</td>
+            <td>{{patient.age}}</td>
+        </tr>
+        <tr>
+            <td class="patient-field">Gender:</td>
+            <td>{{patient.gender}}</td>
+        </tr>
+        <tr>
+            <td class="patient-field">City of Residence:</td>
+            <td>{{patient.city_of_residence}}</td>
+        </tr>
+        <tr>
+            <td class="patient-field">Caregiver:</td>
+            <td>{{patient.caregiver_name}}</td>
+        </tr>
+        <tr>
+            <td class="patient-field">Treatment Type:</td>
+            <td>{{patient.treatment_type}}</td>
+        </tr>
+        <tr>
+            <td class="patient-field">Next Appointment:</td>
+            <!-- <td class="millis-date">{{patient.next_appointment}}</td> -->
+            <td>{{patient.next_appointment|date:"SHORT_DATE_FORMAT"}} {{patient.next_appointment|time:"H:i"}}</td>
+        </tr>
 
-</table>
+        {{edit_patient_form.pk}}
 
-<div class="row pull-right">
-    <button id="edit-patient-info-btn" type="button" class="btn btn-warning table-btn" onclick="editPatientInfo('{{patient.pk}}')">
-        <span class="glyphicon glyphicon-pencil"></span> &nbsp; Edit
-    </button>
-</div>
+    </table>
+
+    <div class="row pull-right">
+        <button id="edit-patient-info-btn" type="submit" class="btn btn-warning table-btn">
+            <span class="glyphicon glyphicon-pencil"></span> &nbsp; Edit
+        </button>
+    </div>
+</form>
 
 {% endif %}
 

@@ -45,9 +45,7 @@
             <th>Hospital ID</th>
             <th>Gender</th>
             <th>Age</th>
-            {% comment %}
             <th><!-- Add/Remove button column --></th>
-            {% endcomment %}
         </tr>
     </thead>
     <tbody>
@@ -59,13 +57,25 @@
             <td>{{ patient_result.gender }} </td>
             <td>{{ patient_result.age }} </td>
 
-            {% comment %}
             {% if user.doctor in patient_result.doctor_set.all %}
-            <td><button type="button" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-minus"></span> Unfollow</button></td>
+            <td>
+                <form action="/unfollow-patient" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="patient_pk" value="{{patient_result.pk}}">
+                    <input type="hidden" name="doctor_pk" value="{{user.doctor.pk}}">
+                    <button type="submit" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-minus"></span> Unfollow</button>
+                </form>
+            </td>
             {% else %}
-            <td><button type="button" class="btn btn-success btn-sm"><span class="glyphicon glyphicon-plus"></span> Follow</button></td> 
+            <td>
+                <form action="/follow-patient" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="patient_pk" value="{{patient_result.pk}}">
+                    <input type="hidden" name="doctor_pk" value="{{user.doctor.pk}}">
+                    <button type="submit" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-plus"></span> Follow</button>
+                </form>
+            </td>
             {% endif %}
-            {% endcomment %}
 
         </tr>
         {% endfor %}
