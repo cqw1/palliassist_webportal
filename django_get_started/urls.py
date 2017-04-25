@@ -55,6 +55,7 @@ urlpatterns = [
     url(r'^(?i)unfollow-patient', app_views.unfollow_patient, name='unfollow-patient'),
     url(r'^(?i)save-patient-info', app_views.save_patient_info, name='save-patient-info'),
     url(r'^(?i)edit-patient-info', app_views.edit_patient_info, name='edit-patient-info'),
+    url(r'^(?i)set-language', app_views.set_language, name='set-language'),
     url(r'^(?i)admin-input', app_views.admin_input, name='admin-input'),
     url(r'^(?i)mobile', app_views.mobile, name='mobile'),
     url(r'^(?i)token', app_views.token, name='token'),

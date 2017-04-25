@@ -1102,6 +1102,7 @@ def handle_mobile_login(data, topic):
 
         data_message = {
             "event": "LOGIN",
+            "action": "SUCCESS"
             "category": "AUTHORIZATION",
             "data": {
                 "success": "yes",
@@ -1113,9 +1114,10 @@ def handle_mobile_login(data, topic):
     else:
         data_message = {
             "event": "LOGIN",
+            "action": "ERROR",
             "category": "AUTHORIZATION",
             "data": {
-                "success": "no"
+                "success": "no",
             }
         }
 
@@ -1288,6 +1290,16 @@ def sendFCM(data_message, topic):
     print data_message
     print
     result = settings.FCM_SERVICE.notify_topic_subscribers(topic_name=topic, data_message=data_message)
+
+
+@csrf_exempt
+def set_language(request):
+    """ 
+    Set language of website.
+    """
+    print "set_language"
+    return HttpResponseRedirect(request.POST["next"]) 
+    
 
 
 @csrf_exempt
