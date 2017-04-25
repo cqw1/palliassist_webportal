@@ -1202,10 +1202,12 @@ def handle_patient_registration(data, topic):
                 "action": "SUCCESS",
                 "category": "PATIENT",
                 "data": {
+                }
+                """
                     "patient": serializers.serialize("json", [patient]),
                     "videos": serializers.serialize("json", Video.objects.filter(patient=patient)),
                     "medications": serializers.serialize("json", Medication.objects.filter(patient=patient)),
-                }
+                """
             }
             sendFCM(data_message, topic)
 
