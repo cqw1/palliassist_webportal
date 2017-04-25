@@ -26,7 +26,8 @@
 
         <div class="input-group">
             <span class="chat-input-span">
-                <input id="{{ch.unique_name}}-chat-input" type="text" class="form-control chat-input" placeholder="say anything" autofocus aria-label="...">
+                {% trans "say anything" as text_prompt %}
+                <input id="{{ch.unique_name}}-chat-input" type="text" class="form-control chat-input" placeholder="{{text_prompt}}" autofocus aria-label="...">
             </span>
 
             <!-- Buttons -->
@@ -39,7 +40,7 @@
                     <span class=" glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                 </button>
                 -->
-                <button id="{{ch.unique_name}}-send-message-btn" class="btn btn-primary send-message-btn" type="button">Send</button>
+                <button id="{{ch.unique_name}}-send-message-btn" class="btn btn-primary send-message-btn" type="button">{% trans "Send" %}</button>
             </div>
 
         </div>

@@ -4,7 +4,7 @@ Definition of views.
 
 from django.conf import settings
 from django.shortcuts import render
-from django.http import HttpRequest, JsonResponse, HttpResponseRedirect
+from django.http import HttpRequest, JsonResponse, HttpResponseRedirect, HttpResponse
 from django.template import RequestContext
 from cgi import parse_qs, escape
 from django.views.decorators.csrf import csrf_exempt
@@ -13,7 +13,8 @@ from django.core.urlresolvers import reverse
 from app.models import *
 from app.forms import *
 from django.core import serializers
-from django.utils import timezone
+from django.utils import timezone, translation
+from django.utils.translation import ugettext_lazy as _
 
 import json
 import datetime
@@ -45,8 +46,8 @@ class DivErrorList(ErrorList):
     def __unicode__(self):              # __unicode__ on Python 2
         return self.as_spans()
     def as_spans(self):
-        if not self: return ''
-        return ''.join(['<div><span class="control-label">%s</span></div>' % e for e in self])
+        if not self: return ""
+        return "".join(['<div><span class="control-label">%s</span></div>' % e for e in self])
 
 
 def dashboard(request):
@@ -55,7 +56,7 @@ def dashboard(request):
 
     # Check if user is logged in. Otherwise redirect to login page.
     if not request.user.is_authenticated():
-        return HttpResponseRedirect(reverse('login'))
+        return HttpResponseRedirect(reverse("login"))
 
     unread_patients = []
     unread_patients = Patient.objects.filter(unread_messages__gt=0)
@@ -132,32 +133,18 @@ def dashboard(request):
     following_patients = request.user.doctor.patients.all()
 
     context = {
-        'title':'Dashboard',
-        'year':datetime.datetime.now().year,
-        'unread_patients': unread_patients,
-        'patient_esas_alert': ordered_patient_esas_alert,
-        'patient_medication_alert': ordered_patient_medication_alert,
-        'following_patients': following_patients,
+        "title":_("Dashboard"),
+        "year":datetime.datetime.now().year,
+        "unread_patients": unread_patients,
+        "patient_esas_alert": ordered_patient_esas_alert,
+        "patient_medication_alert": ordered_patient_medication_alert,
+        "following_patients": following_patients,
     }
-
-    """
-    URL = 'https://hcbredcap.com.br/api/'
-    TOKEN = 'F2C5AEE8A2594B0A9E442EE91C56CC7A'
-
-    project = Project(URL, TOKEN)
-
-    for field in project.metadata:
-        print "%s (%s) => %s" % (field['field_name'],field['field_type'], field['field_label'])
-
-    data = project.export_records()
-    for d in data:
-        print d
-        """
 
 
     return render(
         request,
-        'app/dashboard.html',
+        "app/dashboard.html",
         context
     )
 
@@ -165,7 +152,7 @@ def dashboard(request):
 def login_redirect(request, **kwargs):
     # Checks to see if user is logged in. If so, redirect to dashboard page.
     if request.user.is_authenticated():
-        return HttpResponseRedirect(reverse('dashboard'))
+        return HttpResponseRedirect(reverse("dashboard"))
     else:
         return auth_views.login(request, **kwargs)
 
@@ -175,23 +162,23 @@ def patients(request):
 
     # Check if user is logged in. Otherwise redirect to login page.
     if not request.user.is_authenticated():
-        return HttpResponseRedirect(reverse('login'))
+        return HttpResponseRedirect(reverse("login"))
 
     print "request.user.username:", request.user.username
 
     patient_results = []
 
-    if request.method == 'GET':
+    if request.method == "GET":
         print "[views.searchPatients] got GET request"
 
         # Get "patient_query" url param
-        patient_query = request.GET.get("patient_query", '')
+        patient_query = request.GET.get("patient_query", "")
         print "patient_query:", patient_query
 
         doctor = Doctor.objects.get(user=request.user)
         print "doctor:", doctor
 
-        if patient_query == '':
+        if patient_query == "":
             # No specific patient query. Show all patients
             #patient_results = doctor.patients.all()
             patient_results = Patient.objects.all()
@@ -211,16 +198,16 @@ def patients(request):
     query_patients_form = QueryPatientsForm()
 
     context = {
-        'title': 'Patients',
-        'message': 'List of patients.',
-        'year': datetime.datetime.now().year,
-        'patient_results': patient_results,
-        'query_patients_form': query_patients_form,
+        "title": _("Patients"),
+        "message": _("List of patients."),
+        "year": datetime.datetime.now().year,
+        "patient_results": patient_results,
+        "query_patients_form": query_patients_form,
     }
 
     return render(
         request,
-        'app/patients.html',
+        "app/patients.html",
         context
     )
 
@@ -251,16 +238,16 @@ def patient_profile(request):
 
     # Check if user is logged in. Otherwise redirect to login page.
     if not request.user.is_authenticated():
-        return HttpResponseRedirect(reverse('login'))
+        return HttpResponseRedirect(reverse("login"))
 
     print request.GET
 
-    patient_pk = request.GET['pk']
+    patient_pk = request.GET["pk"]
     print "patient_pk:", patient_pk  
 
     patient_obj = Patient.objects.get(pk=patient_pk)
 
-    notes_form = PatientNotesForm(initial={'notes': patient_obj.doctor_notes})
+    notes_form = PatientNotesForm(initial={"notes": patient_obj.doctor_notes})
     create_notification_form = CreateNotificationForm()
     add_video_form = AddVideoForm()
     create_medication_form = CreateMedicationForm()
@@ -300,9 +287,9 @@ def patient_profile(request):
         if c.unique_name == patient_obj.user.username:
             print "selected channel", c.friendly_name, c.sid
             channel_json = {
-                'sid': str(c.sid),
-                'unique_name': str(c.unique_name),
-                'friendly_name': str(c.friendly_name),
+                "sid": str(c.sid),
+                "unique_name": str(c.unique_name),
+                "friendly_name": str(c.friendly_name),
             }
             channels.append(channel_json)
             break
@@ -340,34 +327,34 @@ def patient_profile(request):
     medication_reports = MedicationReport.objects.filter(patient=patient_obj)
 
     context = {
-        'title': 'Patient Profile',
-        'message': 'Patient profile.',
-        'year': datetime.datetime.now().year,
-        'patient': patient_obj,
-        'editing_patient': editing_patient,
-        'edit_patient_form': edit_patient_form,
-        'notes_form': notes_form,
-        'add_video_form': add_video_form,
-        'create_notification_form': create_notification_form,
-        'create_medication_form': create_medication_form,
-        'upload_image_form': upload_image_form,
-        'notifications': notifications,
-        'videos': videos,
-        'medications': medications,
-        'medication_reports': medication_reports,
-        'esas_objects': esas_objects,
-        'esas_json': esas_json,
-        'pain_objects': pain_objects,
-        'pain_width': 207,
-        'pain_height': 400,
-        'pain_images': pain_images,
-        'channels': channels, 
-        'token': token, # Twilio token for messaging tab.
+        "title": _("Patient Profile"),
+        "message": _("Patient profile."),
+        "year": datetime.datetime.now().year,
+        "patient": patient_obj,
+        "editing_patient": editing_patient,
+        "edit_patient_form": edit_patient_form,
+        "notes_form": notes_form,
+        "add_video_form": add_video_form,
+        "create_notification_form": create_notification_form,
+        "create_medication_form": create_medication_form,
+        "upload_image_form": upload_image_form,
+        "notifications": notifications,
+        "videos": videos,
+        "medications": medications,
+        "medication_reports": medication_reports,
+        "esas_objects": esas_objects,
+        "esas_json": esas_json,
+        "pain_objects": pain_objects,
+        "pain_width": 207,
+        "pain_height": 400,
+        "pain_images": pain_images,
+        "channels": channels, 
+        "token": token, # Twilio token for messaging tab.
     }
 
     return render(
         request,
-        'app/patient_profile.html',
+        "app/patient_profile.html",
         context
     )
 
@@ -417,30 +404,30 @@ def save_patient_info(request):
 
 def patient_signup(request):
 
-    if request.method == 'POST':
+    if request.method == "POST":
         patient_signup_form = PatientSignupForm(request.POST, error_class=DivErrorList)
         doctor_signup_form = SignupForm(error_class=DivErrorList)
 
         if patient_signup_form.is_valid():
-            username = patient_signup_form.cleaned_data['username']
-            password = patient_signup_form.cleaned_data['password_1']
-            #role = signup_form.cleaned_data['doctor_patient_choice']
+            username = patient_signup_form.cleaned_data["username"]
+            password = patient_signup_form.cleaned_data["password_1"]
+            #role = signup_form.cleaned_data["doctor_patient_choice"]
 
             user = User.objects.create_user(username=username, password=password)
 
             print patient_signup_form.cleaned_data
 
             # Create User and Patient object.
-            patients_doctor_username = patient_signup_form.cleaned_data['patients_doctor_username']
+            patients_doctor_username = patient_signup_form.cleaned_data["patients_doctor_username"]
             patient = Patient.objects.create(
                     user=user, 
-                    full_name=patient_signup_form.cleaned_data['full_name'],
-                    telephone=patient_signup_form.cleaned_data['telephone'],
-                    age=patient_signup_form.cleaned_data['age'],
-                    city_of_residence=patient_signup_form.cleaned_data['city_of_residence'],
-                    caregiver_name=patient_signup_form.cleaned_data['caregiver_name'],
-                    treatment_type=patient_signup_form.cleaned_data['treatment_type'],
-                    gender=patient_signup_form.cleaned_data['gender'],
+                    full_name=patient_signup_form.cleaned_data["full_name"],
+                    telephone=patient_signup_form.cleaned_data["telephone"],
+                    age=patient_signup_form.cleaned_data["age"],
+                    city_of_residence=patient_signup_form.cleaned_data["city_of_residence"],
+                    caregiver_name=patient_signup_form.cleaned_data["caregiver_name"],
+                    treatment_type=patient_signup_form.cleaned_data["treatment_type"],
+                    gender=patient_signup_form.cleaned_data["gender"],
 
             )
             Doctor.objects.get(user=User.objects.get(username=patients_doctor_username)).patients.add(patient)
@@ -448,31 +435,31 @@ def patient_signup(request):
             return HttpResponseRedirect("/signup-success/")
 
     context = {
-        'title': 'Sign Up',
-        'year': datetime.datetime.now().year,
-        'active_form': 'patient',
-        'patient_signup_form': patient_signup_form,
-        'doctor_signup_form': doctor_signup_form,
+        "title": _("Sign Up"),
+        "year": datetime.datetime.now().year,
+        "active_form": "patient",
+        "patient_signup_form": patient_signup_form,
+        "doctor_signup_form": doctor_signup_form,
     }
 
     return render(
         request,
-        'app/sign_up.html',
+        "app/sign_up.html",
         context
     )
 
 def doctor_signup(request):
 
-    if request.method == 'POST':
+    if request.method == "POST":
         patient_signup_form = PatientSignupForm(error_class=DivErrorList)
         doctor_signup_form = SignupForm(request.POST, error_class=DivErrorList)
 
         if doctor_signup_form.is_valid():
-            full_name = doctor_signup_form.cleaned_data['full_name']
-            username = doctor_signup_form.cleaned_data['username']
-            telephone = doctor_signup_form.cleaned_data['telephone']
-            password = doctor_signup_form.cleaned_data['password_1']
-            #role = signup_form.cleaned_data['doctor_patient_choice']
+            full_name = doctor_signup_form.cleaned_data["full_name"]
+            username = doctor_signup_form.cleaned_data["username"]
+            telephone = doctor_signup_form.cleaned_data["telephone"]
+            password = doctor_signup_form.cleaned_data["password_1"]
+            #role = signup_form.cleaned_data["doctor_patient_choice"]
 
             user = User.objects.create_user(username=username, password=password)
 
@@ -482,16 +469,16 @@ def doctor_signup(request):
             return HttpResponseRedirect("/signup-success/")
 
     context = {
-        'title': 'Sign Up',
-        'year': datetime.datetime.now().year,
-        'active_form': 'doctor',
-        'patient_signup_form': patient_signup_form,
-        'doctor_signup_form': doctor_signup_form,
+        "title": _("Sign Up"),
+        "year": datetime.datetime.now().year,
+        "active_form": "doctor",
+        "patient_signup_form": patient_signup_form,
+        "doctor_signup_form": doctor_signup_form,
     }
 
     return render(
         request,
-        'app/sign_up.html',
+        "app/sign_up.html",
         context
     )
 
@@ -503,42 +490,17 @@ def signup(request):
     patient_signup_form = PatientSignupForm(error_class=DivErrorList)
     doctor_signup_form = SignupForm(error_class=DivErrorList)
 
-    """
-    if request.method == 'POST':
-        signup_form = PatientSignupForm(request.POST, error_class=DivErrorList)
-
-        if signup_form.is_valid():
-            full_name = signup_form.cleaned_data['full_name']
-            username = signup_form.cleaned_data['username']
-            password = signup_form.cleaned_data['password_1']
-            role = signup_form.cleaned_data['doctor_patient_choice']
-
-            user = User.objects.create(username=username, password=password)
-
-            if role == 'patient':
-                # Create User and Patient object.
-                patients_doctor_username = signup_form.cleaned_data['patients_doctor_username']
-                patient = Patient.objects.create(user=user, full_name=full_name)
-                Doctor.objects.get(user=User.objects.get(username=patients_doctor_username)).patients.add(patient)
-            else:
-                # Create User and Doctor object.
-                doctor = Doctor.objects.create(user=user, full_name=full_name)
-
-            return HttpResponseRedirect("/signup-success/")
-    """
-
-
     context = {
-        'title': 'Sign Up',
-        'year': datetime.datetime.now().year,
-        'active_form': 'doctor',
-        'patient_signup_form': patient_signup_form,
-        'doctor_signup_form': doctor_signup_form,
+        "title": _("Sign Up"),
+        "year": datetime.datetime.now().year,
+        "active_form": "doctor",
+        "patient_signup_form": patient_signup_form,
+        "doctor_signup_form": doctor_signup_form,
     }
 
     return render(
         request,
-        'app/sign_up.html',
+        "app/sign_up.html",
         context
     )
 
@@ -548,13 +510,13 @@ def signup_success(request):
 
 
     context = {
-        'title': 'Sign Up',
-        'year': datetime.datetime.now().year,
+        "title": _("Sign Up"),
+        "year": datetime.datetime.now().year,
     }
 
     return render(
         request,
-        'app/sign_up_success.html',
+        "app/sign_up_success.html",
         context
     )
 
@@ -565,7 +527,7 @@ def messages(request):
 
     # Check if user is logged in. Otherwise redirect to login page.
     if not request.user.is_authenticated():
-        return HttpResponseRedirect(reverse('login'))
+        return HttpResponseRedirect(reverse("login"))
 
     """
     How to delete a channel:
@@ -613,9 +575,9 @@ def messages(request):
     # Always allow the user to chat in the demo channel by adding to it if we haven't already been added.
     demo_channel = settings.TWILIO_IPM_SERVICE.channels.get(sid="CHe75c920bb94c449da5fba883aa64db6c")
     demo_json = {
-        'sid': str(demo_channel.sid),
-        'unique_name': str(demo_channel.unique_name),
-        'friendly_name': str(demo_channel.friendly_name),
+        "sid": str(demo_channel.sid),
+        "unique_name": str(demo_channel.unique_name),
+        "friendly_name": str(demo_channel.friendly_name),
     }
     #demo_channel.update(unique_name="demochannel")
     member = demo_channel.members.create(identity=request.user.username)
@@ -630,12 +592,12 @@ def messages(request):
             print "identity", m.identity
             # Assuming that all twilio identities are based off of usernames
             if m.identity == request.user.username:
-                # str() needed to get rid of u'hello' when escaping the string to javascript.
+                # str() needed to get rid of u"hello" when escaping the string to javascript.
                 print "selected channel", c.friendly_name, c.unique_name, c.sid
                 channel_json = {
-                    'sid': str(c.sid),
-                    'unique_name': str(c.unique_name),
-                    'friendly_name': str(c.friendly_name),
+                    "sid": str(c.sid),
+                    "unique_name": str(c.unique_name),
+                    "friendly_name": str(c.friendly_name),
                 }
                 channels.append(channel_json)
                 break
@@ -662,63 +624,21 @@ def messages(request):
     token.add_grant(ipm_grant)
 
     context = {
-        'title':'Messages',
-        'message':'Send messages.',
-        'upload_image_form': upload_image_form,
-        'year':datetime.datetime.now().year,
-        'patients': patients,
-        'channels': channels,
-        'token': token,
+        "title": _("Messages"),
+        "message": _("Send messages."),
+        "upload_image_form": upload_image_form,
+        "year":datetime.datetime.now().year,
+        "patients": patients,
+        "channels": channels,
+        "token": token,
     }
 
     return render(
         request,
-        'app/messages.html',
+        "app/messages.html",
         context
     )
 
-
-def save_message(request):
-    """
-    Saves a message to the REDCap database.
-    """
-    assert isinstance(request, HttpRequest)
-
-    print request
-
-    sender = request.GET['sender']
-    channel = request.GET['channel']
-    content = request.GET['content']
-    content_type = request.GET['type']
-    time_sent = request.GET['time_sent']
-
-    print "saveMessage:"
-    print sender, channel, content, content_type, time_sent
-
-    URL = 'https://hcbredcap.com.br/api/'
-    TOKEN = 'F2C5AEE8A2594B0A9E442EE91C56CC7A'
-
-    #project = Project(URL, TOKEN)
-
-    for field in settings.REDCAP_USER_PROJECT.metadata:
-        print "%s (%s) => %s" % (field['field_name'],field['field_type'], field['field_label'])
-
-    data = settings.REDCAP_USER_PROJECT.export_records()
-    for d in data:
-        print d
-
-    d = data[0]
-    d['content'] = content
-    d['content_type'] = content_type
-    d['channel'] = channel
-    d['time_sent'] = time_sent
-
-    response = settings.REDCAP_USER_PROJECT.import_records(data)
-    print response['count']
-        
-
-    
-    return JsonResponse({})
 
 def token(request):
     """
@@ -727,7 +647,7 @@ def token(request):
     assert isinstance(request, HttpRequest)
 
     # create a randomly generated username for the client
-    identity = request.GET['identity']
+    identity = request.GET["identity"]
 
     # <unique app>:<user>:<device>
     endpoint = "PalliAssist:" + identity + ":mobile"
@@ -741,8 +661,8 @@ def token(request):
 
     # COMMENTED CAUSE FLASK THING - Return token info as JSON
     #return jsonify(identity=identity, token=token.to_jwt())
-    return JsonResponse({'identity': identity, 'token': token.to_jwt()})
-    #return JsonResponse({'identity': identity, 'token': token})
+    return JsonResponse({"identity": identity, "token": token.to_jwt()})
+    #return JsonResponse({"identity": identity, "token": token})
 
 def save_notes(request):
     """
@@ -753,9 +673,9 @@ def save_notes(request):
     assert isinstance(request, HttpRequest)
 
     print request.POST
-    doctor_notes = request.POST['notes']
+    doctor_notes = request.POST["notes"]
     print "doctor_notes:", doctor_notes
-    patient_pk = request.POST['pk']
+    patient_pk = request.POST["pk"]
 
     patient = Patient.objects.get(pk=patient_pk)
     patient.doctor_notes = doctor_notes
@@ -919,11 +839,11 @@ def upload_image(request):
         blob_name = patient_obj.user.username + "_" + str(convert_datetime_to_millis(datetime.datetime.now()))
 
         settings.BLOCK_BLOB_SERVICE.create_container(container_name, public_access=PublicAccess.Container)
-        settings.BLOCK_BLOB_SERVICE.create_blob_from_path(container_name, blob_name, image_obj.image.path, content_settings=ContentSettings(content_type='image/png'))
+        settings.BLOCK_BLOB_SERVICE.create_blob_from_path(container_name, blob_name, image_obj.image.path, content_settings=ContentSettings(content_type="image/png"))
         success = True
 
     else:
-        message = "Error uploading image. Please try again."
+        message = _("Error uploading image. Please try again.")
 
 
     return JsonResponse({
@@ -941,8 +861,8 @@ def create_channel(request):
     """
     assert isinstance(request, HttpRequest)
 
-    print request.POST['channel_name']
-    channel_name = request.POST['channel_name']
+    print request.POST["channel_name"]
+    channel_name = request.POST["channel_name"]
 
     new_channel = settings.TWILIO_IPM_SERVICE.channels.create(friendly_name=channel_name, type="private")
     new_channel.members.create(identity=request.user.username)
@@ -1283,7 +1203,7 @@ def mobile(request):
 
     # TODO. return an error.
 
-    return render(request, 'app/blank.html')
+    return render(request, "app/blank.html")
 
 def sendFCM(data_message, topic):
     print 
@@ -1299,6 +1219,11 @@ def set_language(request):
     Set language of website.
     """
     print "set_language"
+    language = request.POST["language"]
+    print "language:", language
+    translation.activate(language)
+    print "get_language:", translation.get_language()
+    request.session[translation.LANGUAGE_SESSION_KEY] = language
     return HttpResponseRedirect(request.POST["next"]) 
     
 
@@ -1470,6 +1395,6 @@ def admin_input(request):
 
     return render(
         request,
-        'app/admin_input.html',
+        "app/admin_input.html",
         {}
     )

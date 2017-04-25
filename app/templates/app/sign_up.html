@@ -3,7 +3,7 @@
 
 {% block content %}
 
-<h2>{{ title }}</h2>
+<h2>{% blocktrans %}{{ title }}{% endblocktrans %}</h2>
 <div class="row">
     <div class="col-md-6 col-md-push-3">
         <hr />
@@ -15,17 +15,17 @@
         <ul class="nav nav-pills nav-justified">
             {% if active_form == 'patient' %}
             <li role="presentation" id="doctor-signup">
-                <a data-toggle="tab" href="#doctor-form">Doctor</a>
+                <a data-toggle="tab" href="#doctor-form">{% trans "Doctor" %}</a>
             </li>
             <li role="presentation" class="active" id="patient-signup">
-                <a data-toggle="tab" href="#patient-form">Patient</a>
+                <a data-toggle="tab" href="#patient-form">{% trans "Patient" %}</a>
             </li>
             {% else %}
             <li role="presentation" class="active" id="doctor-signup">
-                <a data-toggle="tab" href="#doctor-form">Doctor</a>
+                <a data-toggle="tab" href="#doctor-form">{% trans "Doctor" %}</a>
             </li>
             <li role="presentation" id="patient-signup">
-                <a data-toggle="tab" href="#patient-form">Patient</a>
+                <a data-toggle="tab" href="#patient-form">{% trans "Patient" %}</a>
             </li>
             {% endif %}
         </ul>
@@ -72,7 +72,7 @@
                 <div class="form-group pa-ignore-center-wrapper">
                     <div class="col-md-offset-3 col-md-9">
                         <input type="hidden" name="next" value="/" />
-                        <input type="submit" value="Sign Up" class="btn btn-primary" />
+                        <button type="submit" class="btn btn-primary" />{% trans "Sign Up" %}</button>
                     </div>
                 </div>
             </form>
@@ -112,7 +112,7 @@
                 <div class="form-group pa-ignore-center-wrapper">
                     <div class="col-md-offset-3 col-md-9">
                         <input type="hidden" name="next" value="/" />
-                        <input type="submit" value="Sign Up" class="btn btn-primary" />
+                        <button type="submit" class="btn btn-primary" />{% trans "Sign Up" %}</button>
                     </div>
                 </div>
             </form>
@@ -120,52 +120,6 @@
         </section>
     </div>
 </div>
-
-{% comment %}
-<div class="row">
-    <div class="col-md-8 col-md-push-3">
-        <section id="signupForm">
-        <form action="." method="post" class="form-horizontal">
-            {% csrf_token %}
-
-            {{ form.non_field_errors }}
-
-            <!-- Loops through fields in form and renders -->
-            {% for field in form %}
-
-            {% if field.errors %}
-            <div class="form-group has-error">
-            {% else %}
-            <div class="form-group">
-            {% endif %}
-
-                <label for="{{ field.id_for_label }}" class="col-md-3 control-label">{{ field.label }}</label>
-                <div class="col-md-9 pa-ignore-center-wrapper pa-form-field">
-                    {{ field }}
-
-                    {{ field.errors | safe }}
-
-                    {% if field.id_for_label == 'id_patients_doctor_username' %}
-                    <span><i>* Only for registering patients.</i></span>
-                    {% endif %}
-                </div>
-            </div>
-
-            {% endfor %}
-
-            <br><br>
-
-            <div class="form-group pa-ignore-center-wrapper">
-                <div class="col-md-offset-3 col-md-9">
-                    <input type="hidden" name="next" value="/" />
-                    <input type="submit" value="Sign Up" class="btn btn-primary" />
-                </div>
-            </div>
-        </form>
-        </section>
-    </div>
-</div>
-{% endcomment %}
 
 
 {% endblock %}

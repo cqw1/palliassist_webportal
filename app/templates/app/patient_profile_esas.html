@@ -8,17 +8,16 @@
             <!-- Default panel contents -->
 
             <div class="panel-heading clearfix">
-                <strong class="panel-title">Surveys</strong>
-                <button type="button" class="btn btn-danger btn-xs" onclick="fcmNotification('{{patient.user.username}}', 'REMIND', 'ESAS', '', '-1')">Remind</button>
+                <strong class="panel-title">{% trans "Surveys" %}</strong>
+                <button type="button" class="btn btn-danger btn-xs" onclick="fcmNotification('{{patient.user.username}}', 'REMIND', 'ESAS', '', '-1')">{% trans "Remind" %}</button>
             </div>
 
             <!-- Chat channels list -->
             <ul class="list-group">
                 
-                <a data-toggle="tab" class="list-group-item" href="#esas-overview">Overview</a>
+                <a data-toggle="tab" class="list-group-item" href="#esas-overview">{% trans "Overview" %}</a>
 
                 {% for esas in esas_objects %}
-                <!-- <a data-toggle="tab" class="list-group-item millis-date" href="#{{esas.pk}}">{{esas.created_date}}</a> -->
                 <a data-toggle="tab" class="list-group-item" href="#esas-{{esas.pk}}">{{esas.created_date|date:"SHORT_DATE_FORMAT"}} {{esas.created_date|time:"H:i"}}</a>
                 {% endfor %}
             </ul>
@@ -30,7 +29,7 @@
         <div class="panel panel-default tab-pane fade in active" id="esas-panel">
 
             <div class="panel-heading">
-                <strong class="panel-title">Overview</strong>
+                <strong class="panel-title">{% trans "Overview" %}</strong>
             </div>
             <div class="panel-body" id="esas-panel-body">
                 <div id="esas-overview" class="tab-pane fade in active">
@@ -50,7 +49,7 @@
                     <div id="{{esas.pk}}-esas-responses">
 
                         <!-- Standard questions -->
-                        <strong>Standard</strong>
+                        <strong>{% trans "Standard" %}</strong>
                         <table class="table table-bordered table-hover">
                             {% comment %}
                             <tr>
@@ -60,59 +59,59 @@
                             {% endcomment %}
 
                             <tr class="esas-standard-field">
-                                <td>Pain</td>
+                                <td>{% trans "Pain" %}</td>
                                 <td class="esas-answer">{{esas.pain}}</td>
                             </tr>
 
                             <tr class="esas-standard-field">
-                                <td>Fatigue</td>
+                                <td>{% trans "Fatigue" %}</td>
                                 <td class="esas-answer">{{esas.fatigue}}</td>
                             </tr>
 
                             <tr class="esas-standard-field">
-                                <td>Nausea</td>
+                                <td>{% trans "Nausea" %}</td>
                                 <td class="esas-answer">{{esas.nausea}}</td>
                             </tr>
 
                             <tr class="esas-standard-field">
-                                <td>Depression</td>
+                                <td>{% trans "Depression" %}</td>
                                 <td class="esas-answer">{{esas.depression}}</td>
                             </tr>
 
                             <tr class="esas-standard-field">
-                                <td>Anxiety</td>
+                                <td>{% trans "Anxiety" %}</td>
                                 <td class="esas-answer">{{esas.anxiety}}</td>
                             </tr>
 
                             <tr class="esas-standard-field">
-                                <td>Drowsiness</td>
+                                <td>{% trans "Drowsiness" %}</td>
                                 <td class="esas-answer">{{esas.drowsiness}}</td>
                             </tr>
 
                             <tr class="esas-standard-field">
-                                <td>Appetite</td>
+                                <td>{% trans "Appetite" %}</td>
                                 <td class="esas-answer">{{esas.appetite}}</td>
                             </tr>
 
                             <tr class="esas-standard-field">
-                                <td>Well-Being</td>
+                                <td>{% trans "Well-Being" %}</td>
                                 <td class="esas-answer">{{esas.well_being}}</td>
                             </tr>
 
                             <tr class="esas-standard-field">
-                                <td>Lack of Air</td>
+                                <td>{% trans "Lack of Air" %}</td>
                                 <td class="esas-answer">{{esas.lack_of_air}}</td>
                             </tr>
 
                             <tr class="esas-standard-field">
-                                <td>Insomnia</td>
+                                <td>{% trans "Insomnia" %}</td>
                                 <td class="esas-answer">{{esas.insomnia}}</td>
                             </tr>
                         </table>
 
                         <br>
 
-                        <strong>Custom</strong>
+                        <strong>{% trans "Custom" %}</strong>
                         <!-- Custom questions -->
                         <table class="table table-bordered table-hover">
 
@@ -122,8 +121,10 @@
                             {% else %}
                             <tr class="esas-custom-field success">
                             {% endif %}
-                                <td>Fever</td>
-                                <td class="esas-answer">{{esas.fever|title}}</td>
+                            <td>{% trans "Fever" %}</td>
+                            <td class="esas-answer">
+                                {% blocktrans with esas_fever=esas.fever|title %}{{esas_fever}}{% endblocktrans %}
+                            </td>
                             </tr>
 
                             <!-- Constipated -->
@@ -133,27 +134,38 @@
                                 {% else %}
                                 <tr class="esas-custom-field danger">
                                 {% endif %}
-                                    <td>Constipated</td>
-                                    <td class="esas-answer">{{esas.constipated|title}}, for {{esas.constipated_days}} days, severity of {{esas.constipated_bothered}}</td>
+                                <td>{% trans "Constipated" %}</td>
+
+                                <td class="esas-answer">
+                                    {% blocktrans with esas_constipated=esas.constipated|title %}{{esas_constipated}}{% endblocktrans %}, {{esas.constipated_days}} {% trans "days" %}, {{esas.constipated_bothered}} {% trans "severity" %}
+                                </td>
                                 </tr>
 
                             {% else %}
                             <tr class="esas-custom-field success">
-                                <td>Constipated</td>
-                                <td class="esas-answer">{{esas.constipated|title}}</td>
+                                <td>{% trans "Constipated" %}</td>
+                                <td class="esas-answer">
+                                    {% blocktrans with esas_constipated=esas.constipated|title %}{{esas_constipated}}{% endblocktrans %}
+                                </td>
                             </tr>
                             {% endif %}
 
                             <!-- Vomiting -->
+
                             {% if esas.vomiting == "yes" %}
                             <tr class="esas-custom-field danger">
-                                <td>Vomiting</td>
-                                <td class="esas-answer">{{esas.vomiting|title}}, {{esas.vomiting_count}} times</td>
+                                <td>{% trans "Vomiting" %}</td>
+
+                                <td class="esas-answer">
+                                    {% blocktrans with esas_vomiting=esas.vomiting|title %}{{esas_vomiting}}{% endblocktrans %}, {{esas.vomiting_count}} {% trans "times" %}
+                                </td>
                             </tr>
                             {% else %}
                             <tr class="esas-custom-field success">
-                                <td>Vomiting</td>
-                                <td class="esas-answer">{{esas.vomiting|title}}</td>
+                                <td>{% trans "Vomiting" %}</td>
+                                <td class="esas-answer">
+                                    {% blocktrans with esas_vomiting=esas.vomiting|title %}{{esas_vomiting}}{% endblocktrans %}, {% trans "times" %}
+                                </td>
                             </tr>
                             {% endif %}
 
@@ -163,8 +175,11 @@
                             {% else %}
                             <tr class="esas-custom-field success">
                             {% endif %}
-                                <td>Confused</td>
-                                <td class="esas-answer">{{esas.confused|title}}</td>
+                            <td>{% trans "Confused" %}</td>
+
+                            <td class="esas-answer">
+                                {% blocktrans with esas_confused=esas.confused|title %}{{esas_confused}}{% endblocktrans %}
+                            </td>
                             </tr>
 
                         </table>

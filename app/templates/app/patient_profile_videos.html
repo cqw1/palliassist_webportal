@@ -9,10 +9,10 @@
         <label>{{ add_video_form.url.label }}</label>
         {{ add_video_form.url}}
 
-        <button id="add-video-btn" type="button" class="btn btn-primary" onclick="addVideo('{{patient.pk}}', '{{patient.user.username}}')">Set</button>
+        <button id="add-video-btn" type="button" class="btn btn-primary" onclick="addVideo('{{patient.pk}}', '{{patient.user.username}}')">{% trans "Set" %}</button>
     </div>
     <div class="pa-child-display-inline-block">
-        <i><strong>*Example embed URL:</strong> https://www.youtube.com/embed/someurl</i>
+        <i><strong>{% trans "*Example embed URL:" %}</strong> https://www.youtube.com/embed/someurl</i>
     </div>
 
 
@@ -35,7 +35,7 @@
 
 <br>
 <div class="pa-center-wrapper">
-    No videos found.
+    {% trans "No videos found." %}
 </div>
 
 {% endif %}

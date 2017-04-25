@@ -10,17 +10,17 @@
 <div class="row">
     <div class="col-md-9">
         <ul class="nav nav-tabs">
-            <li class="active"><a data-toggle="tab" href="#home">Home</a></li>
+            <li class="active"><a data-toggle="tab" href="#home">{% trans "Home" %}</a></li>
             {% comment %}
             <li><a data-toggle="tab" href="#notifications">Notifications</a></li>
             {% endcomment %}
             {% comment %}
             <li><a data-toggle="tab" href="#videos">Videos</a></li>
             {% endcomment %}
-            <li><a data-toggle="tab" href="#messages">Messages</a></li>
-            <li><a data-toggle="tab" href="#medications">Medications</a></li>
-            <li><a data-toggle="tab" id="esas-tab" href="#esas">ESAS</a></li>
-            <li><a data-toggle="tab" href="#pain">Pain</a></li>
+            <li><a data-toggle="tab" href="#messages">{% trans "Messages" %}</a></li>
+            <li><a data-toggle="tab" href="#medications">{% trans "Medications" %}</a></li>
+            <li><a data-toggle="tab" id="esas-tab" href="#esas">{% trans "ESAS" %}</a></li>
+            <li><a data-toggle="tab" href="#pain">{% trans "Pain" %}</a></li>
         </ul>
 
         <div class="tab-content">
@@ -52,7 +52,7 @@
         </div>
     </div>
     <div class="col-md-3">
-        <h3>Notes</h3>
+        <h3>{% trans "Notes" %}</h3>
 
         <form method="POST" action="{% url 'save-notes' %}" id="notes-form" class="form-group">
             {% csrf_token %}
@@ -61,8 +61,8 @@
             </div>
         </form>
         <div>
-            <input id="save-notes-button" class="btn btn-default" type="submit" onclick="saveNotes('{{patient.pk}}')" value="Save">
-            <input class="btn btn-default" type="button" onclick="clearNotes()" value="Clear">
+            <button id="save-notes-button" class="btn btn-default" type="submit" onclick="saveNotes('{{patient.pk}}')">{% trans "Save" %}</button>
+            <button class="btn btn-default" type="button" onclick="clearNotes()">{% trans "Clear" %}</button>
         </div>
     </div>
 </div>

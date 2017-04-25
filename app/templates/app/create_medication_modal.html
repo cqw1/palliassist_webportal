@@ -6,7 +6,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button id="x-create-medication-modal-btn" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="create-medication-title">Create medication</h4>
+                <h4 class="modal-title" id="create-medication-title">{% trans "Create medication" %}</h4>
             </div>
 
             <div class="modal-body">
@@ -53,8 +53,8 @@
 
             </div>
             <div class="modal-footer">
-                <button id="close-create-medication-btn" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button id="create-medication-btn" type="button" class="btn btn-primary" onclick="createMedication('{{patient.pk}}')" autocomplete="off">Create</button>
+                <button id="close-create-medication-btn" type="button" class="btn btn-default" data-dismiss="modal">{% trans "Close" %}</button>
+                <button id="create-medication-btn" type="button" class="btn btn-primary" onclick="createMedication('{{patient.pk}}')" autocomplete="off">{% trans "Create" %}</button>
             </div>
 
 

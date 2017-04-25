@@ -28,16 +28,16 @@ class BootstrapAuthenticationForm(AuthenticationForm):
 
 class QueryPatientsForm(forms.Form):
     """ Queries for patients by name"""
-    patient_query = forms.CharField(label=_("Search"), widget=forms.TextInput({"class": "form-control", "placeholder":"Search for patient"})) 
+    patient_query = forms.CharField(label=_("Search"), widget=forms.TextInput({"class": "form-control", "placeholder":_("Search for patient")})) 
     following = forms.BooleanField(label=_("Following"), widget=forms.CheckboxInput(), required=False)
 
 class AddVideoForm(forms.Form):
     """ Queries for patients by name"""
-    url = forms.CharField(label=_("URL"), widget=forms.TextInput({"class": "form-control", "placeholder":"Video url"})) 
+    url = forms.CharField(label=_("URL"), widget=forms.TextInput({"class": "form-control", "placeholder":_("Video url")})) 
 
 class PatientNotesForm(forms.Form):
     """ Notes on a patient """
-    notes = forms.CharField(widget=forms.Textarea({ "class": "form-control", "placeholder":"Add notes here."}), label="") 
+    notes = forms.CharField(widget=forms.Textarea({ "class": "form-control", "placeholder":_("Add notes here.")}), label="") 
 
 class CreateNotificationForm(forms.Form):
     ESAS = "ESAS"
@@ -79,19 +79,19 @@ class CreateMedicationForm(forms.Form):
     rescue = forms.CharField(label=_("Rescue"), widget=forms.TextInput({"class": "form-control"}), required=True) 
 
 class UploadImageForm(forms.Form):
-    image = forms.ImageField(label="Select a image.")
+    image = forms.ImageField(label=_("Select a image."))
 
 
 class SignupForm(forms.Form):
     """ Registering new users, both doctors and patients. """
 
     #doctor_patient_choice = forms.ChoiceField(label=_("Role"), widget=forms.RadioSelect, choices=[("doctor", "Doctor"), ("patient", "Patient")], required=True)
-    full_name = forms.CharField(label=_("Full Name"), widget=forms.TextInput({"class": "form-control", "placeholder":"Full Name"}), required=True) 
-    username = forms.CharField(label=_("Username"), widget=forms.TextInput({"class": "form-control", "placeholder":"Username"}), required=True) 
-    telephone = forms.CharField(label=_("Telephone"), widget=forms.TextInput({"class": "form-control", "placeholder": "Telephone"}), required=True)
-    password_1 = forms.CharField(label=_("Password"), widget=forms.PasswordInput({"class": "form-control", "placeholder":"Password"}), required=True) 
-    password_2 = forms.CharField(label=_("Retype Password"), widget=forms.PasswordInput({"class": "form-control", "placeholder":"Retype Password"}), required=True) 
-    access_key = forms.CharField(label=_("Access Key"), widget=forms.TextInput({"class": "form-control", "placeholder":"Access Key"}), required=True) 
+    full_name = forms.CharField(label=_("Full Name"), widget=forms.TextInput({"class": "form-control", "placeholder":_("Full Name")}), required=True) 
+    username = forms.CharField(label=_("Username"), widget=forms.TextInput({"class": "form-control", "placeholder":_("Username")}), required=True) 
+    telephone = forms.CharField(label=_("Telephone"), widget=forms.TextInput({"class": "form-control", "placeholder": _("Telephone")}), required=True)
+    password_1 = forms.CharField(label=_("Password"), widget=forms.PasswordInput({"class": "form-control", "placeholder":_("Password")}), required=True) 
+    password_2 = forms.CharField(label=_("Retype Password"), widget=forms.PasswordInput({"class": "form-control", "placeholder":_("Retype Password")}), required=True) 
+    access_key = forms.CharField(label=_("Access Key"), widget=forms.TextInput({"class": "form-control", "placeholder":_("Access Key")}), required=True) 
 
     def clean_username(self):
         # Check if the username hasn't been taken already.
@@ -136,13 +136,13 @@ class SignupForm(forms.Form):
 
 
 class PatientSignupForm(SignupForm):
-    hospital_id = forms.CharField(label=_("Hospital ID"), widget=forms.TextInput({"class": "form-control", "placeholder": "Hospital ID"}), required=True) 
-    age = forms.IntegerField(label=_("Age"), widget=forms.TextInput({"class": "form-control", "placeholder": "Age"}), required=True)
+    hospital_id = forms.CharField(label=_("Hospital ID"), widget=forms.TextInput({"class": "form-control", "placeholder": _("Hospital ID")}), required=True) 
+    age = forms.IntegerField(label=_("Age"), widget=forms.TextInput({"class": "form-control", "placeholder": _("Age")}), required=True)
     gender = forms.ChoiceField(label=_("Gender"), widget=forms.RadioSelect, choices=Patient.GENDER_CHOICES, required=True)
-    city_of_residence = forms.CharField(label=_("City of Residence"), widget=forms.TextInput({"class": "form-control", "placeholder": "City of Residence"}), required=True) 
-    caregiver_name = forms.CharField(label=_("Caregiver Name"), widget=forms.TextInput({"class": "form-control", "placeholder": "Caregiver Name"}), required=True) 
+    city_of_residence = forms.CharField(label=_("City of Residence"), widget=forms.TextInput({"class": "form-control", "placeholder": _("City of Residence")}), required=True) 
+    caregiver_name = forms.CharField(label=_("Caregiver Name"), widget=forms.TextInput({"class": "form-control", "placeholder": _("Caregiver Name")}), required=True) 
     treatment_type = forms.ChoiceField(label=_("Treatment Type"), widget=forms.RadioSelect, choices=Patient.TREATMENT_CHOICES, required=True)
-    patients_doctor_username = forms.CharField(label=_("Your Doctor's Username"), widget=forms.TextInput({ "class": "form-control", "placeholder": "Your Doctor's Username"}), required=True) 
+    patients_doctor_username = forms.CharField(label=_("Your Doctor's Username"), widget=forms.TextInput({ "class": "form-control", "placeholder": _("Your Doctor's Username")}), required=True) 
 
     def clean(self):
         cleaned_data = super(PatientSignupForm, self).clean()
@@ -167,19 +167,19 @@ class PatientSignupForm(SignupForm):
 class EditPatientForm(forms.Form):
     hospital_id = forms.CharField(
             label=_("Hospital ID"), 
-            widget=forms.TextInput({"class": "form-control", "placeholder": "Hospital ID"}), 
+            widget=forms.TextInput({"class": "form-control", "placeholder": _("Hospital ID")}), 
             required=False) 
     full_name = forms.CharField(
             label=_("Full Name"), 
-            widget=forms.TextInput({"class": "form-control", "placeholder":"Name"}), 
+            widget=forms.TextInput({"class": "form-control", "placeholder":_("Name")}), 
             required=False) 
     telephone = forms.CharField(
             label=_("Telephone"), 
-            widget=forms.TextInput({"class": "form-control", "placeholder": "Telephone"}),
+            widget=forms.TextInput({"class": "form-control", "placeholder": _("Telephone")}),
             required=False) 
     age = forms.IntegerField(
             label=_("Age"), 
-            widget=forms.TextInput({"class": "form-control", "placeholder": "Age"}), 
+            widget=forms.TextInput({"class": "form-control", "placeholder": _("Age")}), 
             required=False)
     gender = forms.ChoiceField(
             label=_("Gender"), 
@@ -188,11 +188,11 @@ class EditPatientForm(forms.Form):
             required=False)
     city_of_residence = forms.CharField(
             label=_("City of Residence"), 
-            widget=forms.TextInput({"class": "form-control", "placeholder": "City of Residence"}), 
+            widget=forms.TextInput({"class": "form-control", "placeholder": _("City of Residence")}), 
             required=False) 
     caregiver_name = forms.CharField(
             label=_("Caregiver"), 
-            widget=forms.TextInput({"class": "form-control", "placeholder": "Caregiver"}), 
+            widget=forms.TextInput({"class": "form-control", "placeholder": _("Caregiver")}), 
             required=False) 
     treatment_type = forms.ChoiceField(
             label=_("Treatment Type"), 
@@ -200,11 +200,11 @@ class EditPatientForm(forms.Form):
             required=False)
     next_appointment = forms.DateTimeField(
             label=_("Next Appointment"), 
-            widget=forms.DateTimeInput({"class": "form-control", "placeholder": "Next Appointment"}), 
+            widget=forms.DateTimeInput({"class": "form-control", "placeholder": _("Next Appointment")}), 
             required=False)
     esas_alert = forms.IntegerField(
             label=_("ESAS Alert Level"), 
-            widget=forms.TextInput({"class": "form-control", "placeholder": "ESAS Alert Level"}), 
+            widget=forms.TextInput({"class": "form-control", "placeholder": _("ESAS Alert Level")}), 
             required=False)
     pk = forms.IntegerField(widget=forms.HiddenInput(), required=True)
 

@@ -8,43 +8,43 @@
     <table class="table table-bordered table-hover">
 
         <tr>
-            <td class="patient-field">Name:</td>
+            <td class="patient-field">{% trans "Name:" %}</td>
             <td>{{edit_patient_form.full_name}}</td>
         </tr>
         <tr>
-            <td class="patient-field">Hospital ID:</td>
+            <td class="patient-field">{% trans "Hospital ID:" %}</td>
             <td>{{edit_patient_form.hospital_id}}</td>
         </tr>
         <tr>
-            <td class="patient-field">ESAS Alert Level:</td>
+            <td class="patient-field">{% trans "ESAS Alert Level:" %}</td>
             <td>{{edit_patient_form.esas_alert}}</td>
         </tr>
         <tr>
-            <td class="patient-field">Telephone:</td>
+            <td class="patient-field">{% trans "Telephone:" %}</td>
             <td>{{edit_patient_form.telephone}}</td>
         </tr>
         <tr>
-            <td class="patient-field">Age:</td>
+            <td class="patient-field">{% trans "Age:" %}</td>
             <td>{{edit_patient_form.age}}</td>
         </tr>
         <tr>
-            <td class="patient-field">Gender:</td>
+            <td class="patient-field">{% trans "Gender:" %}</td>
             <td class="pa-form-field">{{edit_patient_form.gender}}</td>
         </tr>
         <tr>
-            <td class="patient-field">City of Residence:</td>
+            <td class="patient-field">{% trans "City of Residence:" %}</td>
             <td>{{edit_patient_form.city_of_residence}}</td>
         </tr>
         <tr>
-            <td class="patient-field">Caregiver:</td>
+            <td class="patient-field">{% trans "Caregiver:" %}</td>
             <td>{{edit_patient_form.caregiver_name}}</td>
         </tr>
         <tr>
-            <td class="patient-field">Treatment Type:</td>
+            <td class="patient-field">{% trans "Treatment Type:" %}</td>
             <td class="pa-form-field">{{edit_patient_form.treatment_type}}</td>
         </tr>
         <tr>
-            <td class="patient-field">Next Appointment:</td>
+            <td class="patient-field">{% trans "Next Appointment:" %}</td>
             <td>{{edit_patient_form.next_appointment}}</td>
         </tr>
 
@@ -54,7 +54,7 @@
     {{edit_patient_form.pk}}
 
     <div class="row pull-right">
-        <button id="edit-patient-info-btn" type="submit" class="btn btn-primary table-btn">Save</button>
+        <button id="edit-patient-info-btn" type="submit" class="btn btn-primary table-btn">{% trans "Save" %}</button>
     </div>
 </form>
 
@@ -65,43 +65,43 @@
 
     <table class="table table-bordered table-hover">
         <tr>
-            <td class="patient-field">Name:</td>
+            <td class="patient-field">{% trans "Name:" %}</td>
             <td>{{patient.full_name}}</td>
         </tr>
         <tr>
-            <td class="patient-field">Hospital ID:</td>
+            <td class="patient-field">{% trans "Hospital ID:" %}</td>
             <td>{{patient.hospital_id}}</td>
         </tr>
         <tr>
-            <td class="patient-field">ESAS Alert Level:</td>
+            <td class="patient-field">{% trans "ESAS Alert Level:" %}</td>
             <td>{{patient.esas_alert}}</td>
         </tr>
         <tr>
-            <td class="patient-field">Telephone:</td>
+            <td class="patient-field">{% trans "Telephone:" %}</td>
             <td>{{patient.telephone}}</td>
         </tr>
         <tr>
-            <td class="patient-field">Age:</td>
+            <td class="patient-field">{% trans "Age:" %}</td>
             <td>{{patient.age}}</td>
         </tr>
         <tr>
-            <td class="patient-field">Gender:</td>
+            <td class="patient-field">{% trans "Gender:" %}</td>
             <td>{{patient.gender}}</td>
         </tr>
         <tr>
-            <td class="patient-field">City of Residence:</td>
+            <td class="patient-field">{% trans "City of Residence:" %}</td>
             <td>{{patient.city_of_residence}}</td>
         </tr>
         <tr>
-            <td class="patient-field">Caregiver:</td>
+            <td class="patient-field">{% trans "Caregiver:" %}</td>
             <td>{{patient.caregiver_name}}</td>
         </tr>
         <tr>
-            <td class="patient-field">Treatment Type:</td>
+            <td class="patient-field">{% trans "Treatment Type:" %}</td>
             <td>{{patient.treatment_type}}</td>
         </tr>
         <tr>
-            <td class="patient-field">Next Appointment:</td>
+            <td class="patient-field">{% trans "Next Appointment:" %}</td>
             <!-- <td class="millis-date">{{patient.next_appointment}}</td> -->
             <td>{{patient.next_appointment|date:"SHORT_DATE_FORMAT"}} {{patient.next_appointment|time:"H:i"}}</td>
         </tr>
@@ -112,7 +112,7 @@
 
     <div class="row pull-right">
         <button id="edit-patient-info-btn" type="submit" class="btn btn-warning table-btn">
-            <span class="glyphicon glyphicon-pencil"></span> &nbsp; Edit
+            <span class="glyphicon glyphicon-pencil"></span> &nbsp; {% trans "Edit" %}
         </button>
     </div>
 </form>
@@ -120,6 +120,6 @@
 {% endif %}
 
 <br>
-<h4>Video</h4>
+<h4>{% trans "Video" %}</h4>
 
 {% include "patient_profile_videos.html" %}

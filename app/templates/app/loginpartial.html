@@ -4,8 +4,8 @@
 <form id="logoutForm" action="/logout" method="post" class="navbar-right">
     {% csrf_token %}
     <ul class="nav navbar-nav navbar-right">
-        <li><span>Hello {{ user.username }}!</span></li>
-        <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+        <li><span>{% trans "Hello" %} {{ user.username }}!</span></li>
+        <li><a href="javascript:document.getElementById('logoutForm').submit()">{% trans "Log off" %}</a></li>
     </ul>
 
 </form>
@@ -14,7 +14,7 @@
 {% else %}
 
 <ul class="nav navbar-nav navbar-right">
-    <li><a href="{% url 'login' %}">Log in</a></li>
+    <li><a href="{% url 'login' %}">{% trans "Log in" %}</a></li>
 </ul>
 
 {% endif %}

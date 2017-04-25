@@ -11,6 +11,7 @@ from django.conf import settings
 from django.utils import timezone
 from django.core import serializers
 from django.contrib.auth import authenticate
+from django.utils.translation import ugettext_lazy as _
 
 from phonenumber_field.modelfields import PhoneNumberField
 
@@ -40,16 +41,16 @@ class Patient(models.Model):
     PALLIATIVE = "Palliative Care Only"
     ANTICANCER = "Undergoing Anticancer Therapy"
     TREATMENT_CHOICES = (
-        (PALLIATIVE, PALLIATIVE),
-        (ANTICANCER, ANTICANCER),
+        (PALLIATIVE, _(PALLIATIVE)),
+        (ANTICANCER, _(ANTICANCER)),
     )
     treatment_type = models.CharField(max_length=MAX_LENGTH, choices=TREATMENT_CHOICES, default=PALLIATIVE)
 
     FEMALE = "Female"
     MALE = "Male"
     GENDER_CHOICES = (
-        (FEMALE, FEMALE),
-        (MALE, MALE),
+        (FEMALE, _(FEMALE)),
+        (MALE, _(MALE)),
     )
     gender = models.CharField(max_length=MAX_LENGTH, choices=GENDER_CHOICES, default="")
 
@@ -228,8 +229,8 @@ class DashboardAlert(models.Model):
     MEDICATION = "MEDICATION"
     ESAS = "ESAS"
     CATEGORY_CHOICES = (
-        (MEDICATION, MEDICATION),
-        (ESAS, ESAS),
+        (MEDICATION, _(MEDICATION)),
+        (ESAS, _(ESAS)),
     )
     category = models.CharField(max_length=MAX_LENGTH, choices=CATEGORY_CHOICES, default=MEDICATION)
 

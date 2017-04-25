@@ -8,13 +8,13 @@
             <!-- Default panel contents -->
 
             <div class="panel-heading clearfix">
-                <strong class="panel-title">Medications</strong>
+                <strong class="panel-title">{% trans "Medications" %}</strong>
             </div>
 
             <!-- Medication reports list -->
             <ul class="list-group">
                 
-                <a data-toggle="tab" class="list-group-item" href="#medication-overview">Overview</a>
+                <a data-toggle="tab" class="list-group-item" href="#medication-overview">{% trans "Overview" %}</a>
 
                 {% for report in medication_reports %}
                 <a data-toggle="tab" class="list-group-item" href="#report-{{report.pk}}">{{report.created_date|date:"SHORT_DATE_FORMAT"}} {{report.created_date|time:"H:i"}}</a>
@@ -28,9 +28,9 @@
         <div class="panel panel-default tab-pane fade in active" id="medication-overview">
 
             <div class="panel-heading">
-                <strong class="panel-title">Overview</strong>
+                <strong class="panel-title">{% trans "Overview" %}</strong>
                 <button id="create-medication-modal-btn" type="button" class="btn btn-primary pull-right" autocomplete="off" data-toggle="modal" data-target="#create-medication-modal">
-                    <span class="glyphicon glyphicon-plus"></span> Create 
+                    <span class="glyphicon glyphicon-plus"></span> {% trans "Create" %} 
                 </button>
             </div>
             <div class="panel-body" id="esas-panel-body">
@@ -42,11 +42,11 @@
                     <thead>
                         <tr>
                             <!-- <th>Date</th> -->
-                            <th>Name</th>
-                            <th>Form</th>
-                            <th>Dose</th>
-                            <th>Posology</th>
-                            <th>Rescue</th>
+                            <th>{% trans "Name" %}</th>
+                            <th>{% trans "Form" %}</th>
+                            <th>{% trans "Dose" %}</th>
+                            <th>{% trans "Posology" %}</th>
+                            <th>{% trans "Rescue" %}</th>
                             <th><!-- Remind medication column --></th>
                             <th><!-- Clear medication column --></th>
                         </tr>
@@ -63,7 +63,7 @@
                             <td>{{ medication.rescue }}</td>
                             <td>
                                 <button type="button" class="btn btn-danger btn-xs" onclick="fcmNotification('{{patient.user.username}}', 'REMIND', 'MEDICATION', '', '{{medication.pk}}')">
-                                    Remind
+                                    {% trans "Remind" %}
                                 </button>
                             </td>
                             <td><span class="glyphicon glyphicon-remove delete-medication delete-x" aria-hidden="true"></span></td>
@@ -76,7 +76,7 @@
 
                 <br>
                 <div class="pa-center-wrapper">
-                    No medications found.
+                    {% trans "No medications found." %}
                 </div>
 
                 {% endif %}

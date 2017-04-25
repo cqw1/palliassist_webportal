@@ -87,57 +87,31 @@
                     <div class="navbar-collapse collapse">
                         <!-- <ul class="nav navbar-nav"> -->
                         <ul class="nav nav-pills nav-stacked pa-nav-pills">
-                            <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
-                            <li><a href="{% url 'messages' %}">Messages <span class="badge">4</span></a></li>
-                            <li><a href="{% url 'patients' %}">Patients</a></li>
-                            <li><a href="#" id="sync-redcap">Sync REDCap</a></li>
+                            <li><a href="{% url 'dashboard' %}">{% trans "Dashboard" %}</a></li>
+                            <li><a href="{% url 'messages' %}">{% trans "Messages" %}<span class="badge">4</span></a></li>
+                            <li><a href="{% url 'patients' %}">{% trans "Patients" %}</a></li>
+                            <li><a href="#" id="sync-redcap">{% trans "Sync REDCap" %}</a></li>
                         </ul>
                         {% include 'app/loginpartial.html' %}
                     </div>
 
                     <!-- Change language -->
-                    {% comment %}
                     <form action="{% url 'set-language' %}" method="post">
                         {% csrf_token %}
 
-                        <input name="next" type="hidden" value="{{request.path}}" />
+                        <input name="next" type="hidden" value="{{request.get_full_path}}" />
                         <select name="language" onchange="this.form.submit()">
                             {% get_current_language as LANGUAGE_CODE %}
                             {% get_available_languages as LANGUAGES %}
                             {% get_language_info_list for LANGUAGES as languages %}
                             {% for language in languages %}
+                                <!-- <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected{% endif %}> -->
                                 <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected{% endif %}>
                                     {{ language.name_local }} ({{ language.code }})
                                 </option>
                             {% endfor %}
                         </select>
                     </form>
-                    {% endcomment %}
-
-                    <form action="{% url 'set-language' %}" method="post">
-                        {% csrf_token %}
-
-                        <input name="next" type="hidden" value="{{request.path}}" />
-                        <div class="dropdown">
-                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Dropdown button
-                            </button>
-
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <select name="language" onchange="this.form.submit()">
-                                    {% get_current_language as LANGUAGE_CODE %}
-                                    {% get_available_languages as LANGUAGES %}
-                                    {% get_language_info_list for LANGUAGES as languages %}
-                                    {% for language in languages %}
-                                        <option class="dropdown-item" value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected{% endif %}>
-                                            {{ language.name_local }} ({{ language.code }})
-                                        </option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-                        </div>
-                    </form>
-
 
                 </div>
             </div>
