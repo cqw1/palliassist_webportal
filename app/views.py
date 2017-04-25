@@ -1102,7 +1102,7 @@ def handle_mobile_login(data, topic):
 
         data_message = {
             "event": "LOGIN",
-            "action": "SUCCESS"
+            "action": "SUCCESS",
             "category": "AUTHORIZATION",
             "data": {
                 "success": "yes",
