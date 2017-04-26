@@ -6,6 +6,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button id="x-upload-image-btn" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                {# Translators: Popup to upload an image to send in a message chat. #}
                 <h4 class="modal-title" id="upload-image-title">{% trans "Upload image" %}</h4>
             </div>
 
@@ -20,7 +21,10 @@
                     <span id="upload-image-error"></span>
                 </div>
                 <div class="modal-footer">
+                    {# Translators: Button to close upload image popup. #}
                     <button id="close-upload-image-btn" type="button" class="btn btn-default" data-dismiss="modal">{% trans "Close" %}</button>
+
+                    {# Translators: Button to upload an image. #}
                     <button id="upload-image-btn" type="button" class="btn btn-primary" autocomplete="off">{% trans "Upload" %}</button>
                 </div>
 

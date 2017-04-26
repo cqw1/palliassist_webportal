@@ -4,7 +4,9 @@
 <form id="logoutForm" action="/logout" method="post" class="navbar-right">
     {% csrf_token %}
     <ul class="nav navbar-nav navbar-right">
+        {# Translators: Greeting on sidebar. #}
         <li><span>{% trans "Hello" %} {{ user.username }}!</span></li>
+        {# Translators: Link to log off. #}
         <li><a href="javascript:document.getElementById('logoutForm').submit()">{% trans "Log off" %}</a></li>
     </ul>
 

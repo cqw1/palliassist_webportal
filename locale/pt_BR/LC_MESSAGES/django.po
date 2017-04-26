@@ -1,0 +1,624 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-04-25 21:24-0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#. Translators: Password field.
+#: app/forms.py:24 app/forms.py:92 app/templates/app/login.html:34
+msgid "Password"
+msgstr ""
+
+#. Translators: Search for a specific patient.
+#: app/forms.py:31 app/templates/app/patients.html:23
+msgid "Search"
+msgstr ""
+
+#: app/forms.py:31
+msgid "Search for patient"
+msgstr ""
+
+#: app/forms.py:32
+msgid "Following"
+msgstr ""
+
+#: app/forms.py:36
+msgid "URL"
+msgstr ""
+
+#: app/forms.py:36
+msgid "Video url"
+msgstr ""
+
+#: app/forms.py:40
+msgid "Add notes here."
+msgstr ""
+
+#: app/forms.py:54
+msgid "Select Category"
+msgstr ""
+
+#: app/forms.py:55
+msgid "Text"
+msgstr ""
+
+#. Translators: Name of medication.
+#. Translators: Name of a patient.
+#: app/forms.py:74 app/forms.py:174
+#: app/templates/app/patient_profile_medications.html:48
+#: app/templates/app/patients.html:48
+msgid "Name"
+msgstr ""
+
+#. Translators: Form of medication.
+#: app/forms.py:75 app/templates/app/patient_profile_medications.html:50
+msgid "Form"
+msgstr ""
+
+#. Translators: Dose of medication.
+#: app/forms.py:76 app/templates/app/patient_profile_medications.html:52
+msgid "Dose"
+msgstr ""
+
+#. Translators: Posology of medication.
+#: app/forms.py:77 app/templates/app/patient_profile_medications.html:54
+msgid "Posology"
+msgstr ""
+
+#. Translators: Rescue of medication.
+#: app/forms.py:79 app/templates/app/patient_profile_medications.html:56
+msgid "Rescue"
+msgstr ""
+
+#: app/forms.py:82
+msgid "Select a image."
+msgstr ""
+
+#: app/forms.py:89 app/forms.py:173
+msgid "Full Name"
+msgstr ""
+
+#. Translators: Login field.
+#: app/forms.py:90 app/templates/app/login.html:27
+msgid "Username"
+msgstr ""
+
+#: app/forms.py:91 app/forms.py:177 app/forms.py:178
+msgid "Telephone"
+msgstr ""
+
+#: app/forms.py:93
+msgid "Retype Password"
+msgstr ""
+
+#: app/forms.py:94
+msgid "Access Key"
+msgstr ""
+
+#: app/forms.py:103
+msgid "Username already taken. Please try a different one."
+msgstr ""
+
+#: app/forms.py:120
+msgid "Invalid access key."
+msgstr ""
+
+#: app/forms.py:132 app/forms.py:133
+msgid "Passwords must match."
+msgstr ""
+
+#. Translators: Hospital ID of a patient.
+#: app/forms.py:139 app/forms.py:169 app/forms.py:170
+#: app/templates/app/patients.html:50
+msgid "Hospital ID"
+msgstr ""
+
+#. Translators: Age of a patient.
+#: app/forms.py:140 app/forms.py:181 app/forms.py:182
+#: app/templates/app/patients.html:54
+msgid "Age"
+msgstr ""
+
+#. Translators: Gender of a patient.
+#: app/forms.py:141 app/forms.py:185 app/templates/app/patients.html:52
+msgid "Gender"
+msgstr ""
+
+#: app/forms.py:142 app/forms.py:190 app/forms.py:191
+msgid "City of Residence"
+msgstr ""
+
+#: app/forms.py:143
+msgid "Caregiver Name"
+msgstr ""
+
+#: app/forms.py:144 app/forms.py:198
+msgid "Treatment Type"
+msgstr ""
+
+#: app/forms.py:145
+msgid "Your Doctor's Username"
+msgstr ""
+
+#: app/forms.py:162 app/forms.py:165
+msgid "Doctor username not found."
+msgstr ""
+
+#: app/forms.py:194 app/forms.py:195
+msgid "Caregiver"
+msgstr ""
+
+#: app/forms.py:202 app/forms.py:203
+msgid "Next Appointment"
+msgstr ""
+
+#: app/forms.py:206 app/forms.py:207
+msgid "ESAS Alert Level"
+msgstr ""
+
+#. Translators: Title of form to create a new medication entry.
+#: app/templates/app/create_medication_modal.html:10
+msgid "Create medication"
+msgstr ""
+
+#. Translators: Button to close the popup to create a new medication.
+#. Translators: Button to close upload image popup.
+#: app/templates/app/create_medication_modal.html:48
+#: app/templates/app/messages_upload_image_modal.html:25
+msgid "Close"
+msgstr ""
+
+#. Translators: Button to create a new medication.
+#: app/templates/app/create_medication_modal.html:50
+#: app/templates/app/patient_profile_medications.html:37
+msgid "Create"
+msgstr ""
+
+#. Translators: Panel that displays the list of patients the doctor is following.
+#: app/templates/app/dashboard.html:17
+msgid "Following Patients"
+msgstr ""
+
+#. Translators: Panel that displays the list of unread messages.
+#: app/templates/app/dashboard.html:34
+msgid "Unread Messages"
+msgstr ""
+
+#. Translators: Panel that displays the patients who have missed a medication.
+#: app/templates/app/dashboard.html:54
+msgid "Missed Medication"
+msgstr ""
+
+#. Translators: Panel that displays the patients who have a high ESAS symptom level.
+#: app/templates/app/dashboard.html:84
+msgid "ESAS Surveys"
+msgstr ""
+
+#. Translators: Sidebar button to return to dashboard.
+#: app/templates/app/layout.html:93 app/views.py:136
+msgid "Dashboard"
+msgstr ""
+
+#. Translators: Sidebar button to return to messages.
+#. Translators: Patient profile messages tab.
+#: app/templates/app/layout.html:95 app/templates/app/patient_profile.html:20
+#: app/views.py:627
+msgid "Messages"
+msgstr ""
+
+#. Translators: Sidebar button to return to patients.
+#: app/templates/app/layout.html:97 app/views.py:201
+msgid "Patients"
+msgstr ""
+
+#. Translators: Sidebar button to sync information to REDCap.
+#: app/templates/app/layout.html:99
+msgid "Sync REDCap"
+msgstr ""
+
+#. Translators: When logging in.
+#: app/templates/app/login.html:16
+msgid "Please enter a correct username and password."
+msgstr ""
+
+#. Translators: Button to login.
+#: app/templates/app/login.html:43
+msgid "Login"
+msgstr ""
+
+#. Translators: Link to go to sign up page.
+#: app/templates/app/login.html:54
+msgid "Create account"
+msgstr ""
+
+#. Translators: Greeting on sidebar.
+#: app/templates/app/loginpartial.html:8
+msgid "Hello"
+msgstr ""
+
+#. Translators: Link to log off.
+#: app/templates/app/loginpartial.html:10
+msgid "Log off"
+msgstr ""
+
+#: app/templates/app/loginpartial.html:19
+msgid "Log in"
+msgstr ""
+
+#. Translators: Message chats.
+#: app/templates/app/messages.html:18
+msgid "Chats"
+msgstr ""
+
+#. Translators: Prompt in the message chat input.
+#: app/templates/app/messages_panel.html:25
+msgid "say anything"
+msgstr ""
+
+#. Translators: Button to send a message.
+#: app/templates/app/messages_panel.html:36
+msgid "Send"
+msgstr ""
+
+#. Translators: Popup to upload an image to send in a message chat.
+#: app/templates/app/messages_upload_image_modal.html:10
+msgid "Upload image"
+msgstr ""
+
+#. Translators: Button to upload an image.
+#: app/templates/app/messages_upload_image_modal.html:28
+msgid "Upload"
+msgstr ""
+
+#. Translators: Patient profile home tab.
+#: app/templates/app/patient_profile.html:14
+msgid "Home"
+msgstr ""
+
+#. Translators: Patient profile medications tab.
+#. Translators: Patient profile medication tab.
+#: app/templates/app/patient_profile.html:22
+#: app/templates/app/patient_profile_medications.html:12
+msgid "Medications"
+msgstr ""
+
+#. Translators: Patient profile ESAS tab.
+#: app/templates/app/patient_profile.html:24
+msgid "ESAS"
+msgstr ""
+
+#. Translators: Patient profile pain tab.
+#. Translators: Pain symptom on ESAS.
+#: app/templates/app/patient_profile.html:26
+#: app/templates/app/patient_profile_esas.html:68
+msgid "Pain"
+msgstr ""
+
+#. Translators: Patient profile notes.
+#: app/templates/app/patient_profile.html:55
+msgid "Notes"
+msgstr ""
+
+#. Translators: Save patient profile notes.
+#. Translators: Save edited patient profile.
+#: app/templates/app/patient_profile.html:65
+#: app/templates/app/patient_profile_home.html:68
+msgid "Save"
+msgstr ""
+
+#. Translators: Clear patient profile notes.
+#: app/templates/app/patient_profile.html:67
+msgid "Clear"
+msgstr ""
+
+#. Translators: Past ESAS surveys .
+#. Translators: List of past submitted pain locator surveys.
+#: app/templates/app/patient_profile_esas.html:12
+#: app/templates/app/patient_profile_pain.html:13
+msgid "Surveys"
+msgstr ""
+
+#. Translators: Button to remind a patient to take a medication.
+#. Translators: Button to remind patients to submit a pain locator survey.
+#: app/templates/app/patient_profile_esas.html:13
+#: app/templates/app/patient_profile_medications.html:74
+#: app/templates/app/patient_profile_pain.html:15
+msgid "Remind"
+msgstr ""
+
+#. Translators: Overview of all ESAS surveys.
+#. Translators: Overview of all patient medications.
+#: app/templates/app/patient_profile_esas.html:20
+#: app/templates/app/patient_profile_esas.html:35
+#: app/templates/app/patient_profile_medications.html:19
+#: app/templates/app/patient_profile_medications.html:34
+msgid "Overview"
+msgstr ""
+
+#. Translators: Standard ESAS questions.
+#: app/templates/app/patient_profile_esas.html:56
+msgid "Standard"
+msgstr ""
+
+#. Translators: Fatigue sympton on ESAS.
+#: app/templates/app/patient_profile_esas.html:74
+msgid "Fatigue"
+msgstr ""
+
+#. Translators: Nausea sympton on ESAS.
+#: app/templates/app/patient_profile_esas.html:80
+msgid "Nausea"
+msgstr ""
+
+#. Translators: Depression sympton on ESAS.
+#: app/templates/app/patient_profile_esas.html:86
+msgid "Depression"
+msgstr ""
+
+#. Translators: Anxiety sympton on ESAS.
+#: app/templates/app/patient_profile_esas.html:92
+msgid "Anxiety"
+msgstr ""
+
+#. Translators: Drowsiness sympton on ESAS.
+#: app/templates/app/patient_profile_esas.html:98
+msgid "Drowsiness"
+msgstr ""
+
+#. Translators: Appetite sympton on ESAS.
+#: app/templates/app/patient_profile_esas.html:104
+msgid "Appetite"
+msgstr ""
+
+#. Translators: Well-Being sympton on ESAS.
+#: app/templates/app/patient_profile_esas.html:110
+msgid "Well-Being"
+msgstr ""
+
+#. Translators: Lack of Air sympton on ESAS.
+#: app/templates/app/patient_profile_esas.html:116
+msgid "Lack of Air"
+msgstr ""
+
+#. Translators: Insomnia sympton on ESAS.
+#: app/templates/app/patient_profile_esas.html:122
+msgid "Insomnia"
+msgstr ""
+
+#. Translators: Custom type of questions on ESAS.
+#: app/templates/app/patient_profile_esas.html:130
+msgid "Custom"
+msgstr ""
+
+#. Translators: Fever question on ESAS.
+#: app/templates/app/patient_profile_esas.html:141
+msgid "Fever"
+msgstr ""
+
+#: app/templates/app/patient_profile_esas.html:143
+#, python-format
+msgid "%(esas_fever)s"
+msgstr ""
+
+#. Translators: Constipated question on ESAS.
+#: app/templates/app/patient_profile_esas.html:155
+#: app/templates/app/patient_profile_esas.html:165
+msgid "Constipated"
+msgstr ""
+
+#: app/templates/app/patient_profile_esas.html:158
+#: app/templates/app/patient_profile_esas.html:167
+#, python-format
+msgid "%(esas_constipated)s"
+msgstr ""
+
+#: app/templates/app/patient_profile_esas.html:158
+msgid "days"
+msgstr ""
+
+#: app/templates/app/patient_profile_esas.html:158
+msgid "severity"
+msgstr ""
+
+#. Translators: Vomiting question on ESAS.
+#: app/templates/app/patient_profile_esas.html:177
+#: app/templates/app/patient_profile_esas.html:186
+msgid "Vomiting"
+msgstr ""
+
+#: app/templates/app/patient_profile_esas.html:180
+#: app/templates/app/patient_profile_esas.html:188
+#, python-format
+msgid "%(esas_vomiting)s"
+msgstr ""
+
+#: app/templates/app/patient_profile_esas.html:180
+msgid "times"
+msgstr ""
+
+#. Translators: Confused question on ESAS.
+#: app/templates/app/patient_profile_esas.html:200
+msgid "Confused"
+msgstr ""
+
+#: app/templates/app/patient_profile_esas.html:203
+#, python-format
+msgid "%(esas_confused)s"
+msgstr ""
+
+#. Translators: Name of patient.
+#: app/templates/app/patient_profile_home.html:12
+#: app/templates/app/patient_profile_home.html:80
+msgid "Name:"
+msgstr ""
+
+#. Translators: Hospital ID of patient.
+#: app/templates/app/patient_profile_home.html:17
+#: app/templates/app/patient_profile_home.html:85
+msgid "Hospital ID:"
+msgstr ""
+
+#. Translators: ESAS alert level of patient.
+#: app/templates/app/patient_profile_home.html:22
+#: app/templates/app/patient_profile_home.html:90
+msgid "ESAS Alert Level:"
+msgstr ""
+
+#. Translators: Telephone of patient.
+#: app/templates/app/patient_profile_home.html:27
+#: app/templates/app/patient_profile_home.html:95
+msgid "Telephone:"
+msgstr ""
+
+#. Translators: Age of patient.
+#: app/templates/app/patient_profile_home.html:32
+#: app/templates/app/patient_profile_home.html:100
+msgid "Age:"
+msgstr ""
+
+#. Translators: Gender of patient.
+#: app/templates/app/patient_profile_home.html:37
+#: app/templates/app/patient_profile_home.html:105
+msgid "Gender:"
+msgstr ""
+
+#. Translators: City of residence of patient.
+#: app/templates/app/patient_profile_home.html:42
+#: app/templates/app/patient_profile_home.html:110
+msgid "City of Residence:"
+msgstr ""
+
+#. Translators: Caregiver of patient.
+#: app/templates/app/patient_profile_home.html:47
+#: app/templates/app/patient_profile_home.html:115
+msgid "Caregiver:"
+msgstr ""
+
+#. Translators: Treatment type of patient.
+#: app/templates/app/patient_profile_home.html:52
+#: app/templates/app/patient_profile_home.html:120
+msgid "Treatment Type:"
+msgstr ""
+
+#. Translators: Next appointment of patient.
+#: app/templates/app/patient_profile_home.html:57
+#: app/templates/app/patient_profile_home.html:125
+msgid "Next Appointment:"
+msgstr ""
+
+#. Translators: Button to edit a patient's profile.
+#: app/templates/app/patient_profile_home.html:136
+msgid "Edit"
+msgstr ""
+
+#. Translators: Instructional video to show patient.
+#: app/templates/app/patient_profile_home.html:145
+msgid "Video"
+msgstr ""
+
+#. Translators: No medications for a patient found.
+#: app/templates/app/patient_profile_medications.html:88
+msgid "No medications found."
+msgstr ""
+
+#. Translators: Front image of pain locator body.
+#: app/templates/app/patient_profile_pain.html:44
+msgid "Front"
+msgstr ""
+
+#. Translators: Rear image of pain locator body.
+#: app/templates/app/patient_profile_pain.html:49
+msgid "Rear"
+msgstr ""
+
+#: app/templates/app/patient_profile_videos.html:12
+msgid "Set"
+msgstr ""
+
+#: app/templates/app/patient_profile_videos.html:15
+msgid "*Example embed URL:"
+msgstr ""
+
+#: app/templates/app/patient_profile_videos.html:38
+msgid "No videos found."
+msgstr ""
+
+#. Translators: Button for doctors to unfollow a patient.
+#: app/templates/app/patients.html:74
+msgid "Unfollow"
+msgstr ""
+
+#. Translators: Button for doctors to follow a patient.
+#: app/templates/app/patients.html:84
+msgid "Follow"
+msgstr ""
+
+#. Translators: No patient results for a certain search.
+#: app/templates/app/patients.html:98
+msgid "No patients found."
+msgstr ""
+
+#: app/templates/app/sign_up.html:18 app/templates/app/sign_up.html:25
+msgid "Doctor"
+msgstr ""
+
+#: app/templates/app/sign_up.html:21 app/templates/app/sign_up.html:28
+msgid "Patient"
+msgstr ""
+
+#: app/templates/app/sign_up.html:75 app/templates/app/sign_up.html:115
+#: app/views.py:438 app/views.py:472 app/views.py:494 app/views.py:513
+msgid "Sign Up"
+msgstr ""
+
+#: app/templates/app/sign_up_success.html:14
+msgid ""
+"You have successfully created an account! <a href=\"/login/\">Go back to the "
+"login page.</a>"
+msgstr ""
+
+#: app/views.py:202
+msgid "List of patients."
+msgstr ""
+
+#: app/views.py:330
+msgid "Patient Profile"
+msgstr ""
+
+#: app/views.py:331
+msgid "Patient profile."
+msgstr ""
+
+#: app/views.py:628
+msgid "Send messages."
+msgstr ""
+
+#: app/views.py:846
+msgid "Error uploading image. Please try again."
+msgstr ""
+
+#: django_get_started/settings.py:181
+msgid "Brazilian Portuguese"
+msgstr ""
+
+#: django_get_started/settings.py:182
+msgid "English"
+msgstr ""
+
+#: For javascript
+msgid "Medication notification sent."
+msgstr "portuguese"

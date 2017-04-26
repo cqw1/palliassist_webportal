@@ -19,6 +19,7 @@
             <label>{{ query_patients_form.patient_query.label }}</label>
             {{ query_patients_form.patient_query}}
 
+            {# Translators: Search for a specific patient. #}
             <button type="submit" class="btn btn-primary">{% trans "Search" %}</button>
         </div>
 
@@ -42,9 +43,13 @@
 <table class="table table-striped">
     <thead>
         <tr>
+            {# Translators: Name of a patient. #}
             <th>{% trans "Name" %}</th>
+            {# Translators: Hospital ID of a patient. #}
             <th>{% trans "Hospital ID" %}</th>
+            {# Translators: Gender of a patient. #}
             <th>{% trans "Gender" %}</th>
+            {# Translators: Age of a patient. #}
             <th>{% trans "Age" %}</th>
             <th><!-- Add/Remove button column --></th>
         </tr>
@@ -64,6 +69,7 @@
                     {% csrf_token %}
                     <input type="hidden" name="patient_pk" value="{{patient_result.pk}}">
                     <input type="hidden" name="doctor_pk" value="{{user.doctor.pk}}">
+                    {# Translators: Button for doctors to unfollow a patient. #}
                     <button type="submit" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-minus"></span> {% trans "Unfollow" %}</button>
                 </form>
             </td>
@@ -73,6 +79,7 @@
                     {% csrf_token %}
                     <input type="hidden" name="patient_pk" value="{{patient_result.pk}}">
                     <input type="hidden" name="doctor_pk" value="{{user.doctor.pk}}">
+                    {# Translators: Button for doctors to follow a patient. #}
                     <button type="submit" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-plus"></span> {% trans "Follow" %}</button>
                 </form>
             </td>
@@ -86,6 +93,7 @@
 {% else %}
 
 <div class="pa-center-wrapper">
+    {# Translators: No patient results for a certain search. #}
     {% trans "No patients found." %}
 </div>
 

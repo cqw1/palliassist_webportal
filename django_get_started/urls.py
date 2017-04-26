@@ -10,6 +10,7 @@ from django.contrib.auth import views as auth_views
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
+from django.views.i18n import JavaScriptCatalog
 
 # Uncomment the next lines to enable the admin:
 # from django.conf.urls import include
@@ -58,6 +59,7 @@ urlpatterns = [
     url(r'^(?i)admin-input', app_views.admin_input, name='admin-input'),
     url(r'^(?i)mobile', app_views.mobile, name='mobile'),
     url(r'^(?i)token', app_views.token, name='token'),
+    url(r'^jsi18n/$', JavaScriptCatalog.as_view(), name='javascript-catalog'),
     url(r'^(?i)login/$',
         auth_views.login,
         {

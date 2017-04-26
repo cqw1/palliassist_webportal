@@ -10,11 +10,6 @@
 
     <div class="panel-heading clearfix">
         <strong class="panel-title">{{ch.friendly_name}}</strong>
-        {% comment %}
-        <button id="add-member-modal-btn" type="button" class="btn btn-primary pull-right" autocomplete="off" data-toggle="modal" data-target="#add-member-modal">
-            <span class="glyphicon glyphicon-plus"></span> Add Member
-        </button>
-        {% endcomment %}
     </div>
     <div class="panel-body messages-panel-body">
         <div id="{{ch.unique_name}}-chat-messages" class="chat-messages"></div>
@@ -26,6 +21,7 @@
 
         <div class="input-group">
             <span class="chat-input-span">
+                {# Translators: Prompt in the message chat input. #}
                 {% trans "say anything" as text_prompt %}
                 <input id="{{ch.unique_name}}-chat-input" type="text" class="form-control chat-input" placeholder="{{text_prompt}}" autofocus aria-label="...">
             </span>
@@ -35,11 +31,8 @@
                 <button data-toggle="modal" data-target="#upload-image-modal" class="btn btn-default upload-image-modal-btn" type="button">
                     <span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
                 </button>
-                <!--
-                <button class="btn btn-default" type="button">
-                    <span class=" glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                </button>
-                -->
+
+                {# Translators: Button to send a message. #}
                 <button id="{{ch.unique_name}}-send-message-btn" class="btn btn-primary send-message-btn" type="button">{% trans "Send" %}</button>
             </div>
 
@@ -49,5 +42,4 @@
 </div>
 {% endfor %}
 
-{% include "messages_add_member_modal.html" %}
 {% include "messages_upload_image_modal.html" %}

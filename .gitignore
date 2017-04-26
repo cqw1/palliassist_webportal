@@ -3,4 +3,3 @@ media/*
 *~
 *.swp
 *.swo
-./db.sqlite3

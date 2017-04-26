@@ -8,6 +8,7 @@
             <!-- Default panel contents -->
 
             <div class="panel-heading clearfix">
+                {# Translators: Past ESAS surveys . #}
                 <strong class="panel-title">{% trans "Surveys" %}</strong>
                 <button type="button" class="btn btn-danger btn-xs" onclick="fcmNotification('{{patient.user.username}}', 'REMIND', 'ESAS', '', '-1')">{% trans "Remind" %}</button>
             </div>
@@ -15,6 +16,7 @@
             <!-- Chat channels list -->
             <ul class="list-group">
                 
+                {# Translators: Overview of all ESAS surveys. #}
                 <a data-toggle="tab" class="list-group-item" href="#esas-overview">{% trans "Overview" %}</a>
 
                 {% for esas in esas_objects %}
@@ -29,6 +31,7 @@
         <div class="panel panel-default tab-pane fade in active" id="esas-panel">
 
             <div class="panel-heading">
+                {# Translators: Overview of all ESAS surveys. #}
                 <strong class="panel-title">{% trans "Overview" %}</strong>
             </div>
             <div class="panel-body" id="esas-panel-body">
@@ -49,6 +52,7 @@
                     <div id="{{esas.pk}}-esas-responses">
 
                         <!-- Standard questions -->
+                        {# Translators: Standard ESAS questions. #}
                         <strong>{% trans "Standard" %}</strong>
                         <table class="table table-bordered table-hover">
                             {% comment %}
@@ -59,51 +63,61 @@
                             {% endcomment %}
 
                             <tr class="esas-standard-field">
+                                {# Translators: Pain symptom on ESAS. #}
                                 <td>{% trans "Pain" %}</td>
                                 <td class="esas-answer">{{esas.pain}}</td>
                             </tr>
 
                             <tr class="esas-standard-field">
+                                {# Translators: Fatigue sympton on ESAS. #}
                                 <td>{% trans "Fatigue" %}</td>
                                 <td class="esas-answer">{{esas.fatigue}}</td>
                             </tr>
 
                             <tr class="esas-standard-field">
+                                {# Translators: Nausea sympton on ESAS. #}
                                 <td>{% trans "Nausea" %}</td>
                                 <td class="esas-answer">{{esas.nausea}}</td>
                             </tr>
 
                             <tr class="esas-standard-field">
+                                {# Translators: Depression sympton on ESAS. #}
                                 <td>{% trans "Depression" %}</td>
                                 <td class="esas-answer">{{esas.depression}}</td>
                             </tr>
 
                             <tr class="esas-standard-field">
+                                {# Translators: Anxiety sympton on ESAS. #}
                                 <td>{% trans "Anxiety" %}</td>
                                 <td class="esas-answer">{{esas.anxiety}}</td>
                             </tr>
 
                             <tr class="esas-standard-field">
+                                {# Translators: Drowsiness sympton on ESAS. #}
                                 <td>{% trans "Drowsiness" %}</td>
                                 <td class="esas-answer">{{esas.drowsiness}}</td>
                             </tr>
 
                             <tr class="esas-standard-field">
+                                {# Translators: Appetite sympton on ESAS. #}
                                 <td>{% trans "Appetite" %}</td>
                                 <td class="esas-answer">{{esas.appetite}}</td>
                             </tr>
 
                             <tr class="esas-standard-field">
+                                {# Translators: Well-Being sympton on ESAS. #}
                                 <td>{% trans "Well-Being" %}</td>
                                 <td class="esas-answer">{{esas.well_being}}</td>
                             </tr>
 
                             <tr class="esas-standard-field">
+                                {# Translators: Lack of Air sympton on ESAS. #}
                                 <td>{% trans "Lack of Air" %}</td>
                                 <td class="esas-answer">{{esas.lack_of_air}}</td>
                             </tr>
 
                             <tr class="esas-standard-field">
+                                {# Translators: Insomnia sympton on ESAS. #}
                                 <td>{% trans "Insomnia" %}</td>
                                 <td class="esas-answer">{{esas.insomnia}}</td>
                             </tr>
@@ -111,6 +125,7 @@
 
                         <br>
 
+                        {# Translators: Custom type of questions on ESAS. #}
                         <strong>{% trans "Custom" %}</strong>
                         <!-- Custom questions -->
                         <table class="table table-bordered table-hover">
@@ -121,6 +136,7 @@
                             {% else %}
                             <tr class="esas-custom-field success">
                             {% endif %}
+                            {# Translators: Fever question on ESAS. #}
                             <td>{% trans "Fever" %}</td>
                             <td class="esas-answer">
                                 {% blocktrans with esas_fever=esas.fever|title %}{{esas_fever}}{% endblocktrans %}
@@ -134,6 +150,7 @@
                                 {% else %}
                                 <tr class="esas-custom-field danger">
                                 {% endif %}
+                                {# Translators: Constipated question on ESAS. #}
                                 <td>{% trans "Constipated" %}</td>
 
                                 <td class="esas-answer">
@@ -143,6 +160,7 @@
 
                             {% else %}
                             <tr class="esas-custom-field success">
+                                {# Translators: Constipated question on ESAS. #}
                                 <td>{% trans "Constipated" %}</td>
                                 <td class="esas-answer">
                                     {% blocktrans with esas_constipated=esas.constipated|title %}{{esas_constipated}}{% endblocktrans %}
@@ -154,6 +172,7 @@
 
                             {% if esas.vomiting == "yes" %}
                             <tr class="esas-custom-field danger">
+                                {# Translators: Vomiting question on ESAS. #}
                                 <td>{% trans "Vomiting" %}</td>
 
                                 <td class="esas-answer">
@@ -162,9 +181,10 @@
                             </tr>
                             {% else %}
                             <tr class="esas-custom-field success">
+                                {# Translators: Vomiting question on ESAS. #}
                                 <td>{% trans "Vomiting" %}</td>
                                 <td class="esas-answer">
-                                    {% blocktrans with esas_vomiting=esas.vomiting|title %}{{esas_vomiting}}{% endblocktrans %}, {% trans "times" %}
+                                    {% blocktrans with esas_vomiting=esas.vomiting|title %}{{esas_vomiting}}{% endblocktrans %}
                                 </td>
                             </tr>
                             {% endif %}
@@ -175,6 +195,7 @@
                             {% else %}
                             <tr class="esas-custom-field success">
                             {% endif %}
+                            {# Translators: Confused question on ESAS. #}
                             <td>{% trans "Confused" %}</td>
 
                             <td class="esas-answer">

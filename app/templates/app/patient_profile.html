@@ -10,16 +10,18 @@
 <div class="row">
     <div class="col-md-9">
         <ul class="nav nav-tabs">
+            {# Translators: Patient profile home tab. #}
             <li class="active"><a data-toggle="tab" href="#home">{% trans "Home" %}</a></li>
-            {% comment %}
-            <li><a data-toggle="tab" href="#notifications">Notifications</a></li>
-            {% endcomment %}
             {% comment %}
             <li><a data-toggle="tab" href="#videos">Videos</a></li>
             {% endcomment %}
+            {# Translators: Patient profile messages tab. #}
             <li><a data-toggle="tab" href="#messages">{% trans "Messages" %}</a></li>
+            {# Translators: Patient profile medications tab. #}
             <li><a data-toggle="tab" href="#medications">{% trans "Medications" %}</a></li>
+            {# Translators: Patient profile ESAS tab. #}
             <li><a data-toggle="tab" id="esas-tab" href="#esas">{% trans "ESAS" %}</a></li>
+            {# Translators: Patient profile pain tab. #}
             <li><a data-toggle="tab" href="#pain">{% trans "Pain" %}</a></li>
         </ul>
 
@@ -30,11 +32,6 @@
             <div id="messages" class="tab-pane fade">
                 {% include "patient_profile_messages.html" %}
             </div>
-            {% comment %}
-            <div id="notifications" class="tab-pane fade">
-                {% include "patient_profile_notifications.html" %}
-            </div>
-            {% endcomment %}
             {% comment %}
             <div id="videos" class="tab-pane fade">
                 {% include "patient_profile_videos.html" %}
@@ -52,6 +49,7 @@
         </div>
     </div>
     <div class="col-md-3">
+        {# Translators: Patient profile notes. #}
         <h3>{% trans "Notes" %}</h3>
 
         <form method="POST" action="{% url 'save-notes' %}" id="notes-form" class="form-group">
@@ -61,7 +59,9 @@
             </div>
         </form>
         <div>
+            {# Translators: Save patient profile notes. #}
             <button id="save-notes-button" class="btn btn-default" type="submit" onclick="saveNotes('{{patient.pk}}')">{% trans "Save" %}</button>
+            {# Translators: Clear patient profile notes. #}
             <button class="btn btn-default" type="button" onclick="clearNotes()">{% trans "Clear" %}</button>
         </div>
     </div>

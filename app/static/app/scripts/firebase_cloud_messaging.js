@@ -53,8 +53,10 @@ function fcmNotification(patientUsername, action, category, text, primary_key) {
        prettyCategory = 'Video' ;
     }
 
+    let toastText = prettyCategory + ' notification sent.';
+
     if (toast) {
-        triggerToast(prettyCategory + ' notification sent.', 'success');
+        triggerToast(gettext(toastText), 'success');
     }
 
 

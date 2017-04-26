@@ -8,12 +8,14 @@
             <!-- Default panel contents -->
 
             <div class="panel-heading clearfix">
+                {# Translators: Patient profile medication tab. #}
                 <strong class="panel-title">{% trans "Medications" %}</strong>
             </div>
 
             <!-- Medication reports list -->
             <ul class="list-group">
                 
+                {# Translators: Overview of all patient medications. #}
                 <a data-toggle="tab" class="list-group-item" href="#medication-overview">{% trans "Overview" %}</a>
 
                 {% for report in medication_reports %}
@@ -28,24 +30,29 @@
         <div class="panel panel-default tab-pane fade in active" id="medication-overview">
 
             <div class="panel-heading">
+                {# Translators: Overview of all patient medications. #}
                 <strong class="panel-title">{% trans "Overview" %}</strong>
                 <button id="create-medication-modal-btn" type="button" class="btn btn-primary pull-right" autocomplete="off" data-toggle="modal" data-target="#create-medication-modal">
+                    {# Translators: Button to create a new medication. #}
                     <span class="glyphicon glyphicon-plus"></span> {% trans "Create" %} 
                 </button>
             </div>
             <div class="panel-body" id="esas-panel-body">
-                <!-- <div id="medication-overview" class="tab-pane fade in active"> -->
                 {% if medications %}
 
                 <!-- Table of search results --> 
                 <table class="table table-striped table-hover">
                     <thead>
                         <tr>
-                            <!-- <th>Date</th> -->
+                            {# Translators: Name of medication. #}
                             <th>{% trans "Name" %}</th>
+                            {# Translators: Form of medication. #}
                             <th>{% trans "Form" %}</th>
+                            {# Translators: Dose of medication. #}
                             <th>{% trans "Dose" %}</th>
+                            {# Translators: Posology of medication. #}
                             <th>{% trans "Posology" %}</th>
+                            {# Translators: Rescue of medication. #}
                             <th>{% trans "Rescue" %}</th>
                             <th><!-- Remind medication column --></th>
                             <th><!-- Clear medication column --></th>
@@ -63,6 +70,7 @@
                             <td>{{ medication.rescue }}</td>
                             <td>
                                 <button type="button" class="btn btn-danger btn-xs" onclick="fcmNotification('{{patient.user.username}}', 'REMIND', 'MEDICATION', '', '{{medication.pk}}')">
+                                    {# Translators: Button to remind a patient to take a medication. #}
                                     {% trans "Remind" %}
                                 </button>
                             </td>
@@ -76,6 +84,7 @@
 
                 <br>
                 <div class="pa-center-wrapper">
+                    {# Translators: No medications for a patient found. #}
                     {% trans "No medications found." %}
                 </div>
 
