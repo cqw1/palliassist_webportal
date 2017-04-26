@@ -103,7 +103,7 @@ def dashboard(request):
 
     sorted_medication = []
     for alert in medication_alerts:
-        sorted_medicationa.append(MedicationReport.objects.get(pk=alert.item_pk))
+        sorted_medication.append(MedicationReport.objects.get(pk=alert.item_pk))
 
     # Sort medication by created date
     sorted_medication.sort(key=lambda x: x.created_date, reverse=True)
@@ -119,7 +119,7 @@ def dashboard(request):
         # and need to maintain order
         tup = unordered_patient_medication_alert[alert.patient]
         lst = list(tup)
-        lst.append((mdeication, alert))
+        lst.append((medication, alert))
         unordered_patient_medication_alert[alert.patient] = tuple(lst)
 
     # Sort patients by full_name
@@ -277,11 +277,12 @@ def patient_profile(request):
 
     #### Videos tab.
     videos = Video.objects.filter(patient=patient_obj)
-    print "videos:", videos
-    print "video url: " + videos[0].url
 
     ### Messages tab.
     channels = []
+    channels.append(get_channel(request, patient_obj))
+    token = get_token(request.user.username)
+    """
     # List the channels that the user is a member of
     for c in settings.TWILIO_IPM_SERVICE.channels.list():
         if c.unique_name == patient_obj.user.username:
@@ -299,6 +300,7 @@ def patient_profile(request):
     # Create an IP Messaging grant and add to token
     ipm_grant = IpMessagingGrant(endpoint_id=endpoint, service_sid=settings.TWILIO_IPM_SERVICE_SID)
     token.add_grant(ipm_grant)
+    """
 
     ### ESAS tab.
     esas_objects = ESASSurvey.objects.filter(patient=patient_obj)
@@ -582,9 +584,8 @@ def messages(request):
     #demo_channel.update(unique_name="demochannel")
     member = demo_channel.members.create(identity=request.user.username)
 
+    """
     channels = []
-        
-
     # List the channels that the user is a member of
     for c in settings.TWILIO_IPM_SERVICE.channels.list():
         print "looking at", c.friendly_name, c.unique_name, c.sid
@@ -602,7 +603,6 @@ def messages(request):
                 channels.append(channel_json)
                 break
 
-        """
         print "== Channel =="
         print "\tsid: ", c.sid
         print "\tunique_name: ", c.unique_name
@@ -612,16 +612,22 @@ def messages(request):
         print "\tmembers:"
         for m in c.members.list():
             print "\t\t", m.identity
-        """
-    upload_image_form = UploadImageForm()
-
-    patients = Patient.objects.all()
     
     token = AccessToken(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_API_KEY, settings.TWILIO_API_SECRET, request.user.username)
     endpoint = "PalliAssist:" + request.user.username + ":web"
     # Create an IP Messaging grant and add to token
     ipm_grant = IpMessagingGrant(endpoint_id=endpoint, service_sid=settings.TWILIO_IPM_SERVICE_SID)
     token.add_grant(ipm_grant)
+    """
+
+    channels = []
+    for p in Patient.objects.all():
+        channels.append(get_channel(request, p))
+
+    token = get_token(request.user.username)
+    upload_image_form = UploadImageForm()
+
+    patients = Patient.objects.all()
 
     context = {
         "title": _("Messages"),
@@ -638,6 +644,46 @@ def messages(request):
         "app/messages.html",
         context
     )
+
+def get_channel(request, patient):
+    """ Get list of twilio channels """
+    channel_json = {}
+    # List the channels that the user is a member of
+    for c in settings.TWILIO_IPM_SERVICE.channels.list():
+        if c.unique_name == patient.user.username:
+            print "selected channel", c.friendly_name, c.sid
+            channel_json = {
+                "sid": str(c.sid),
+                "unique_name": str(c.unique_name),
+                "friendly_name": str(c.friendly_name),
+            }
+            break
+
+    if channel_json == {}:
+        # We didn't find a channel. Create one
+        new_channel = settings.TWILIO_IPM_SERVICE.channels.create(unique_name=patient.user.username, friendly_name=patient.full_name, type="private")
+        if request != None:
+            new_channel.members.create(identity=request.user.username)
+        new_channel.members.create(identity=patient.user.username)
+        new_channel.members.create(identity=patient.full_name)
+        channel_json = {
+            "sid": str(new_channel.sid),
+            "unique_name": str(new_channel.unique_name),
+            "friendly_name": str(new_channel.friendly_name),
+        }
+
+
+    return channel_json
+
+def get_token(username):
+
+    token = AccessToken(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_API_KEY, settings.TWILIO_API_SECRET, username)
+    endpoint = "PalliAssist:" + username + ":web"
+    # Create an IP Messaging grant and add to token
+    ipm_grant = IpMessagingGrant(endpoint_id=endpoint, service_sid=settings.TWILIO_IPM_SERVICE_SID)
+    token.add_grant(ipm_grant)
+
+    return token
 
 
 def token(request):
@@ -1029,6 +1075,7 @@ def handle_mobile_login(data, topic):
                 "patient": serializers.serialize("json", [patient_obj]),
                 "videos": serializers.serialize("json", Video.objects.filter(patient=patient_obj)),
                 "medications": serializers.serialize("json", Medication.objects.filter(patient=patient_obj)),
+                "channel_sid": get_channel(None, patient_obj)["sid"]
             }
         }
     else:
@@ -1197,7 +1244,7 @@ def mobile(request):
     elif event == "REGISTRATION":
         if request.POST["category"] == "PATIENT":
             print "post: REGISTRATION, PATIENT"
-            handle_patient_registration(json.loads(request.POST["data"]), request.POST["hospital_id"])
+            handle_patient_registration(json.loads(request.POST["data"]), request.POST["topic"])
             return JsonResponse({})
         
 

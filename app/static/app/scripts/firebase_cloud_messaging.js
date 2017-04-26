@@ -55,6 +55,8 @@ function fcmNotification(patientUsername, action, category, text, primary_key) {
 
     let toastText = prettyCategory + ' notification sent.';
 
+    console.log('gettext: ' + gettext(toastText));
+
     if (toast) {
         triggerToast(gettext(toastText), 'success');
     }
