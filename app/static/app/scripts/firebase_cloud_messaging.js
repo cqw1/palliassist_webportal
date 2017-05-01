@@ -64,7 +64,7 @@ function fcmNotification(patientUsername, action, category, text, primary_key) {
 
     if (category == 'MESSAGE') {
         var dataJSON = JSON.stringify({
-            'to' : '/topics/test',
+            'to' : '/topics/' + patientUsername,
             'data' : {
                   'event' : 'NOTIFICATION',
                   'action': action,
@@ -77,7 +77,7 @@ function fcmNotification(patientUsername, action, category, text, primary_key) {
         });
     } else {
         var dataJSON = JSON.stringify({
-            'to' : '/topics/test',
+            'to' : '/topics/' + patientUsername,
             'data' : {
                   'event' : 'NOTIFICATION',
                   'action': action,
