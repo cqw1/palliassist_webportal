@@ -782,7 +782,8 @@ def add_video(request):
             "videos": serializers.serialize("json", [video])
         }
     }
-    sendFCM(data_message, "test")
+    #sendFCM(data_message, "test")
+    sendFCM(data_message, patient_obj.user.username)
 
     print request
     print video
@@ -804,7 +805,8 @@ def delete_video(request):
         "category": "VIDEO",
         "pk": request.POST["pk"]
     }
-    sendFCM(data_message, "test")
+    #sendFCM(data_message, "test")
+    sendFCM(data_message, patient_obj.user.username)
 
     return JsonResponse({})
 
@@ -814,20 +816,24 @@ def delete_medication(request):
     """
     Deletes a medication object for a patient.
     """
+    print "delete_medication"
     print request.POST
 
+    patient_obj = Patient.objects.get(pk=int(request.POST["patient_pk"]))
+
     # Notification's PK
-    Medication.objects.get(pk=int(request.POST["pk"])).delete()
+    Medication.objects.get(pk=int(request.POST["medication_pk"])).delete()
 
     data_message = {
         "event": "NOTIFICATION",
         "action": "DELETE",
         "category": "MEDICATION",
-        "pk": request.POST["pk"]
+        "pk": request.POST["medication_pk"]
     }
-    sendFCM(data_message, "test")
+    #sendFCM(data_message, "test")
+    sendFCM(data_message, patient_obj.user.username)
 
-    return JsonResponse({})
+    return HttpResponseRedirect("/patient-profile?pk=" + str(request.POST["patient_pk"] + "#medications"))
 
 def create_medication(request):
     """
@@ -858,7 +864,8 @@ def create_medication(request):
             "medications": serializers.serialize("json", Medication.objects.filter(pk=medication.pk))
         }
     }
-    sendFCM(data_message, "test")
+    #sendFCM(data_message, "test")
+    sendFCM(data_message, patient_obj.user.username)
 
     print CreateMedicationForm(request.POST)
     print request

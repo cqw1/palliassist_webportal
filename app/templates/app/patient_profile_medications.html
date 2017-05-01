@@ -74,7 +74,13 @@
                                     {% trans "Remind" %}
                                 </button>
                             </td>
-                            <td><span class="glyphicon glyphicon-remove delete-medication delete-x" aria-hidden="true"></span></td>
+                            <td>
+                                <form action="{% url 'delete-medication' %}" method="post" id="delete-medication-form">
+                                    <input type="hidden" name="patient_pk" value="{{patient.pk}}">
+                                    <input type="hidden" name="medication_pk" value="{{medication.pk}}">
+                                    <span class="glyphicon glyphicon-remove delete-medication delete-x" aria-hidden="true" onclick="document.getElementById('delete-medication-form').submit()"></span>
+                                </form>
+                            </td>
                         </tr>
                         {% endfor %}
                     </tbody>

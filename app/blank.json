@@ -1,0 +1,17 @@
+{
+  "to": "/topics/patient0",
+  "data": {
+    "event": "NOTIFICATION",
+    "category": "MEDICATION",
+    "action": "CREATE",
+    "patient": "patient0",
+    "text": "Take your medication",
+    "pk": 3
+  }
+}
+
+
+
+
+
+

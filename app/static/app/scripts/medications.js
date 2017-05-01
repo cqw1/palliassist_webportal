@@ -20,16 +20,19 @@ $(function() {
 
 
     $('.delete-medication').click(function() {
-        var id = $(this).parent().parent().attr('id');
+        var id = $(this).parent().parent().parent().attr('id');
         // ID is notification-row-{{pk}}
         var pk = id.split('-')[2];
 
+        triggerToast('Medication removed.', 'success');
+        /*
         $.post('/delete-medication', "pk=" + pk, function() {
             console.log('posted');
             triggerToast('Medication removed.', 'success');
         })
+        */
 
-        $(this).parent().parent().hide();
+        $(this).parent().parent().parent().hide();
     });
 
 })
