@@ -48,9 +48,24 @@
             <td>{{edit_patient_form.caregiver_name}}</td>
         </tr>
         <tr>
+            {# Translators: Caregiver relationships of patient. #}
+            <td class="patient-field">{% trans "Caregiver Relationships" %}:</td>
+            <td>{{edit_patient_form.caregiver_relationships}}</td>
+        </tr>
+        <tr>
             {# Translators: Treatment type of patient. #}
             <td class="patient-field">{% trans "Treatment Type" %}:</td>
             <td class="pa-form-field">{{edit_patient_form.treatment_type}}</td>
+        </tr>
+        <tr>
+            {# Translators: Tumor type of patient. #}
+            <td class="patient-field">{% trans "Tumor Type" %}:</td>
+            <td>{{edit_patient_form.tumor_type}}</td>
+        </tr>
+        <tr>
+            {# Translators: Comorbidities of patient. #}
+            <td class="patient-field">{% trans "Comorbidities" %}:</td>
+            <td>{{edit_patient_form.comorbidities}}</td>
         </tr>
         <tr>
             {# Translators: Next appointment of patient. #}
@@ -116,9 +131,24 @@
             <td>{{patient.caregiver_name}}</td>
         </tr>
         <tr>
+            {# Translators: Caregiver relationships of patient. #}
+            <td class="patient-field">{% trans "Caregiver Relationships" %}:</td>
+            <td>{{patient.caregiver_relationships}}</td>
+        </tr>
+        <tr>
             {# Translators: Treatment type of patient. #}
             <td class="patient-field">{% trans "Treatment Type" %}:</td>
             <td>{{patient.treatment_type}}</td>
+        </tr>
+        <tr>
+            {# Translators: Tumor type of patient. #}
+            <td class="patient-field">{% trans "Tumor Type" %}:</td>
+            <td>{{patient.tumor_type}}</td>
+        </tr>
+        <tr>
+            {# Translators: Comorbidities of patient. #}
+            <td class="patient-field">{% trans "Comorbidities" %}:</td>
+            <td>{{patient.comorbidities}}</td>
         </tr>
         <tr>
             {# Translators: Next appointment of patient. #}

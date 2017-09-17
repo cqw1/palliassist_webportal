@@ -34,6 +34,7 @@ class Patient(models.Model):
     age = models.IntegerField(default=0) 
     city_of_residence = models.TextField(default="")
     caregiver_name = models.CharField(max_length=MAX_LENGTH, default="")
+    caregiver_relationships = models.CharField(max_length=MAX_LENGTH, default="")
     next_appointment = models.DateTimeField(default=timezone.now)
     hospital_id = models.IntegerField(default=-1)
     esas_alert = models.IntegerField(default=7)
@@ -45,6 +46,8 @@ class Patient(models.Model):
         (ANTICANCER, _(ANTICANCER)),
     )
     treatment_type = models.CharField(max_length=MAX_LENGTH, choices=TREATMENT_CHOICES, default=PALLIATIVE)
+    tumor_type = models.CharField(max_length=MAX_LENGTH, default="")
+    comorbidities = models.CharField(max_length=MAX_LENGTH, default="")
 
     FEMALE = "Female"
     MALE = "Male"

@@ -141,8 +141,12 @@ class PatientSignupForm(SignupForm):
     gender = forms.ChoiceField(label=_("Gender"), widget=forms.RadioSelect, choices=Patient.GENDER_CHOICES, required=True)
     city_of_residence = forms.CharField(label=_("City of Residence"), widget=forms.TextInput({"class": "form-control", "placeholder": _("City of Residence")}), required=True) 
     caregiver_name = forms.CharField(label=_("Caregiver Name"), widget=forms.TextInput({"class": "form-control", "placeholder": _("Caregiver Name")}), required=True) 
+    caregiver_relationships= forms.CharField(label=_("Caregiver Relationships"), widget=forms.TextInput({"class": "form-control", "placeholder":_("Caregiver Relationships")}), required=True)
     treatment_type = forms.ChoiceField(label=_("Treatment Type"), widget=forms.RadioSelect, choices=Patient.TREATMENT_CHOICES, required=True)
+    tumor_type = forms.CharField(label=_("Tumor Type"), widget=forms.TextInput({"class": "form-control", "placeholder":_("Tumor Type")}), required=True)
+    comorbidities = forms.CharField(label=_("Comorbidities"), widget=forms.TextInput({"class": "form-control", "placeholder":_("Comorbidities")}), required=True)
     patients_doctor_username = forms.CharField(label=_("Your Doctor's Username"), widget=forms.TextInput({ "class": "form-control", "placeholder": _("Your Doctor's Username")}), required=True) 
+
 
     def clean(self):
         cleaned_data = super(PatientSignupForm, self).clean()
@@ -206,6 +210,18 @@ class EditPatientForm(forms.Form):
             label=_("ESAS Alert Level"), 
             widget=forms.TextInput({"class": "form-control", "placeholder": _("ESAS Alert Level")}), 
             required=False)
+    tumor_type = forms.CharField(
+            label=_("Tumor Type"), 
+            widget=forms.TextInput({"class": "form-control", "placeholder": _("Tumor Type")}),
+            required=False) 
+    comorbidities = forms.CharField(
+            label=_("Comorbidities"), 
+            widget=forms.TextInput({"class": "form-control", "placeholder": _("Comorbidities")}),
+            required=False) 
+    caregiver_relationships = forms.CharField(
+            label=_("Caregiver Relationships"), 
+            widget=forms.TextInput({"class": "form-control", "placeholder": _("Caregiver Relationships")}),
+            required=False) 
     pk = forms.IntegerField(widget=forms.HiddenInput(), required=True)
 
 

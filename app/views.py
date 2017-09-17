@@ -267,10 +267,15 @@ def patient_profile(request):
         edit_patient_form.fields["age"].initial = patient_obj.age
         edit_patient_form.fields["gender"].initial = patient_obj.gender
         edit_patient_form.fields["treatment_type"].initial = patient_obj.treatment_type
+        edit_patient_form.fields["tumor_type"].initial = patient_obj.tumor_type
+        edit_patient_form.fields["comorbidities"].initial = patient_obj.comorbidities
         edit_patient_form.fields["caregiver_name"].initial = patient_obj.caregiver_name
+        edit_patient_form.fields["caregiver_relationships"].initial = patient_obj.caregiver_relationships
         edit_patient_form.fields["city_of_residence"].initial = patient_obj.city_of_residence
         edit_patient_form.fields["telephone"].initial = patient_obj.telephone
         edit_patient_form.fields["next_appointment"].initial = patient_obj.next_appointment
+
+        print "edit_patient_form:", edit_patient_form.fields
 
     ### Notifications tab.
     notifications = Notification.objects.filter(patient=patient_obj)
@@ -392,8 +397,14 @@ def save_patient_info(request):
             patient.city_of_residence = form_data["city_of_residence"]
         if form_data["caregiver_name"]:
             patient.caregiver_name = form_data["caregiver_name"]
+        if form_data["caregiver_relationships"]:
+            patient.caregiver_relationships = form_data["caregiver_relationships"]
         if form_data["treatment_type"]:
             patient.treatment_type = form_data["treatment_type"]
+        if form_data["tumor_type"]:
+            patient.tumor_type = form_data["tumor_type"]
+        if form_data["comorbidities"]:
+            patient.comorbidities = form_data["comorbidities"]
         if form_data["next_appointment"]:
             patient.next_appointment = form_data["next_appointment"]
 
@@ -428,7 +439,10 @@ def patient_signup(request):
                     age=patient_signup_form.cleaned_data["age"],
                     city_of_residence=patient_signup_form.cleaned_data["city_of_residence"],
                     caregiver_name=patient_signup_form.cleaned_data["caregiver_name"],
+                    caregiver_relationships=patient_signup_form.cleaned_data["caregiver_relationships"],
                     treatment_type=patient_signup_form.cleaned_data["treatment_type"],
+                    tumor_type=patient_signup_form.cleaned_data["tumor_type"],
+                    comorbidities=patient_signup_form.cleaned_data["comorbidities"],
                     gender=patient_signup_form.cleaned_data["gender"],
 
             )
@@ -652,6 +666,7 @@ def get_channel(request, patient):
     for c in settings.TWILIO_IPM_SERVICE.channels.list():
         if c.unique_name == patient.user.username:
             print "selected channel", c.friendly_name, c.sid
+            c.members.create(identity=request.user.username)
             channel_json = {
                 "sid": str(c.sid),
                 "unique_name": str(c.unique_name),
@@ -1404,6 +1419,13 @@ def sync_redcap(request):
             "treatment_type": patient.treatment_type,
             "esas_alert": patient.esas_alert,
         })
+        """
+        # TODO: add fields to patient_data after adding to redcap models
+        "tumor_type": patient.tumor_type,
+        "comorbidities": patient.comorbidities,
+        "caregiver_relationships": patient.caregiver_relationships,
+        """
+
     patient_response = REDCAP_PATIENT_PROJECT.import_records(patient_data, overwrite="overwrite")
 
     print "patient models:", len(patients)
