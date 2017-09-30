@@ -443,8 +443,7 @@ def patient_signup(request):
                     treatment_type=patient_signup_form.cleaned_data["treatment_type"],
                     tumor_type=patient_signup_form.cleaned_data["tumor_type"],
                     comorbidities=patient_signup_form.cleaned_data["comorbidities"],
-                    gender=patient_signup_form.cleaned_data["gender"],
-
+                    gender=patient_signup_form.cleaned_data["gender"]
             )
             Doctor.objects.get(user=User.objects.get(username=patients_doctor_username)).patients.add(patient)
 
@@ -660,13 +659,20 @@ def messages(request):
     )
 
 def get_channel(request, patient):
-    """ Get list of twilio channels """
+    """ 
+    Get list of twilio channels that the patient is a part of. If the patient
+    doesn't have a channel yet, create one for it. Always create the 
+    request.user (should be the doctor) as a member in case he hasn't been 
+    added as a member yet.
+    """
     channel_json = {}
+
     # List the channels that the user is a member of
     for c in settings.TWILIO_IPM_SERVICE.channels.list():
         if c.unique_name == patient.user.username:
             print "selected channel", c.friendly_name, c.sid
-            c.members.create(identity=request.user.username)
+            if request != None:
+                c.members.create(identity=request.user.username)
             channel_json = {
                 "sid": str(c.sid),
                 "unique_name": str(c.unique_name),
@@ -1079,6 +1085,8 @@ def handle_mobile_login(data, topic):
 
     user = authenticate(username=data["username"], password=data["password"])
     print user
+    if user != None:
+        print serializers.serialize("json", [user.patient])
 
     if user is not None:
         patient_obj = user.patient
@@ -1177,7 +1185,11 @@ def handle_patient_registration(data, topic):
                     city_of_residence=data["city_of_residence"],
                     caregiver_name=data["caregiver_name"],
                     treatment_type=data["treatment_type"],
-                    gender=data["gender"])
+                    gender=data["gender"],
+                    tumor_type=data["tumor_type"],
+                    comorbidities=data["comorbidities"],
+                    caregiver_relationships=data["caregiver_relationships"],
+            )
 
             # Add patient to that doctor's list of patients
             doctor.patients.add(patient)
