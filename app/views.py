@@ -1073,7 +1073,9 @@ def handle_completed_pain(dt, patient_obj, data):
             created_date=dt, 
             container_name = data["container_name"], 
             front_blob_name=data["front_blob_name"], 
-            back_blob_name=data["back_blob_name"]
+            back_blob_name=data["back_blob_name"],
+            left_blob_name=data["left_blob_name"],
+            right_blob_name=data["right_blob_name"],
         )
     print pain_image
 
@@ -1393,6 +1395,8 @@ def sync_redcap(request):
             "container_name": pain_image.container_name,
             "front_blob_name": pain_image.front_blob_name,
             "back_blob_name": pain_image.back_blob_name,
+            "left_blob_name": pain_image.left_blob_name,
+            "right_blob_name": pain_image.right_blob_name,
         })
     pain_response = REDCAP_PAIN_PROJECT.import_records(pain_data, overwrite="overwrite")
 
