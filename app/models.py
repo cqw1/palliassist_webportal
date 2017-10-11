@@ -145,6 +145,8 @@ class PainImages(models.Model):
     container_name = models.CharField(default="", max_length=MAX_LENGTH)
     front_blob_name = models.CharField(default="", max_length=MAX_LENGTH)
     back_blob_name = models.CharField(default="", max_length=MAX_LENGTH)
+    left_blob_name = models.CharField(default="", max_length=MAX_LENGTH)
+    right_blob_name = models.CharField(default="", max_length=MAX_LENGTH)
 
     class Meta:
         ordering = ('-created_date',)
