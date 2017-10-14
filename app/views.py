@@ -1434,13 +1434,11 @@ def sync_redcap(request):
             "caregiver_name": patient.caregiver_name,
             "treatment_type": patient.treatment_type,
             "esas_alert": patient.esas_alert,
+            "tumor_type": patient.tumor_type,
+            "comorbidities": patient.comorbidities,
+            "caregiver_relationships": patient.caregiver_relationships,
         })
-        """
-        # TODO: add fields to patient_data after adding to redcap models
-        "tumor_type": patient.tumor_type,
-        "comorbidities": patient.comorbidities,
-        "caregiver_relationships": patient.caregiver_relationships,
-        """
+        
 
     patient_response = REDCAP_PATIENT_PROJECT.import_records(patient_data, overwrite="overwrite")
 
