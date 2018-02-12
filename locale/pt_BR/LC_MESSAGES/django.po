@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-04-25 22:46-0500\n"
+"POT-Creation-Date: 2018-02-11 16:38-0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #. Translators: Password field.
-#: app/forms.py:24 app/forms.py:92 app/templates/app/login.html:34
+#: app/forms.py:24 app/forms.py:99 app/templates/app/login.html:34
 msgid "Password"
 msgstr "Senha"
 
@@ -56,148 +56,181 @@ msgstr "Selecione uma categoria"
 msgid "Text"
 msgstr "Texto"
 
+#: app/forms.py:75
+msgid "No rescue"
+msgstr "Sem resgate"
+
+#: app/forms.py:76
+msgid "Severe pain: Use rescue, up to 1/1 h"
+msgstr "Se dor forte use resgate até de 1/1 h"
+
+#: app/forms.py:77
+msgid "Strong symptom: Use rescue"
+msgstr "Se sintoma forte: Use resgate"
+
 #. Translators: Name of patient.
 #. Translators: Name of medication.
 #. Translators: Name of a patient.
-#: app/forms.py:74 app/forms.py:174
+#: app/forms.py:80 app/forms.py:185
 #: app/templates/app/patient_profile_home.html:12
-#: app/templates/app/patient_profile_home.html:80
+#: app/templates/app/patient_profile_home.html:95
 #: app/templates/app/patient_profile_medications.html:48
 #: app/templates/app/patients.html:48
 msgid "Name"
 msgstr "Nome"
 
 #. Translators: Form of medication.
-#: app/forms.py:75 app/templates/app/patient_profile_medications.html:50
+#: app/forms.py:81 app/templates/app/patient_profile_medications.html:50
 msgid "Form"
 msgstr "Formulário"
 
 #. Translators: Dose of medication.
-#: app/forms.py:76 app/templates/app/patient_profile_medications.html:52
+#: app/forms.py:82 app/templates/app/patient_profile_medications.html:52
 msgid "Dose"
 msgstr "Dose"
 
 #. Translators: Posology of medication.
-#: app/forms.py:77 app/templates/app/patient_profile_medications.html:54
+#: app/forms.py:83 app/templates/app/patient_profile_medications.html:54
 msgid "Posology"
 msgstr "Posologia"
 
 #. Translators: Rescue of medication.
-#: app/forms.py:79 app/templates/app/patient_profile_medications.html:56
+#: app/forms.py:85 app/templates/app/patient_profile_medications.html:56
 msgid "Rescue"
 msgstr "Salvamento"
 
-#: app/forms.py:82
+#: app/forms.py:89
 msgid "Select a image."
 msgstr "Selecione uma imagem"
 
-#: app/forms.py:89 app/forms.py:173
+#: app/forms.py:96 app/forms.py:184
 msgid "Full Name"
 msgstr "Nome Completo"
 
 #. Translators: Login field.
-#: app/forms.py:90 app/templates/app/login.html:27
+#: app/forms.py:97 app/templates/app/login.html:27
 msgid "Username"
 msgstr "Nome de usuário"
 
 #. Translators: Telephone of patient.
-#: app/forms.py:91 app/forms.py:177 app/forms.py:178
+#: app/forms.py:98 app/forms.py:188 app/forms.py:189
 #: app/templates/app/patient_profile_home.html:27
-#: app/templates/app/patient_profile_home.html:95
+#: app/templates/app/patient_profile_home.html:110
 msgid "Telephone"
 msgstr "Telefone"
 
-#: app/forms.py:93
+#: app/forms.py:100
 msgid "Retype Password"
 msgstr "Redigite a Senha"
 
-#: app/forms.py:94
+#: app/forms.py:101
 msgid "Access Key"
 msgstr "Tecla de Acesso"
 
-#: app/forms.py:103
+#: app/forms.py:110
 msgid "Username already taken. Please try a different one."
 msgstr "Nome de usuário já existe. Tente um diferente"
 
-#: app/forms.py:120
+#: app/forms.py:127
 msgid "Invalid access key."
 msgstr "Chave de acesso inválida"
 
-#: app/forms.py:132 app/forms.py:133
+#: app/forms.py:139 app/forms.py:140
 msgid "Passwords must match."
 msgstr "As senhas devem ser idênticas"
 
 #. Translators: Hospital ID of patient.
 #. Translators: Hospital ID of a patient.
-#: app/forms.py:139 app/forms.py:169 app/forms.py:170
+#: app/forms.py:146 app/forms.py:180 app/forms.py:181
 #: app/templates/app/patient_profile_home.html:17
-#: app/templates/app/patient_profile_home.html:85
+#: app/templates/app/patient_profile_home.html:100
 #: app/templates/app/patients.html:50
 msgid "Hospital ID"
 msgstr "Hospital ID"
 
 #. Translators: Age of patient.
 #. Translators: Age of a patient.
-#: app/forms.py:140 app/forms.py:181 app/forms.py:182
+#: app/forms.py:147 app/forms.py:192 app/forms.py:193
 #: app/templates/app/patient_profile_home.html:32
-#: app/templates/app/patient_profile_home.html:100
+#: app/templates/app/patient_profile_home.html:115
 #: app/templates/app/patients.html:54
 msgid "Age"
 msgstr "Idade"
 
 #. Translators: Gender of patient.
 #. Translators: Gender of a patient.
-#: app/forms.py:141 app/forms.py:185
+#: app/forms.py:148 app/forms.py:196
 #: app/templates/app/patient_profile_home.html:37
-#: app/templates/app/patient_profile_home.html:105
+#: app/templates/app/patient_profile_home.html:120
 #: app/templates/app/patients.html:52
 msgid "Gender"
 msgstr "Sexo"
 
 #. Translators: City of residence of patient.
-#: app/forms.py:142 app/forms.py:190 app/forms.py:191
+#: app/forms.py:149 app/forms.py:201 app/forms.py:202
 #: app/templates/app/patient_profile_home.html:42
-#: app/templates/app/patient_profile_home.html:110
+#: app/templates/app/patient_profile_home.html:125
 msgid "City of Residence"
 msgstr "Cidade de residência"
 
-#: app/forms.py:143
+#: app/forms.py:150
 msgid "Caregiver Name"
 msgstr "Nome do cuidador"
 
-#. Translators: Treatment type of patient.
-#: app/forms.py:144 app/forms.py:198
+#. Translators: Caregiver relationships of patient.
+#: app/forms.py:151 app/forms.py:229 app/forms.py:230
 #: app/templates/app/patient_profile_home.html:52
-#: app/templates/app/patient_profile_home.html:120
+#: app/templates/app/patient_profile_home.html:135
+msgid "Caregiver Relationships"
+msgstr ""
+
+#. Translators: Treatment type of patient.
+#: app/forms.py:152 app/forms.py:209
+#: app/templates/app/patient_profile_home.html:57
+#: app/templates/app/patient_profile_home.html:140
 msgid "Treatment Type"
 msgstr "Tipo de tratamento"
 
-#: app/forms.py:145
+#. Translators: Tumor type of patient.
+#: app/forms.py:153 app/forms.py:221 app/forms.py:222
+#: app/templates/app/patient_profile_home.html:62
+#: app/templates/app/patient_profile_home.html:145
+msgid "Tumor Type"
+msgstr ""
+
+#. Translators: Comorbidities of patient.
+#: app/forms.py:154 app/forms.py:225 app/forms.py:226
+#: app/templates/app/patient_profile_home.html:67
+#: app/templates/app/patient_profile_home.html:150
+msgid "Comorbidities"
+msgstr ""
+
+#: app/forms.py:155
 msgid "Your Doctor's Username"
 msgstr "Nome de usuário do seu médico"
 
-#: app/forms.py:162 app/forms.py:165
+#: app/forms.py:173 app/forms.py:176
 msgid "Doctor username not found."
 msgstr "Nome de usuário médico não encontrado"
 
 #. Translators: Caregiver of patient.
-#: app/forms.py:194 app/forms.py:195
+#: app/forms.py:205 app/forms.py:206
 #: app/templates/app/patient_profile_home.html:47
-#: app/templates/app/patient_profile_home.html:115
+#: app/templates/app/patient_profile_home.html:130
 msgid "Caregiver"
 msgstr "Cuidador"
 
 #. Translators: Next appointment of patient.
-#: app/forms.py:202 app/forms.py:203
-#: app/templates/app/patient_profile_home.html:57
-#: app/templates/app/patient_profile_home.html:125
+#: app/forms.py:213 app/forms.py:214
+#: app/templates/app/patient_profile_home.html:72
+#: app/templates/app/patient_profile_home.html:155
 msgid "Next Appointment"
 msgstr "Próxima consulta"
 
 #. Translators: ESAS alert level of patient.
-#: app/forms.py:206 app/forms.py:207
+#: app/forms.py:217 app/forms.py:218
 #: app/templates/app/patient_profile_home.html:22
-#: app/templates/app/patient_profile_home.html:90
+#: app/templates/app/patient_profile_home.html:105
 msgid "ESAS Alert Level"
 msgstr "Nível de ESAS alerta"
 
@@ -247,7 +280,7 @@ msgstr "Painel de bordo"
 #. Translators: Sidebar button to return to messages.
 #. Translators: Patient profile messages tab.
 #: app/templates/app/layout.html:95 app/templates/app/patient_profile.html:20
-#: app/views.py:627
+#: app/views.py:646
 msgid "Messages"
 msgstr "Mensagens"
 
@@ -347,7 +380,7 @@ msgstr "Notas"
 #. Translators: Save patient profile notes.
 #. Translators: Save edited patient profile.
 #: app/templates/app/patient_profile.html:65
-#: app/templates/app/patient_profile_home.html:68
+#: app/templates/app/patient_profile_home.html:83
 msgid "Save"
 msgstr "Salvar"
 
@@ -492,17 +525,17 @@ msgid "%(esas_confused)s"
 msgstr ""
 
 #. Translators: Button to edit a patient's profile.
-#: app/templates/app/patient_profile_home.html:136
+#: app/templates/app/patient_profile_home.html:166
 msgid "Edit"
 msgstr "Editar"
 
 #. Translators: Instructional video to show patient.
-#: app/templates/app/patient_profile_home.html:145
+#: app/templates/app/patient_profile_home.html:175
 msgid "Video"
 msgstr "Vídeo"
 
 #. Translators: No medications for a patient found.
-#: app/templates/app/patient_profile_medications.html:88
+#: app/templates/app/patient_profile_medications.html:94
 msgid "No medications found."
 msgstr "Medicamentos não encontrado."
 
@@ -515,6 +548,16 @@ msgstr "Frente"
 #: app/templates/app/patient_profile_pain.html:49
 msgid "Rear"
 msgstr "Parte traseira"
+
+#. Translators: Left image of pain locator body.
+#: app/templates/app/patient_profile_pain.html:54
+msgid "Left"
+msgstr ""
+
+#. Translators: Right image of pain locator body.
+#: app/templates/app/patient_profile_pain.html:59
+msgid "Right"
+msgstr ""
 
 #: app/templates/app/patient_profile_videos.html:12
 msgid "Set"
@@ -552,7 +595,7 @@ msgid "Patient"
 msgstr "Paciente"
 
 #: app/templates/app/sign_up.html:75 app/templates/app/sign_up.html:115
-#: app/views.py:438 app/views.py:472 app/views.py:494 app/views.py:513
+#: app/views.py:453 app/views.py:487 app/views.py:509 app/views.py:528
 msgid "Sign Up"
 msgstr "Assinar"
 
@@ -568,19 +611,19 @@ msgstr ""
 msgid "List of patients."
 msgstr "Lista de pacientes"
 
-#: app/views.py:330
+#: app/views.py:337
 msgid "Patient Profile"
 msgstr "O perfil do paciente"
 
-#: app/views.py:331
+#: app/views.py:338
 msgid "Patient profile."
 msgstr "O perfil do paciente."
 
-#: app/views.py:628
+#: app/views.py:647
 msgid "Send messages."
 msgstr "Enviar mensagens."
 
-#: app/views.py:846
+#: app/views.py:920
 msgid "Error uploading image. Please try again."
 msgstr "Erro ao carregar imagem. Tente novamente."
 

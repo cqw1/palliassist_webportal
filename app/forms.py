@@ -71,12 +71,19 @@ class CreateMedicationForm(forms.Form):
         ('22', '22h'),
     )
 
+    RESCUE_CHOICES = (
+        ('none', _('No rescue')),
+        ('severe_pain', _('Severe pain: Use rescue, up to 1/1 h')),
+        ('strong_symptom', _('Strong symptom: Use rescue')),
+    )
+
     name = forms.CharField(label=_("Name"), widget=forms.TextInput({"class": "form-control"}), required=True) 
     form = forms.CharField(label=_("Form"), widget=forms.TextInput({"class": "form-control"}), required=True) 
     dose = forms.CharField(label=_("Dose"), widget=forms.TextInput({"class": "form-control"}), required=True) 
     posology = forms.CharField(label=_("Posology"), widget=forms.TextInput({"class": "form-control"}), required=True) 
     #posology = forms.MultipleChoiceField(label=_("Posology"), widget=forms.CheckboxSelectMultiple, choices=POSOLOGY_CHOICES, required=True) 
-    rescue = forms.CharField(label=_("Rescue"), widget=forms.TextInput({"class": "form-control"}), required=True) 
+    rescue = forms.ChoiceField(label=_("Rescue"), widget=forms.Select({"class": "form-control"}), choices = RESCUE_CHOICES, required=True) 
+    #rescue = forms.CharField(label=_("Rescue"), widget=forms.TextInput({"class": "form-control"}), required=True) 
 
 class UploadImageForm(forms.Form):
     image = forms.ImageField(label=_("Select a image."))
