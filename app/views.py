@@ -329,7 +329,9 @@ def patient_profile(request):
     ### Medication tab.
     medications = Medication.objects.filter(patient=patient_obj)
     for med in medications:
-        med.posology = "h, ".join(med.posology.split(";")) + "h"
+        # TODO fix how this is displayed
+        #med.posology= ", ".join(med.num_doses.split(";")) + "h"
+        med.num_doses = range(1, med.num_doses + 1)
 
     medication_reports = MedicationReport.objects.filter(patient=patient_obj)
 
@@ -870,7 +872,7 @@ def create_medication(request):
             name=request.POST["name"],
             form=request.POST["form"],
             dose=request.POST["dose"],
-            num_doses=request.POST["num_doses"],
+            num_doses=int(request.POST["num_doses"]),
             dose_time_1=request.POST["dose_time_1"],
             dose_time_2=request.POST["dose_time_2"],
             dose_time_3=request.POST["dose_time_3"],
@@ -1350,7 +1352,13 @@ def sync_redcap(request):
             "name": medication.name,
             "form": medication.form,
             "dose": medication.dose,
-            "posology": medication.posology,
+            "num_doses": medication.num_doses,
+            "dose_time_1": medication.dose_time_1,
+            "dose_time_2": medication.dose_time_2,
+            "dose_time_3": medication.dose_time_3,
+            "dose_time_4": medication.dose_time_4,
+            "dose_time_5": medication.dose_time_5,
+            "dose_time_6": medication.dose_time_6,
             "rescue": medication.rescue
         })
 

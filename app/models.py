@@ -158,7 +158,13 @@ class Medication(models.Model):
     name = models.CharField(max_length=MAX_LENGTH, default="")
     form = models.CharField(max_length=MAX_LENGTH, default="")
     dose = models.CharField(max_length=MAX_LENGTH, default="")
-    posology = models.CharField(max_length=MAX_LENGTH, default="")
+    num_doses = models.IntegerField()
+    dose_time_1 = models.CharField(max_length=MAX_LENGTH, default="")
+    dose_time_2 = models.CharField(max_length=MAX_LENGTH, default="")
+    dose_time_3 = models.CharField(max_length=MAX_LENGTH, default="")
+    dose_time_4 = models.CharField(max_length=MAX_LENGTH, default="")
+    dose_time_5 = models.CharField(max_length=MAX_LENGTH, default="")
+    dose_time_6 = models.CharField(max_length=MAX_LENGTH, default="")
     rescue = models.TextField(default="")
 
     class Meta:

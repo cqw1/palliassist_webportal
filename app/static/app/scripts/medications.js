@@ -17,6 +17,7 @@ function ToggleDoseTimes() {
 }
 
 function createMedication(patientPrimaryKey) {
+    console.log($("#create-medication-form").serialize());
     $.post('/create-medication', $("#create-medication-form").serialize() + "&pk=" + patientPrimaryKey, function() {
         console.log('posted');
         location.reload();
