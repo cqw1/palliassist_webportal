@@ -1,9 +1,9 @@
-var MAX_DOSES = 6; // Grabbed from the CreateMedicationForm.
+var MAX_NUM_DOSES = 6; // Grabbed from the CreateMedicationForm.
 
-function ToggleDosageTime() {
+function ToggleDoseTimes() {
 
     // Get the user-selected number of dosages.
-    var numDoses = parseInt(document.getElementById('id_dose').options[document.getElementById('id_dose').selectedIndex].value);
+    var numDoses = parseInt(document.getElementById('id_num_doses').options[document.getElementById('id_num_doses').selectedIndex].value);
 
     // Show all the dosage times that are less than the num dosages selected
     for (var show = 1; show <= numDoses; show++) {
@@ -11,7 +11,7 @@ function ToggleDosageTime() {
     }
     
     // Hide all the dosage times that are greater than the num dosages selected
-    for (var hide = numDoses + 1; hide <= MAX_DOSES; hide++) {
+    for (var hide = numDoses + 1; hide <= MAX_NUM_DOSES; hide++) {
          document.getElementById('id_dose_time_' + hide).parentNode.parentNode.style.display = 'none';
     }
 }
@@ -31,7 +31,7 @@ $(function() {
         $('#create-medication-form')[0].reset()
 
         // Hide all the dosage times except 1, the default choice
-        for (var hide = 2; hide <= MAX_DOSES; hide++) {
+        for (var hide = 2; hide <= MAX_NUM_DOSES; hide++) {
              document.getElementById('id_dose_time_' + hide).parentNode.parentNode.style.display = 'none';
         }
     }
@@ -57,6 +57,6 @@ $(function() {
         $(this).parent().parent().parent().hide();
     });
 
-    document.getElementById('id_dose').onchange = ToggleDosageTime;
+    document.getElementById('id_num_doses').onchange = ToggleDoseTimes;
 
 })

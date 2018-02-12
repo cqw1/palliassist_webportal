@@ -84,7 +84,7 @@ class CreateMedicationForm(forms.Form):
         ('oral_solution', _('Oral Solution')),
     )
 
-    DOSE_CHOICES = (
+    NUM_DOSES_CHOICES = (
         ('1', '1'),
         ('2', '2'),
         ('3', '3'),
@@ -147,8 +147,11 @@ class CreateMedicationForm(forms.Form):
     name = forms.CharField(label=_("Name"), widget=forms.TextInput({"class": "form-control"}), required=True) 
     form = forms.ChoiceField(label=_("Form"), widget=forms.Select({"class": "form-control"}), choices=FORM_CHOICES, required=True) 
     #form = forms.CharField(label=_("Form"), widget=forms.TextInput({"class": "form-control"}), required=True) 
-    dose = forms.ChoiceField(label=_("How many doses?"), widget=forms.Select({"class": "form-control"}), choices=DOSE_CHOICES, required=True) 
-    #dose = forms.CharField(label=_("Dose"), widget=forms.TextInput({"class": "form-control"}), required=True) 
+    dose = forms.CharField(label=_("Dose"), widget=forms.TextInput({"class": "form-control"}), required=True) 
+
+    num_doses = forms.ChoiceField(label=_("How many doses?"), widget=forms.Select({"class": "form-control"}), choices=NUM_DOSES_CHOICES, required=True) 
+    #posology = forms.CharField(label=_("Posology"), widget=forms.TextInput({"class": "form-control"}), required=True) 
+    #posology = forms.MultipleChoiceField(label=_("Posology"), widget=forms.CheckboxSelectMultiple, choices=POSOLOGY_CHOICES, required=True) 
 
     # Dose times. Dynamically shown using javascript to hide/show based on 'dose' selection.
     dose_time_1 = forms.ChoiceField(label=_("Dose 1"), widget=forms.Select({"class": "form-control"}), choices=DOSE_TIME_CHOICES, required=False) 
@@ -158,8 +161,6 @@ class CreateMedicationForm(forms.Form):
     dose_time_5 = forms.ChoiceField(label=_("Dose 5"), widget=forms.Select({"class": "form-control"}), choices=DOSE_TIME_CHOICES, required=False) 
     dose_time_6 = forms.ChoiceField(label=_("Dose 6"), widget=forms.Select({"class": "form-control"}), choices=DOSE_TIME_CHOICES, required=False) 
 
-    posology = forms.CharField(label=_("Posology"), widget=forms.TextInput({"class": "form-control"}), required=True) 
-    #posology = forms.MultipleChoiceField(label=_("Posology"), widget=forms.CheckboxSelectMultiple, choices=POSOLOGY_CHOICES, required=True) 
     rescue = forms.ChoiceField(label=_("Rescue"), widget=forms.Select({"class": "form-control"}), choices=RESCUE_CHOICES, required=True) 
     #rescue = forms.CharField(label=_("Rescue"), widget=forms.TextInput({"class": "form-control"}), required=True) 
 

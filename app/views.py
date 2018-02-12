@@ -870,7 +870,13 @@ def create_medication(request):
             name=request.POST["name"],
             form=request.POST["form"],
             dose=request.POST["dose"],
-            posology=request.POST["posology"],
+            num_doses=request.POST["num_doses"],
+            dose_time_1=request.POST["dose_time_1"],
+            dose_time_2=request.POST["dose_time_2"],
+            dose_time_3=request.POST["dose_time_3"],
+            dose_time_4=request.POST["dose_time_4"],
+            dose_time_5=request.POST["dose_time_5"],
+            dose_time_6=request.POST["dose_time_6"],
             rescue=request.POST["rescue"]
     )
 
