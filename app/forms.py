@@ -77,12 +77,90 @@ class CreateMedicationForm(forms.Form):
         ('strong_symptom', _('Strong symptom: Use rescue')),
     )
 
+    FORM_CHOICES = (
+        ('tablet', _('Tablet')),
+        ('capsule', _('Capsule')),
+        ('syrup', _('Syrup')),
+        ('oral_solution', _('Oral Solution')),
+    )
+
+    DOSE_CHOICES = (
+        ('1', '1'),
+        ('2', '2'),
+        ('3', '3'),
+        ('4', '4'),
+        ('5', '5'),
+        ('6', '6'),
+    )
+
+    DOSE_TIME_CHOICES = (
+        ('00:00', '00:00'),
+        ('00:30', '00:30'),
+        ('01:00', '01:00'),
+        ('01:30', '01:30'),
+        ('02:00', '02:00'),
+        ('02:30', '02:30'),
+        ('03:00', '03:00'),
+        ('03:30', '03:30'),
+        ('04:00', '04:00'),
+        ('04:30', '04:30'),
+        ('05:00', '05:00'),
+        ('05:30', '05:30'),
+        ('06:00', '06:00'),
+        ('06:30', '06:30'),
+        ('07:00', '07:00'),
+        ('07:30', '07:30'),
+        ('08:00', '08:00'),
+        ('08:30', '08:30'),
+        ('09:00', '09:00'),
+        ('09:30', '09:30'),
+        ('10:00', '10:00'),
+        ('11:30', '10:30'),
+        ('11:00', '11:00'),
+        ('11:30', '11:30'),
+        ('12:00', '12:00'),
+        ('12:30', '12:30'),
+        ('13:00', '13:00'),
+        ('13:30', '13:30'),
+        ('14:00', '14:00'),
+        ('14:30', '14:30'),
+        ('15:00', '15:00'),
+        ('15:30', '15:30'),
+        ('16:00', '16:00'),
+        ('16:30', '16:30'),
+        ('17:00', '17:00'),
+        ('17:30', '17:30'),
+        ('18:00', '18:00'),
+        ('18:30', '18:30'),
+        ('19:00', '19:00'),
+        ('19:30', '19:30'),
+        ('20:00', '20:00'),
+        ('20:30', '20:30'),
+        ('21:00', '21:00'),
+        ('21:30', '21:30'),
+        ('22:00', '22:00'),
+        ('22:30', '22:30'),
+        ('23:00', '23:00'),
+        ('23:30', '23:30'),
+    )
+
     name = forms.CharField(label=_("Name"), widget=forms.TextInput({"class": "form-control"}), required=True) 
-    form = forms.CharField(label=_("Form"), widget=forms.TextInput({"class": "form-control"}), required=True) 
-    dose = forms.CharField(label=_("Dose"), widget=forms.TextInput({"class": "form-control"}), required=True) 
+    form = forms.ChoiceField(label=_("Form"), widget=forms.Select({"class": "form-control"}), choices=FORM_CHOICES, required=True) 
+    #form = forms.CharField(label=_("Form"), widget=forms.TextInput({"class": "form-control"}), required=True) 
+    dose = forms.ChoiceField(label=_("How many doses?"), widget=forms.Select({"class": "form-control"}), choices=DOSE_CHOICES, required=True) 
+    #dose = forms.CharField(label=_("Dose"), widget=forms.TextInput({"class": "form-control"}), required=True) 
+
+    # Dose times. Dynamically shown using javascript to hide/show based on 'dose' selection.
+    dose_time_1 = forms.ChoiceField(label=_("Dose 1"), widget=forms.Select({"class": "form-control"}), choices=DOSE_TIME_CHOICES, required=False) 
+    dose_time_2 = forms.ChoiceField(label=_("Dose 2"), widget=forms.Select({"class": "form-control"}), choices=DOSE_TIME_CHOICES, required=False) 
+    dose_time_3 = forms.ChoiceField(label=_("Dose 3"), widget=forms.Select({"class": "form-control"}), choices=DOSE_TIME_CHOICES, required=False) 
+    dose_time_4 = forms.ChoiceField(label=_("Dose 4"), widget=forms.Select({"class": "form-control"}), choices=DOSE_TIME_CHOICES, required=False) 
+    dose_time_5 = forms.ChoiceField(label=_("Dose 5"), widget=forms.Select({"class": "form-control"}), choices=DOSE_TIME_CHOICES, required=False) 
+    dose_time_6 = forms.ChoiceField(label=_("Dose 6"), widget=forms.Select({"class": "form-control"}), choices=DOSE_TIME_CHOICES, required=False) 
+
     posology = forms.CharField(label=_("Posology"), widget=forms.TextInput({"class": "form-control"}), required=True) 
     #posology = forms.MultipleChoiceField(label=_("Posology"), widget=forms.CheckboxSelectMultiple, choices=POSOLOGY_CHOICES, required=True) 
-    rescue = forms.ChoiceField(label=_("Rescue"), widget=forms.Select({"class": "form-control"}), choices = RESCUE_CHOICES, required=True) 
+    rescue = forms.ChoiceField(label=_("Rescue"), widget=forms.Select({"class": "form-control"}), choices=RESCUE_CHOICES, required=True) 
     #rescue = forms.CharField(label=_("Rescue"), widget=forms.TextInput({"class": "form-control"}), required=True) 
 
 class UploadImageForm(forms.Form):
