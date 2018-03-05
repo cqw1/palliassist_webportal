@@ -67,6 +67,32 @@
                             <td>{{ medication.form }}</td>
                             <td>{{ medication.dose }}</td>
                             <td>
+                                {% for dose_time in medication.posology_as_list %}
+                                    {% trans "Dose " %}
+                                    {{ forloop.counter }}
+                                    {{ " Time"}}
+                                    {{ ": " }}
+                                    {{ dose_time }}
+
+                                    <!-- This is really gross. Fix it. -->
+                                    {% if num_dose == 1 %}
+                                        {{ medication.dose_time_1 }}
+                                    {% elif num_dose == 2 %}
+                                        {{ medication.dose_time_2 }}
+                                    {% elif num_dose == 3 %}
+                                        {{ medication.dose_time_3 }}
+                                    {% elif num_dose == 4 %}
+                                        {{ medication.dose_time_4 }}
+                                    {% elif num_dose == 5 %}
+                                        {{ medication.dose_time_5 }}
+                                    {% elif num_dose == 6 %}
+                                        {{ medication.dose_time_6 }}
+                                    {% endif %}
+                                    <br>
+                                {% endfor %}
+                            </td>
+                            {% comment %}
+                            <td>
                                 {% for num_dose in medication.num_doses %}
                                     {% trans "Dose " %}
                                     {{ num_dose }}
@@ -87,8 +113,10 @@
                                         {{ medication.dose_time_6 }}
                                     {% endif %}
                                     <br>
+                                    {{ " Time"}}
                                 {% endfor %}
                             </td>
+                            {% endcomment %}
                             <td>{{ medication.rescue }}</td>
                             <td>
                                 <button type="button" class="btn btn-danger btn-xs" onclick="fcmNotification('{{patient.user.username}}', 'REMIND', 'MEDICATION', '', '{{medication.pk}}')">

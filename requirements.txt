@@ -6,4 +6,3 @@ django-phonenumber-field==1.1.0
 azure-storage==0.32.0
 pyfcm==1.2.9
 phonenumberslite==8.2.0
-Pillow==5.0.0

@@ -158,6 +158,9 @@ class Medication(models.Model):
     name = models.CharField(max_length=MAX_LENGTH, default="")
     form = models.CharField(max_length=MAX_LENGTH, default="")
     dose = models.CharField(max_length=MAX_LENGTH, default="")
+    posology = models.CharField(max_length=MAX_LENGTH, default="")
+    rescue = models.TextField(default="")
+    """
     num_doses = models.IntegerField()
     dose_time_1 = models.CharField(max_length=MAX_LENGTH, default="")
     dose_time_2 = models.CharField(max_length=MAX_LENGTH, default="")
@@ -165,7 +168,10 @@ class Medication(models.Model):
     dose_time_4 = models.CharField(max_length=MAX_LENGTH, default="")
     dose_time_5 = models.CharField(max_length=MAX_LENGTH, default="")
     dose_time_6 = models.CharField(max_length=MAX_LENGTH, default="")
-    rescue = models.TextField(default="")
+    """
+
+    def posology_as_list(self):
+        return self.posology.split(';')
 
     class Meta:
         ordering = ('-created_date',)

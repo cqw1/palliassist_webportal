@@ -154,12 +154,12 @@ class CreateMedicationForm(forms.Form):
     #posology = forms.MultipleChoiceField(label=_("Posology"), widget=forms.CheckboxSelectMultiple, choices=POSOLOGY_CHOICES, required=True) 
 
     # Dose times. Dynamically shown using javascript to hide/show based on 'dose' selection.
-    dose_time_1 = forms.ChoiceField(label=_("Dose 1"), widget=forms.Select({"class": "form-control"}), choices=DOSE_TIME_CHOICES, required=False) 
-    dose_time_2 = forms.ChoiceField(label=_("Dose 2"), widget=forms.Select({"class": "form-control"}), choices=DOSE_TIME_CHOICES, required=False) 
-    dose_time_3 = forms.ChoiceField(label=_("Dose 3"), widget=forms.Select({"class": "form-control"}), choices=DOSE_TIME_CHOICES, required=False) 
-    dose_time_4 = forms.ChoiceField(label=_("Dose 4"), widget=forms.Select({"class": "form-control"}), choices=DOSE_TIME_CHOICES, required=False) 
-    dose_time_5 = forms.ChoiceField(label=_("Dose 5"), widget=forms.Select({"class": "form-control"}), choices=DOSE_TIME_CHOICES, required=False) 
-    dose_time_6 = forms.ChoiceField(label=_("Dose 6"), widget=forms.Select({"class": "form-control"}), choices=DOSE_TIME_CHOICES, required=False) 
+    dose_time_1 = forms.ChoiceField(label=_("Dose 1 Time"), widget=forms.Select({"class": "form-control"}), choices=DOSE_TIME_CHOICES, required=False) 
+    dose_time_2 = forms.ChoiceField(label=_("Dose 2 Time"), widget=forms.Select({"class": "form-control"}), choices=DOSE_TIME_CHOICES, required=False) 
+    dose_time_3 = forms.ChoiceField(label=_("Dose 3 Time"), widget=forms.Select({"class": "form-control"}), choices=DOSE_TIME_CHOICES, required=False) 
+    dose_time_4 = forms.ChoiceField(label=_("Dose 4 Time"), widget=forms.Select({"class": "form-control"}), choices=DOSE_TIME_CHOICES, required=False) 
+    dose_time_5 = forms.ChoiceField(label=_("Dose 5 Time"), widget=forms.Select({"class": "form-control"}), choices=DOSE_TIME_CHOICES, required=False) 
+    dose_time_6 = forms.ChoiceField(label=_("Dose 6 Time"), widget=forms.Select({"class": "form-control"}), choices=DOSE_TIME_CHOICES, required=False) 
 
     rescue = forms.ChoiceField(label=_("Rescue"), widget=forms.Select({"class": "form-control"}), choices=RESCUE_CHOICES, required=True) 
     #rescue = forms.CharField(label=_("Rescue"), widget=forms.TextInput({"class": "form-control"}), required=True) 

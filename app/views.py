@@ -328,10 +328,10 @@ def patient_profile(request):
 
     ### Medication tab.
     medications = Medication.objects.filter(patient=patient_obj)
-    for med in medications:
+    # for med in medications:
         # TODO fix how this is displayed
         #med.posology= ", ".join(med.num_doses.split(";")) + "h"
-        med.num_doses = range(1, med.num_doses + 1)
+        #med.num_doses = range(1, med.num_doses + 1)
 
     medication_reports = MedicationReport.objects.filter(patient=patient_obj)
 
@@ -866,19 +866,31 @@ def create_medication(request):
     print "create_medication"
     patient_obj = Patient.objects.get(pk=request.POST["pk"])
 
+    constructed_posology=""
+    for num_dose in range(1, int(request.POST["num_doses"]) + 1):
+        constructed_posology += request.POST["dose_time_" + str(num_dose)] + ";"
+    # Remove the last '; ' that got concatenated to the end
+    constructed_posology = constructed_posology[:-1]
+
+    print "constructed_posology:", constructed_posology
+
+    """
+    num_doses=int(request.POST["num_doses"]),
+    dose_time_1=request.POST["dose_time_1"],
+    dose_time_2=request.POST["dose_time_2"],
+    dose_time_3=request.POST["dose_time_3"],
+    dose_time_4=request.POST["dose_time_4"],
+    dose_time_5=request.POST["dose_time_5"],
+    dose_time_6=request.POST["dose_time_6"],
+    """
+
     medication = Medication.objects.create(
             created_date=timezone.now(),
             patient=patient_obj,
             name=request.POST["name"],
             form=request.POST["form"],
             dose=request.POST["dose"],
-            num_doses=int(request.POST["num_doses"]),
-            dose_time_1=request.POST["dose_time_1"],
-            dose_time_2=request.POST["dose_time_2"],
-            dose_time_3=request.POST["dose_time_3"],
-            dose_time_4=request.POST["dose_time_4"],
-            dose_time_5=request.POST["dose_time_5"],
-            dose_time_6=request.POST["dose_time_6"],
+            posology=constructed_posology,
             rescue=request.POST["rescue"]
     )
 
